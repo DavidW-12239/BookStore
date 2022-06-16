@@ -1,0 +1,72 @@
+package org.bookStore.controller;
+
+import org.bookStore.pojo.Book;
+import org.bookStore.pojo.Cart;
+import org.bookStore.pojo.CartItem;
+import org.bookStore.pojo.User;
+import org.bookStore.service.CartItemService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
+
+@Controller
+public class CartController {
+    @Autowired
+    CartItemService cartItemService ;
+
+    //加载当前用户的购物车信息
+    @RequestMapping("/toCartPage")
+    public String getCart(HttpSession session){
+        User user = (User)session.getAttribute("loginUser");
+        Cart cart = cartItemService.getCart(user);
+        user.setCart(cart);
+        session.setAttribute("loginUser",user);
+        return "cart/cart";
+    }
+
+    @RequestMapping("/addCart/{id}")
+    public String addCartItem(@PathVariable("id") Integer bookId , HttpSession session){
+        User user = (User)session.getAttribute("loginUser");
+        CartItem cartItem = new CartItem(new Book(bookId),1,user);
+        //将指定的图书添加到当前用户的购物车中
+        cartItemService.addOrUpdateCartItem(cartItem,user.getCart());
+        int cartCount = cartItemService.getCartItemList(user).size();
+        session.setAttribute("cartCount", cartCount);
+
+        return "redirect:/index";
+    }
+
+    @RequestMapping("/deleteCartItem/{id}")
+    public String deleteCartItem(@PathVariable("id") Integer cartItemId , HttpSession session){
+        User user = (User)session.getAttribute("loginUser");
+        CartItem cartItem = cartItemService.getCartItem(cartItemId);
+        //将指定的图书添加到当前用户的购物车中
+        cartItemService.deleteCartItem(cartItem);
+
+        return "redirect:/toCartPage";
+    }
+
+    public String editCart(Integer cartItemId , Integer buyCount){
+        cartItemService.updateCartItem(new CartItem(cartItemId , buyCount));
+        return "";
+    }
+
+    /*public String cartInfo(HttpSession session){
+        User user =(User)session.getAttribute("loginUser");
+        Cart cart = cartItemService.getCart(user);
+
+        //调用Cart中的三个属性的get方法，目的是在此处计算这三个属性的值，否则这三个属性为null，
+        //导致的结果就是下一步的gson转化时，为null的属性会被忽略
+        cart.getTotalBookCount();
+        cart.getTotalCount();
+        cart.getTotalMoney();
+
+        Gson gson = new Gson();
+        String cartJsonStr = gson.toJson(cart);
+        return "json:"+cartJsonStr ;
+    }*/
+}

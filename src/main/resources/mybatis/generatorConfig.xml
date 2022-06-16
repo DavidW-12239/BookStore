@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!-- configure database connection -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/bookdb" userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- assign javaBean generating locations -->
+        <javaModelGenerator targetPackage="org.bookStore.bean"
+                            targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--assign sql mapper locations -->
+        <sqlMapGenerator targetPackage="mapper" targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- assign dao api location，mapper api -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="org.bookStore.mapper" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+
+        <!-- table generating logic -->
+        <table tableName="t_book" domainObjectName="Book"></table>
+        <table tableName="t_order" domainObjectName="Order"></table>
+        <table tableName="t_order_item" domainObjectName="orderItem"></table>
+        <table tableName="t_user" domainObjectName="User"></table>
+        <table tableName="t_cart_item" domainObjectName="CartItem"></table>
+    </context>
+</generatorConfiguration>

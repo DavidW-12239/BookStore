@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.bookStore.mapper.BookMapper">
+    <insert id="addBook">
+        insert into t_book values (null, null, #{bookName}, #{price}, #{author}, #{saleCount}, #{bookCount}, 0)
+    </insert>
+
+    <select id="getBookList" resultType="org.bookStore.pojo.Book">
+        select * from t_book where bookStatus=0
+    </select>
+    <select id="getBook" resultType="org.bookStore.pojo.Book">
+        select * from t_book where id = #{id}
+    </select>
+</mapper>

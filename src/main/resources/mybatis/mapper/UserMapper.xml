@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.bookStore.mapper.UserMapper">
+    <insert id="addUser">
+        insert into t_user values(null, #{uname}, #{pwd}, #{email}, #{role})
+    </insert>
+
+
+    <select id="getUser" resultType="org.bookStore.pojo.User">
+        select * from t_user where uname = #{uname} and pwd = #{pwd}
+    </select>
+    <select id="getUserByEmail" resultType="org.bookStore.pojo.User">
+        select * from t_user where email = #{email}
+    </select>
+    <select id="getUserById" resultType="org.bookStore.pojo.User">
+        select * from t_user where id = #{id}
+    </select>
+    <select id="getUserByName" resultType="org.bookStore.pojo.User">
+        select * from t_user where uname = #{uname}
+    </select>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.bookStore.mapper.OrderMapper">
+
+
+    <insert id="addOrderBean">
+        insert into t_order values(null, #{orderNo}, #{orderDate}, #{orderUser.id}, #{orderMoney}, #{orderStatus})
+    </insert>
+
+    <resultMap id="orderBean" type="org.bookStore.pojo.OrderBean">
+        <id property="id" column="id"></id>
+        <result property="orderNo" column="orderNo"></result>
+        <result property="orderDate" column="orderDate"></result>
+        <result property="orderUser.id" column="orderUser"></result>
+        <result property="orderMoney" column="orderMoney"></result>
+        <result property="orderStatus" column="orderStatus"></result>
+    </resultMap>
+    <select id="getOrderList" resultMap="orderBean">
+        SELECT * FROM t_order WHERE orderUser = #{id}
+    </select>
+    <select id="getOrderTotalBookCount" resultType="java.lang.Integer">
+        SELECT SUM(t3.buyCount) AS totalBookCount  FROM
+                (
+                SELECT t1.id , t2.buyCount , t2.orderBean FROM t_order t1 INNER JOIN t_order_item t2
+                ON t1.id = t2.orderBean WHERE t1.orderUser = #{orderUser.id}
+                )  t3 WHERE t3.orderBean = #{id} GROUP BY t3.orderBean
+    </select>
+    <select id="getOrderBean" resultMap="orderBean">
+        SELECT * FROM t_order WHERE id = #{id}
+    </select>
+</mapper>
