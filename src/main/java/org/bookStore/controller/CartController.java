@@ -29,7 +29,7 @@ public class CartController {
     }
 
     @RequestMapping("/addCart/{id}")
-    public String addCartItem(@PathVariable("id") Integer bookId , HttpSession session){
+    public String addCartItem(@PathVariable("id") Integer bookId, HttpSession session){
         User user = (User)session.getAttribute("loginUser");
         CartItem cartItem = new CartItem(new Book(bookId),1,user);
         //将指定的图书添加到当前用户的购物车中
@@ -41,8 +41,7 @@ public class CartController {
     }
 
     @RequestMapping("/deleteCartItem/{id}")
-    public String deleteCartItem(@PathVariable("id") Integer cartItemId , HttpSession session){
-        User user = (User)session.getAttribute("loginUser");
+    public String deleteCartItem(@PathVariable("id") Integer cartItemId, HttpSession session){
         CartItem cartItem = cartItemService.getCartItem(cartItemId);
         //将指定的图书添加到当前用户的购物车中
         cartItemService.deleteCartItem(cartItem);
@@ -50,9 +49,20 @@ public class CartController {
         return "redirect:/toCartPage";
     }
 
-    public String editCart(Integer cartItemId , Integer buyCount){
+    @RequestMapping("/reduceCartItemQuantity/{id}")
+    public String reduceCartItemQuantity(@PathVariable("id") Integer cartItemId){
+        Integer buyCount = cartItemService.getCartItem(cartItemId).getBuyCount() - 1;
         cartItemService.updateCartItem(new CartItem(cartItemId , buyCount));
-        return "";
+
+        return "redirect:/toCartPage";
+    }
+
+    @RequestMapping("/increaseCartItemQuantity/{id}")
+    public String increaseCartItemQuantity(@PathVariable("id") Integer cartItemId){
+        Integer buyCount = cartItemService.getCartItem(cartItemId).getBuyCount() + 1;
+        cartItemService.updateCartItem(new CartItem(cartItemId , buyCount));
+
+        return "redirect:/toCartPage";
     }
 
     /*public String cartInfo(HttpSession session){

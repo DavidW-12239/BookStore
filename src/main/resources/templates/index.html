@@ -24,7 +24,7 @@
             <a th:href="@{/toRegisterPage}" class="register">注册</a>
             <a href="cart/cart.html" class="cart iconfont icon-gouwuche">
               购物车
-              <div class="cart-num">3</div>
+              <div class="cart-num">0</div>
             </a>
             <a th:href="@{/toAdminPage}" class="admin">后台管理</a>
           </div>
@@ -56,7 +56,7 @@
           </ul>
         </div>
         <div class="header-search">
-          <input type="text" placeholder="十万个为什么" />
+          <input type="text" placeholder=" " />
           <button class="iconfont icon-search"></button>
         </div>
       </div>
@@ -111,15 +111,15 @@
           <div class="swiper-container">
             <ul class="swiper-wrapper">
               <li class="swiper-slide">
-                <img src="./static/uploads/banner4.jpg" alt="">
+                <img src="uploads/banner4.jpg" alt="">
                 <!-- <div class="banner-img"></div> -->
               </li>
               <li class="swiper-slide">
-                <img src="./static/uploads/banner5.jpg" alt="">
+                <img src="uploads/banner5.jpg" alt="">
                 <!-- <div class="banner-img"></div> -->
               </li>
               <li class="swiper-slide">
-                <img src="./static/uploads/banner6.jpg" alt="">
+                <img src="uploads/banner6.jpg" alt="">
                 <!-- <div class="banner-img"></div> -->
               </li>
             </ul>
@@ -136,43 +136,67 @@
         <div class="w">
           <div class="list">
             <div class="list-header">
-              <div class="title">图书列表</div>
+              <div class="title">Book List</div>
               <div class="price-search">
-                <span>价格:</span>
+                <span>Price: </span>
+                <span> $</span>
                 <input type="text">
-                <span>-元</span>
+                <span> $</span>
                 <input type="text">
-                <span>元</span>
-                <button>查询</button>
+                <button>Search</button>
               </div>
             </div>
             <div class="list-content">
-              <div href="" class="list-item" th:each="book : ${session.bookList}" th:object="${book}">
+              <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}">
                 <img th:src="@{|/uploads/*{bookImg}|}" alt="">
-                <p th:text="|书名:*{bookName}|">书名:活着</p>
-                <p th:text="|作者:*{author}|">作者:余华</p>
-                <p th:text="|价格:$*{price}|">价格:$66.6</p>
-                <p th:text="|销量:*{saleCount}|">销量:230</p>
-                <p th:text="|库存:*{bookCount}|">库存:1000</p>
+                <p th:text="|*{bookName}|">bookname</p>
+                <p th:text="|author: *{author}|">author</p>
+                <p th:text="|price: $*{price}|">price</p>
+                <p th:text="|sales: *{saleCount}|">sales</p>
+                <p th:text="|stock: *{bookCount}|">stock</p>
                 <a th:href="@{/addCart/{id}(id=${book.id})}" class="btn" type="button">Add to the Cart</button></a>
               </div>
             </div>
             <div class="list-footer">
-              <div>首页</div>
-              <div>上一页</div>
-              <ul><li class="active">1</li><li>2</li><li>3</li></ul>
-              <div>下一页</div>
-              <div>末页</div>
-              <span>共10页</span>
-              <span>30条记录</span>
-              <span>到第</span>
-              <input type="text">
-              <span>页</span>
-              <button>确定</button>
+              <ul class="pagination">
+                <li>
+                  <a th:href="@{${'getMainBookList'}(pageNum=${1},pageSize=${pageSize})}">Front Page</a>
+                </li>
+                <li>
+                  <a th:if="${not isFirstPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum-1},pageSize=${pageSize})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                  <a th:if="${isFirstPage}" href="javascript:void(0);" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li th:each="pageNo : ${#numbers.sequence(1, totalPages)}">
+                  <a th:if="${pageNum eq pageNo}" href="javascript:void(0);">
+                    <span th:text="${pageNo}"></span>
+                  </a>
+                  <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'getMainBookList'}(pageNum=${pageNo},pageSize=${pageSize})}">
+                    <span th:text="${pageNo}"></span>
+                  </a>
+                </li>
+                <li>
+                  <a th:if="${not isLastPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum+1},pageSize=${pageSize})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                  <a th:if="${isLastPage}" href="javascript:void(0);" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                <li>
+                  <a th:href="@{${'getMainBookList'}(pageNum=${pageInfo.pages},pageSize=${pageSize})}">Last Page</a>
+                </li>
+              </ul>
+
+              <span th:text="'  Total Pages: ' + ${pageInfo.pages}">total pages</span>
+              <span th:text="'  Total Records: ' + ${pageInfo.total}">total records</span>
             </div>
+
           </div>
         </div>
-
       </div>
       <div class="cate w">
         <div class="list">

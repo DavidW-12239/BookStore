@@ -61,7 +61,7 @@ public class UserController {
     @GetMapping(value = "/index")
     public String toIndexPage(HttpSession session){
         if (session.getAttribute("loginUser") != null){
-            return "redirect:/book";
+            return "redirect:/getMainBookList";
         }
         return "user/login";
     }
@@ -75,8 +75,15 @@ public class UserController {
     public String register(@RequestParam("uname") String uname, @RequestParam("pwd") String pwd,
                            @RequestParam("pwd2") String pwd2, @RequestParam("email") String email,
                            HttpSession session, Model model){
+        String unameReg = "^[a-zA-Z0-9_-]{4,16}$";
+        String pwdReg = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$";
+        String emailReg = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
         if (!userService.checkUserName(uname)){
             model.addAttribute("unameMsg","Same username already exists!");
+            return "user/register";
+        }
+        else if (!uname.matches(unameReg)){
+            model.addAttribute("unameMsg","Username should consist of 4-16 alphanumeric characters");
             return "user/register";
         }
         else if (uname.equals("")){
@@ -91,12 +98,20 @@ public class UserController {
             model.addAttribute("pwdMsg2","Different Passwords!");
             return "user/register";
         }
+        else if (!pwd.matches(pwdReg)){
+            model.addAttribute("pwdMsg","Password should contain 6-20 characters, include number or letters");
+            return "user/register";
+        }
         else if (!userService.checkEmail(email)){
             model.addAttribute("emailMsg","Same email address already exists!");
             return "user/register";
         }
         else if (email.equals("")){
             model.addAttribute("emailMsg","Email address cannot be empty!");
+            return "user/register";
+        }
+        else if (!email.matches(emailReg)){
+            model.addAttribute("emailMsg","Incorrect email address !");
             return "user/register";
         }
         else{

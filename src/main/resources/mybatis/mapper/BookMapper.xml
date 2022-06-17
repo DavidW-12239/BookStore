@@ -6,11 +6,16 @@
     <insert id="addBook">
         insert into t_book values (null, null, #{bookName}, #{price}, #{author}, #{saleCount}, #{bookCount}, 0)
     </insert>
-
-    <select id="getBookList" resultType="org.bookStore.pojo.Book">
+    <delete id="deleteBook">
+        delete from t_book where id = #{id}
+    </delete>
+    <select id="getBookListByStatus" resultType="org.bookStore.pojo.Book">
         select * from t_book where bookStatus=0
     </select>
     <select id="getBook" resultType="org.bookStore.pojo.Book">
         select * from t_book where id = #{id}
+    </select>
+    <select id="getBookList" resultType="org.bookStore.pojo.Book">
+        select * from t_book
     </select>
 </mapper>

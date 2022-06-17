@@ -44,13 +44,13 @@
           <tbody>
           <tr th:each="cartItem : ${session.loginUser.cart.cartItemMap.values()}">
             <td>
-              <img th:src="@{|/static/uploads/${cartItem.book.bookImg}|}" alt="" />
+              <img th:src="@{|/uploads/${cartItem.book.bookImg}|}" alt="" />
             </td>
             <td th:text="${cartItem.book.bookName}">bookName</td>
             <td>
-              <span class="count" th:onclick="|editCart(${cartItem.id}, ${cartItem.buyCount-1})|">-</span>
+              <a class="count" th:href="@{/reduceCartItemQuantity/{id}(id=${cartItem.id})}">-</a>
               <input class="count-num" type="text" value="1" th:value="${cartItem.buyCount}"/>
-              <span class="count" th:onclick="|editCart(${cartItem.id} , ${cartItem.buyCount+1})|">+</span>
+              <a class="count" th:href="@{/increaseCartItemQuantity/{id}(id=${cartItem.id})}">+</a>
             </td>
             <td th:text="${cartItem.book.price}">0</td>
             <td th:text="${cartItem.xj}">0</td>

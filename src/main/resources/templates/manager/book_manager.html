@@ -16,7 +16,7 @@
           <a href="../index.html">
             <img src="/img/logo.gif" alt=""
           /></a>
-          <h1>图书管理系统</h1>
+          <h1>Book Management System</h1>
         </div>
         <div class="header-right">
           <a href="#" class="order">图书管理</a>
@@ -28,7 +28,7 @@
     <div class="list">
       <div class="w">
         <div class="add">
-          <a th:href="@{/toBookEditPage}">添加图书</a>
+          <a th:href="@{/toBookEditPage}">Add Books</a>
         </div>
         <table>
           <thead>
@@ -43,58 +43,63 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr th:each="book : ${pageInfo.list}" th:object="${book}">
               <td>
-                <img src="/uploads/huozhe.jpg" alt="" />
+                <img th:src="@{|/uploads/*{bookImg}|}" alt="">
               </td>
-              <td>活着</td>
+              <td th:text="|*{bookName}|">bookName</td>
+              <td th:text="|price: $*{price}|">price</td>
+              <td th:text="|author: *{author}|">author</td>
+              <td th:text="|sales: *{saleCount}|">sales</td>
+              <td th:text="|stock: *{bookCount}|">stock</td>
               <td>
-                100.00
-              </td>
-              <td>余华</td>
-              <td>200</td>
-              <td>400</td>
-              <td>
-                <a href="book_edit.html">修改</a><a href="" class="del">删除</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="/uploads/huozhe.jpg" alt="" />
-              </td>
-              <td>活着</td>
-              <td>
-                100.00
-              </td>
-              <td>余华</td>
-              <td>200</td>
-              <td>400</td>
-              <td>
-                <a href="book_edit.html">修改</a><a href="" class="del">删除</a>
+                <a href="book_edit.html">EDIT</a>
+                <a th:href="@{/deleteBook/{id}(id=${book.id})}" class="del">DELETE</a>
               </td>
             </tr>
           </tbody>
         </table>
         <div class="footer">
           <div class="footer-right">
-            <div>首页</div>
-            <div>上一页</div>
-            <ul>
-              <li class="active">1</li>
-              <li>2</li>
-              <li>3</li>
+            <ul class="pagination">
+              <li>
+                <a th:href="@{${'toBookManagerPage'}(pageNum=${1},pageSize=${10})}">Front Page</a>
+              </li>
+              <li>
+                <a th:if="${not isFirstPage}" th:href="@{${'toBookManagerPage'}(pageNum=${pageNum-1},pageSize=${10})}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+                <a th:if="${isFirstPage}" href="javascript:void(0);" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li th:each="pageNo : ${#numbers.sequence(1, totalPages)}">
+                <a th:if="${pageNum eq pageNo}" href="javascript:void(0);">
+                  <span th:text="${pageNo}"></span>
+                </a>
+                <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'toBookManagerPage'}(pageNum=${pageNo},pageSize=${10})}">
+                  <span th:text="${pageNo}"></span>
+                </a>
+              </li>
+              <li>
+                <a th:if="${not isLastPage}" th:href="@{${'toBookManagerPage'}(pageNum=${pageNum+1},pageSize=${10})}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+                <a th:if="${isLastPage}" href="javascript:void(0);" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              <li>
+                <a th:href="@{${'toBookManagerPage'}(pageNum=${pageInfo.pages},pageSize=${10})}">Last Page</a>
+              </li>
             </ul>
-            <div>下一页</div>
-            <div>末页</div>
-            <span>共10页</span>
-            <span>30条记录</span>
-            <span>到第</span>
-            <input type="text" />
-            <span>页</span>
-            <button>确定</button>
+
+            <span th:text="'  Total Pages: ' + ${pageInfo.pages} + ', '">total pages</span>
+            <span th:text="'  Total Records: ' + ${pageInfo.total}">total records</span>
           </div>
         </div>
       </div>
+
     </div>
     <div class="bottom">
       <div class="w">

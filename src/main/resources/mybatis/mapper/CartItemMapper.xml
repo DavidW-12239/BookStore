@@ -8,7 +8,7 @@
         insert into t_cart_item values (null, #{book.id}, #{buyCount}, #{userBean.id})
     </insert>
     <update id="updateCartItem">
-        update t_cart_item set book = #{book.id}, buyCount = #{buyCount}, userBean = #{userBean.id}
+        update t_cart_item set buyCount = #{buyCount}
         where id = #{id}
     </update>
     <delete id="delCartItem">
