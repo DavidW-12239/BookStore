@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Adding Book Successful</title>
+<title>Editing Book Successful</title>
 <link type="text/css" rel="stylesheet" href="/css/style.css" >
 <style type="text/css">
 	h1 {
@@ -16,13 +16,12 @@
 </style>
 </head>
 <body>
-		<div th:replace="common::head"/>
+<div th:replace="common::head"/>
 		
 		<div id="main">
 		
-			<h1>Book Adding successful!<br><br>
-				<a th:href="@{/toBookEditPage}">Continue Adding Books</a><br><br>
-				<a th:href="@{/toBookManagerPage}">To Book Manager Page</a>
+			<h1>Book Editing succeeed!<br><br>
+				<a th:href="@{/toBookManagerPage}">Back To Book Manager Page</a>
 			</h1>
 	
 		</div>

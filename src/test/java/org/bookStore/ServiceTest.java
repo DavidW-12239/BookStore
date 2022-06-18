@@ -90,7 +90,12 @@ public class ServiceTest {
         for(CartItem cartItem : cartItemList){
             System.out.println(cartItem.toString());
         }
+    }
 
+    @Test
+    void editBook(){
+        List<Book> books = bookService.getBookListByPrice(19.0,30.0);
+        System.out.println(books.size());
     }
 }
 

@@ -80,9 +80,9 @@
   align-items: center;
 }
 .header-logo {
-  width: 200px;
-  height: 62px;
-  background: url('../img/logo.gif') no-repeat;
+  width: 220px;
+  height: 72px;
+  background: url('../img/logo.png') no-repeat;
   background-size: 100%;
 }
 .header-nav li {

@@ -95,6 +95,8 @@ div {
 }
 
 .logo_img {
+  width: 220px;
+  height: 72px;
   float: left;
 }
 
@@ -148,7 +150,7 @@ div {
 
 .login_box {
   margin: 20px;
-  height: 260px;
+  height: 300px;
   /* width: 366px; */
 }
 

@@ -9,7 +9,11 @@ import java.util.List;
 public interface BookService {
     List<Book> getBookListByStatus(Integer bookStatus);
     List<Book> getBookList();
+    List<Book> getBookListByName(String bookName);
+    List<Book> getBookListByPrice(Double price1, Double price2);
     Book getBook(Integer id);
     void addBook(Book book);
+    void updateBook(Book book);
     void deleteBook(Integer id);
+
 }

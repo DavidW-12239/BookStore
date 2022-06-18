@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="top_bar" class="topbar">
+    <div class="w">
+        <div class="topbar-left">
+            <i>Deliver to:</i>
+            <i><select>
+                <option value="BC">British Columbia</option>
+                <option value="Alberta">Alberta</option>
+                <option value="Ontario">Ontario</option>
+                <option value="Quebec">Quebec</option>
+            </select></i>
+        </div>
+        <div class="topbar-right" th:if="${session.loginUser==null}">
+            <a th:href="@{/}" class="login">Login</a>
+            <a th:href="@{/toRegisterPage}" class="register">Register</a>
+            <a th:href="@{/toCartPage}" class="cart iconfont icon-gouwuche">
+                My Cart
+                <div class="cart-num">0</div>
+            </a>
+            <a th:href="@{/toAdminPage}" class="admin">Admin</a>
+        </div>
+
+        <div class="topbar-right" th:unless="${session.loginUser==null}">
+            <!--After login-->
+            <span>Welcome <b th:text="${session.loginUser.getUname()}">xxx</b></span>
+            <a th:href="@{/logout}" class="register">Logout</a>
+            <a th:href="@{/toCartPage}" class="cart iconfont icon-gouwuche">
+                My Cart
+                <div class="cart-num" th:text="${session.cartCount}">0</div>
+            </a>
+            <a th:href="@{/toAdminPage}" class="admin">Admin</a>
+        </div>
+
+    </div>
+</div>
+
+    <div id="header" th:fragment="head" >
+        <a th:href="@{/index}">
+            <img class="logo_img" alt="" src="/img/logo.png" />
+        </a>
+        <div th:fragment="head" >
+            <span>Dear<span class="um_span" th:text="${session.loginUser.getUname()}">xxx</span>Welcome to the BookStore</span>
+            <a th:href="@{/getOrderList}">My Order &nbsp;</a>
+            <a th:href="@{/logout}">Logout</a>&nbsp;&nbsp;
+            <a th:href="@{/index}">Main Page</a>
+        </div>
+    </div>
+
+    <div th:fragment="header_right" class="header-right">
+        <h3>Dear<span th:text="${session.loginUser.uname}">xx</span>, welcome to the BookStore </h3>
+        <div class="order"><a th:href="@{/getOrderList}"> My Order </a></div>
+        <div class="destory"><a th:href="@{/logout}">Logout</a></div>
+        <div class="gohome">
+            <a th:href="@{/index}">Main Page</a>
+        </div>
+    </div>
+
+    <div th:fragment="header_manager">
+        <a th:href="@{/toBookManagerPage}">Book Management&nbsp;&nbsp;</a>
+        <a th:href="@{/toOrderManagerPage}">Order Management&nbsp;&nbsp;</a>
+        <a th:href="@{/index}">Main Page</a>
+    </div>
+
+    <div th:fragment="banner" class="banner w clearfix">
+        <div class="banner-left">
+            <ul>
+                <li>
+                    <a href="">
+                        <span>文学 鉴赏</span>
+                        <i class="iconfont icon-jiantou"></i></a>
+                </li>
+                <li>
+                    <a href="">
+                        <span>社科 研究</span>
+                        <i class="iconfont icon-jiantou"></i></a>
+                </li>
+                <li>
+                    <a href="">
+                        <span>少儿 培训</span>
+                        <i class="iconfont icon-jiantou"></i></a>
+                </li>
+                <li>
+                    <a href="">
+                        <span>艺术 赏析</span>
+                        <i class="iconfont icon-jiantou"></i></a>
+                </li>
+                <li>
+                    <a href="">
+                        <span>生活 周边</span>
+                        <i class="iconfont icon-jiantou"></i></a>
+                </li>
+                <li>
+                    <a href="">
+                        <span>文教 科技</span>
+                        <i class="iconfont icon-jiantou"></i></a>
+                </li>
+                <li>
+                    <a href="">
+                        <span>热销 畅读</span>
+                        <i class="iconfont icon-jiantou"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="banner-right">
+            <div class="swiper-container">
+                <ul class="swiper-wrapper">
+                    <li class="swiper-slide">
+                        <img src="uploads/banner4.jpg" alt="">
+                        <!-- <div class="banner-img"></div> -->
+                    </li>
+                    <li class="swiper-slide">
+                        <img src="uploads/banner5.jpg" alt="">
+                        <!-- <div class="banner-img"></div> -->
+                    </li>
+                    <li class="swiper-slide">
+                        <img src="uploads/banner6.jpg" alt="">
+                        <!-- <div class="banner-img"></div> -->
+                    </li>
+                </ul>
+                <div class="swiper-button-prev"></div>
+
+                <div class="swiper-button-next"></div>
+
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="bottom" id="bottom">
+			<span>
+				The BookStore.Copyright &copy;2022
+			</span>
+    </div>
+
+    <div th:fragment="bottom_main" class="bottom">
+        <div class="w">
+            <div class="content">
+                <dl>
+                    <dt>About the BookStore</dt>
+                    <dd>Our Business Idea</dd>
+                </dl>
+                <dl>
+                    <dt>Join Us</dt>
+                    <dd>Available Jobs</dd>
+                </dl>
+                <dl>
+                    <dt>Contact Us</dt>
+                    <dd>http://www.thebookstore.com<dd>
+                </dl>
+            </div>
+        </div>
+        <div class="down">
+            The BookStore.Copyright ©2022
+        </div>
+    </div>
+
+</body>
+</html>

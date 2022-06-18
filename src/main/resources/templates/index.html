@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>书城首页</title>
+    <title>Main Page</title>
     <link rel="stylesheet" href="css/minireset.css" />
     <link rel="stylesheet" href="css/common.css" />
     <link rel="stylesheet" href="css/iconfont.css" />
@@ -12,139 +12,39 @@
   </head>
   <body>
     <div id="app">
-      <div class="topbar">
-        <div class="w">
-          <div class="topbar-left">
-            <i>送至:</i>
-            <i>北京</i>
-            <i class="iconfont icon-ai-arrow-down"></i>
-          </div>
-          <div class="topbar-right" th:if="${session.loginUser==null}">
-            <a th:href="@{/}" class="login">登录</a>
-            <a th:href="@{/toRegisterPage}" class="register">注册</a>
-            <a href="cart/cart.html" class="cart iconfont icon-gouwuche">
-              购物车
-              <div class="cart-num">0</div>
-            </a>
-            <a th:href="@{/toAdminPage}" class="admin">后台管理</a>
-          </div>
-
-          <div class="topbar-right" th:unless="${session.loginUser==null}">
-              <!--登录后风格-->
-            <span>Welcome <b th:text="${session.loginUser.getUname()}">xxx</b></span>
-            <a th:href="@{/logout}" class="register">Logout</a>
-            <a th:href="@{/toCartPage}" class="cart iconfont icon-gouwuche">
-              购物车
-              <div class="cart-num" th:text="${session.cartCount}">0</div>
-            </a>
-            <a th:href="@{/toAdminPage}" class="admin">后台管理</a>
-          </div>
-
-        </div>
-      </div>
+      <div th:replace="common :: top_bar" class="topbar"/>
       <div class="header w">
         <a href="#" class="header-logo"></a>
         <div class="header-nav">
           <ul>
-            <li><a href="#">java</a></li>
-            <li><a href="#">前端</a></li>
-            <li><a href="#">小说</a></li>
-            <li><a href="#">文学</a></li>
-            <li><a href="#">青春文学</a></li>
-            <li><a href="#">艺术</a></li>
-            <li><a href="#">管理</a></li>
+            <li><a href="#">Technology</a></li>
+            <li><a href="#">History</a></li>
+            <li><a href="#">Fiction</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Literature</a></li>
+            <li><a href="#">Art</a></li>
+            <li><a href="#">Management</a></li>
           </ul>
         </div>
-        <div class="header-search">
+        <form class="header-search">
           <input type="text" placeholder=" " />
           <button class="iconfont icon-search"></button>
-        </div>
+        </form>
       </div>
-      <div class="banner w clearfix">
-        <div class="banner-left">
-          <ul>
-            <li>
-              <a href="">
-                <span>文学 鉴赏</span>
-                <i class="iconfont icon-jiantou"></i
-              ></a>
-            </li>
-            <li>
-              <a href="">
-                <span>社科 研究</span>
-                <i class="iconfont icon-jiantou"></i
-              ></a>
-            </li>
-            <li>
-              <a href="">
-                <span>少儿 培训</span>
-                <i class="iconfont icon-jiantou"></i
-              ></a>
-            </li>
-            <li>
-              <a href="">
-                <span>艺术 赏析</span>
-                <i class="iconfont icon-jiantou"></i
-              ></a>
-            </li>
-            <li>
-              <a href="">
-                <span>生活 周边</span>
-                <i class="iconfont icon-jiantou"></i
-              ></a>
-            </li>
-            <li>
-              <a href="">
-                <span>文教 科技</span>
-                <i class="iconfont icon-jiantou"></i
-              ></a>
-            </li>
-            <li>
-              <a href="">
-                <span>热销 畅读</span>
-                <i class="iconfont icon-jiantou"></i
-              ></a>
-            </li>
-          </ul>
-        </div>
-        <div class="banner-right">
-          <div class="swiper-container">
-            <ul class="swiper-wrapper">
-              <li class="swiper-slide">
-                <img src="uploads/banner4.jpg" alt="">
-                <!-- <div class="banner-img"></div> -->
-              </li>
-              <li class="swiper-slide">
-                <img src="uploads/banner5.jpg" alt="">
-                <!-- <div class="banner-img"></div> -->
-              </li>
-              <li class="swiper-slide">
-                <img src="uploads/banner6.jpg" alt="">
-                <!-- <div class="banner-img"></div> -->
-              </li>
-            </ul>
-            <div class="swiper-button-prev"></div>
-
-            <div class="swiper-button-next"></div>
-
-            <!-- Add Pagination -->
-            <div class="swiper-pagination"></div>
-          </div>
-        </div>
-      </div>
+      <div th:replace="common :: banner" class="banner w clearfix"/>
       <div class="books-list ">
         <div class="w">
           <div class="list">
             <div class="list-header">
               <div class="title">Book List</div>
-              <div class="price-search">
+              <form class="price-search" th:action="@{/getMainBookList}">
                 <span>Price: </span>
                 <span> $</span>
-                <input type="text">
-                <span> $</span>
-                <input type="text">
+                <input type="number" name="price1">
+                <span> - $</span>
+                <input type="number" name="price2">
                 <button>Search</button>
-              </div>
+              </form>
             </div>
             <div class="list-content">
               <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}">
@@ -192,9 +92,8 @@
               </ul>
 
               <span th:text="'  Total Pages: ' + ${pageInfo.pages}">total pages</span>
-              <span th:text="'  Total Records: ' + ${pageInfo.total}">total records</span>
+              <span th:text="'  Total Records: ' + ${pageInfo.total}">total items</span>
             </div>
-
           </div>
         </div>
       </div>
@@ -242,7 +141,7 @@
             <div class="seckill-content">
              
                   <a href="" class="tip"> 
-                     <h5>距离结束还有</h5>
+                     <h5>Before end</h5>
                      <i class="iconfont icon-shandian"></i>
                      <div class="downcount">
                       <span class="time" id="day">00</span>
@@ -261,10 +160,10 @@
                     var hourSpan = my$('hour');
                     var minuteSpan = my$('minute');
                     var secondSpan = my$('second');
-                    TimeRow();
+                    window.onload = TimeRow();
                     setInterval(TimeRow, 1000)
 
-                    window.onload = function TimeRow() {
+                    function TimeRow() {
                       var end = new Date('2022-8-1 0:0:0');
                       var start = new Date();
                       var time = getInterval(start, end);
@@ -318,59 +217,7 @@
           </div>
         </div>
       </div>
-      <div class="bottom">
-        <div class="w">
-          <div class="top">
-            <ul>
-              <li>
-                <a href="">
-                  <img src="/img/bottom1.png" alt="">
-                  <span>大咖级讲师亲自授课</span>
-                </a>
-              </li>
-              <li>
-                <a href="">
-                  <img src="/img/bottom.png" alt="">
-                  <span>课程为学员成长持续赋能</span>
-                </a>
-              </li>
-              <li>
-                <a href="">
-                  <img src="/img/bottom2.png" alt="">
-                  <span>学员真是情况大公开</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="content">
-            <dl>
-              <dt>关于尚硅谷</dt>
-              <dd>教育理念</dd>
-              <!-- <dd>名师团队</dd>
-              <dd>学员心声</dd> -->
-            </dl>
-            <dl>
-              <dt>资源下载</dt>
-              <dd>视频下载</dd>
-              <!-- <dd>资料下载</dd>
-              <dd>工具下载</dd> -->
-            </dl>
-            <dl>
-              <dt>加入我们</dt>
-              <dd>招聘岗位</dd>
-              <!-- <dd>岗位介绍</dd>
-              <dd>招贤纳师</dd> -->
-            </dl>
-            <dl>
-              <dt>联系我们</dt>
-              <dd>http://www.atguigu.com<dd>
-            </dl>
-          </div>
-        </div>
-        <div class="down">
-          尚硅谷书城.Copyright ©2015
-        </div>
-      </div>
+      <div th:replace="common::bottom_main"/>
      
 
     </div>

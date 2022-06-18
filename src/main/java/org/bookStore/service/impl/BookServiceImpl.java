@@ -26,6 +26,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> getBookListByName(String bookName) {
+        return bookMapper.getBookByName(bookName);
+    }
+
+    @Override
+    public List<Book> getBookListByPrice(Double price1, Double price2) {
+        return bookMapper.getBookListByPrice(price1, price2);
+    }
+
+    @Override
     public Book getBook(Integer id) {
         return bookMapper.getBook(id);
     }
@@ -33,6 +43,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public void addBook(Book book) {
         bookMapper.addBook(book);
+    }
+
+    @Override
+    public void updateBook(Book book) {
+        bookMapper.update(book);
     }
 
     @Override

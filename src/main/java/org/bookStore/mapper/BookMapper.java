@@ -11,4 +11,7 @@ public interface BookMapper {
     Book getBook(Integer id);
     void addBook(Book book);
     void deleteBook(Integer id);
+    void update(Book book);
+    List<Book> getBookListByPrice(Double price1, Double price2);
+    List<Book> getBookByName(String bookName);
 }

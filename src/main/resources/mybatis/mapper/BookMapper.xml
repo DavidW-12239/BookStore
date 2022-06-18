@@ -6,6 +6,11 @@
     <insert id="addBook">
         insert into t_book values (null, null, #{bookName}, #{price}, #{author}, #{saleCount}, #{bookCount}, 0)
     </insert>
+    <update id="update">
+        update t_book set bookName = #{bookName},price = #{price}, author = #{author},
+                          saleCount = #{saleCount}, bookCount = #{bookCount}, bookStatus = #{bookStatus}
+        where id = #{id}
+    </update>
     <delete id="deleteBook">
         delete from t_book where id = #{id}
     </delete>
@@ -17,5 +22,11 @@
     </select>
     <select id="getBookList" resultType="org.bookStore.pojo.Book">
         select * from t_book
+    </select>
+    <select id="getBookListByPrice" resultType="org.bookStore.pojo.Book">
+        select * from t_book where price between #{price1} and #{price2}
+    </select>
+    <select id="getBookByName" resultType="org.bookStore.pojo.Book">
+        select * from t_book where bookName = #{bookName}
     </select>
 </mapper>

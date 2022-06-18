@@ -26,13 +26,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addOrderBean(OrderBean orderBean) {
-        //1) 订单表添加一条记录
-        //2) 订单详情表添加7条记录
-        //3) 购物车项表中需要删除对应的7条记录
-        //第1步：
-        orderMapper.addOrderBean(orderBean);   //执行完这一步，orderBean中的id是有值的
-        //第2步：
-        //orderBean中的orderItemList是空的，此处我们应该根据用户的购物车中的购物车项去转换成一个一个的订单项
+        orderMapper.addOrderBean(orderBean);
+
         User loginUser = orderBean.getOrderUser();
         Map<Integer, CartItem> cartItemMap = loginUser.getCart().getCartItemMap();
         for(CartItem cartItem : cartItemMap.values()){
@@ -42,8 +37,6 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setOrderBean(orderBean);
             orderItemMapper.addOrderItem(orderItem);
         }
-
-        //第3步：
 
         for(CartItem cartItem : cartItemMap.values()){
             cartItemMapper.delCartItem(cartItem);

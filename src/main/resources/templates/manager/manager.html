@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>后台管理</title>
+<title>Backstage Management</title>
 <link type="text/css" rel="stylesheet" href="/css/style.css" >
 <style type="text/css">
 	h1 {
@@ -14,28 +14,18 @@
 <body>
 	
 	<div id="header">
-			<img class="logo_img" alt="" src="/img/logo.gif" >
-			<span class="wel_word">后台管理系统</span>
-			<div>
-				<a th:href="book_manager.html">图书管理</a>
-				<a th:href="order_manager.html">订单管理</a>
-				<a th:href="@{/index}">返回商城</a>
-			</div>
+			<img class="logo_img" alt="" src="/img/logo.png" >
+			<span class="wel_word">Backstage Management System</span>
+			<div th:replace="common::header_manager"/>
 	</div>
 	
 	<div id="main">
-		<h1>欢迎管理员进入后台管理系统</h1>
-		<div>
-			<a th:href="@{/toBookManagerPage}">图书管理</a>
-			<a th:href="@{/toBookManagerPage}">订单管理</a>
-			<a th:href="@{/index}">返回商城</a>
-		</div>
+		<h1>Welcome to the management system</h1>
+		<div><a th:href="@{/toBookManagerPage}">Book Management</a></div>
+		<div><a th:href="@{/toBookManagerPage}">Order Management</a></div>
+		<div><a th:href="@{/index}">Main Page</a></div>
 	</div>
-	
-	<div id="bottom">
-		<span>
-			尚硅谷书城.Copyright &copy;2015
-		</span>
-	</div>
+
+	<div th:replace="common::bottom"/>
 </body>
 </html>

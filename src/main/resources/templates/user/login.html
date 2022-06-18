@@ -2,47 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>尚硅谷会员登录页面</title>
+    <title>Login Page</title>
     <link href="css/style.css" rel="stylesheet">
   </head>
   <body>
     <div id="login_header">
       <a>
-        <img class="logo_img" alt="" th:href="@{/img/logo.gif}" />
+        <img class="logo_img" alt="" th:href="@{/img/logo.png}" />
       </a>
     </div>
 
     <div class="login_banner">
       <div id="l_content">
-        <span class="login_word">欢迎登录</span>
+        <span class="login_word">Welcome Login</span>
       </div>
 
       <div id="content">
         <div class="login_form">
           <div class="login_box">
             <div class="tit">
-              <h1>尚硅谷会员</h1>
+              <h1>BookStore Member</h1>
             </div>
             <div class="msg_cont">
               <b></b>
-              <span class="errorMsg">请输入用户名和密码</span>
+              <span class="errorMsg">Please enter the username and password</span>
             </div>
             <div class="form">
-              <form th:action="@{/login}" method="post">
+              <form th:action="@{/login}" method="post" style="text-align: right">
                 <input type="hidden" name="operate" value="login"/>
-                <label>用户名称：</label>
-                <input class="itxt" type="text" placeholder="请输入用户名" autocomplete="off" tabindex="1"
+                <label>Username: </label>
+                <input class="itxt" type="text" placeholder="Please enter the username" autocomplete="off" tabindex="1"
                   name="uname" id="uname" value="kate"/>
                 <span th:text="${unameMsg}" style="color:red">uname error msg</span>
                 <br />
                 <br />
-                <label>用户密码：</label>
-                <input class="itxt" type="pwd" placeholder="请输入密码" autocomplete="off" tabindex="1"
+                <label>Password: </label>
+                <input class="itxt" type="pwd" placeholder="Please enter the password" autocomplete="off" tabindex="1"
                   name="pwd" id="pwd" value="ok"/>
                 <span th:text="${pwdMsg}" style="color:red">pwd error msg</span>
                 <br />
                 <br />
-                <input type="submit" value="Login" id="sub_btn" />
+                <input type="submit" value="Login" id="sub_btn"/>
               </form>
               <div class="tit">
                 <a th:href="@{/toRegisterPage}">Register Now</a>
@@ -52,10 +52,6 @@
         </div>
       </div>
     </div>
-    <div id="bottom">
-      <span>
-        尚硅谷书城.Copyright &copy;2015
-      </span>
-    </div>
+    <div th:replace="common::bottom"/>
   </body>
 </html>

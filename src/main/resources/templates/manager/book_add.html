@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Book</title>
+    <title>Add Book</title>
     <link rel="stylesheet" href="css/minireset.css" />
     <link rel="stylesheet" href="css/common.css" />
     <link rel="stylesheet" href="css/style.css" />
@@ -18,46 +18,46 @@
         <div class="header-left">
           <a th:href="@{/index}">
             <img src="img/logo.png" alt=""/></a>
-          <h1>Edit Book</h1>
+          <h1>Add Book</h1>
         </div>
         <div class="header-right" th:replace="common::header_right"/>
       </div>
     </div>
     <div class="login_banner">
       <div class="register_form">
-        <form th:action="@{/editBook}" method="post">
+        <form th:action="@{/addBook}" method="post">
           <div class="form-item">
             <div>
-              <label>Book Name</label>
-              <input type="text" name="bookName" placeholder="Please enter the book name" th:value=${session.book.bookName}>
+              <label>Book Name:</label>
+              <input type="text" name="bookName" placeholder="Please enter the book name" />
             </div>
             <span th:text="${bookNameMsg}" style="color:red">bookName</span>
           </div>
           <div class="form-item">
             <div>
-              <label>Price</label>
-              <input type="number" name="price" th:value=${session.book.price} placeholder="Please enter the price" >
+              <label>Price:</label>
+              <input type="number" name="price" value="0" placeholder="Please enter the price" />
             </div>
             <span th:text="${priceMsg}" style="color:red">price</span>
           </div>
           <div class="form-item">
             <div>
-              <label>Author</label>
-              <input type="text" name="author" placeholder="Please enter the author" th:value=${session.book.author}>
+              <label>Author:</label>
+              <input type="text" name="author" placeholder="Please enter the author" />
             </div>
             <span th:text="${authorMsg}" style="color:red">author</span>
           </div>
           <div class="form-item">
             <div>
-              <label>Sales</label>
-              <input type="number" name="saleCount" placeholder="Please enter the sales" th:value=${session.book.saleCount}>
+              <label>Sales:</label>
+              <input type="number" name="saleCount" value="0" placeholder="Please enter the sales" />
             </div>
             <span th:text="${saleCountMsg}" style="color:red">sales</span>
           </div>
           <div class="form-item">
             <div>
-              <label>Stock</label>
-              <input type="number" name="bookCount" placeholder="Please enter the stock" th:value=${session.book.bookCount}>
+              <label>Stock:</label>
+              <input type="number" name="bookCount" value="0" placeholder="Please enter the stock" />
             </div>
             <span th:text="${bookCountMsg}" style="color:red">stock</span>
           </div>

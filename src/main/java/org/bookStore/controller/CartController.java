@@ -7,6 +7,7 @@ import org.bookStore.pojo.User;
 import org.bookStore.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +21,12 @@ public class CartController {
 
     //加载当前用户的购物车信息
     @RequestMapping("/toCartPage")
-    public String getCart(HttpSession session){
+    public String getCart(HttpSession session, Model model){
         User user = (User)session.getAttribute("loginUser");
+        if (user==null){
+            model.addAttribute("unameMsg","Please login first");
+            return "user/login";
+        }
         Cart cart = cartItemService.getCart(user);
         user.setCart(cart);
         session.setAttribute("loginUser",user);
@@ -29,8 +34,12 @@ public class CartController {
     }
 
     @RequestMapping("/addCart/{id}")
-    public String addCartItem(@PathVariable("id") Integer bookId, HttpSession session){
+    public String addCartItem(@PathVariable("id") Integer bookId, HttpSession session, Model model){
         User user = (User)session.getAttribute("loginUser");
+        if (user==null){
+            model.addAttribute("unameMsg","Please login first");
+            return "redirect:/index";
+        }
         CartItem cartItem = new CartItem(new Book(bookId),1,user);
         //将指定的图书添加到当前用户的购物车中
         cartItemService.addOrUpdateCartItem(cartItem,user.getCart());
