@@ -48,8 +48,8 @@
             </div>
             <div class="list-content">
               <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}">
-                <img th:src="@{|/uploads/*{bookImg}|}" alt="">
-                <p th:text="|*{bookName}|">bookname</p>
+                <img th:src="@{|/book/*{bookImg}|}" alt="">
+                <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
                 <p th:text="|author: *{author}|">author</p>
                 <p th:text="|price: $*{price}|">price</p>
                 <p th:text="|sales: *{saleCount}|">sales</p>
@@ -91,8 +91,8 @@
                 </li>
               </ul>
 
-              <span th:text="'  Total Pages: ' + ${pageInfo.pages}">total pages</span>
-              <span th:text="'  Total Records: ' + ${pageInfo.total}">total items</span>
+              <span th:text="'  &nbsp;Total Pages: ' + ${pageInfo.pages} + ', '">total pages</span>
+              <span th:text="'  Total Items: ' + ${pageInfo.total}">total items</span>
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@
             ><i class="iconfont icon-h5"></i>h5</a
           >
           <a href="" class="list-item">
-            <i class="iconfont icon-python"></i>python
+            <i class="iconfont icon-p"></i>python
           </a>
           <a href="" class="list-item"
             ><i class="iconfont icon-tianchongxing-"></i>pm</a
@@ -134,18 +134,15 @@
           <div class="seckill">
             <div class="seckill-header">
               <div class="title">
-                图书秒杀
+                Special Offers
               </div>
-              <!-- <i class="iconfont icon-huanyipi"></i> -->
             </div>
             <div class="seckill-content">
              
                   <a href="" class="tip"> 
-                     <h5>Before end</h5>
+                     <h5>Before End</h5>
                      <i class="iconfont icon-shandian"></i>
                      <div class="downcount">
-                      <span class="time" id="day">00</span>
-                      <span class="token">day</span><br>
                       <span class="time" id="hour">00</span>
                       <span class="token">:</span>
                       <span class="time" id="minute">00</span>
@@ -154,25 +151,7 @@
                      </div>
                   </a>
 
-                  <script src="script/countdown.js"></script>
-                  <script>
-                    var daySpan = my$('day');
-                    var hourSpan = my$('hour');
-                    var minuteSpan = my$('minute');
-                    var secondSpan = my$('second');
-                    window.onload = TimeRow();
-                    setInterval(TimeRow, 1000)
 
-                    function TimeRow() {
-                      var end = new Date('2022-8-1 0:0:0');
-                      var start = new Date();
-                      var time = getInterval(start, end);
-                      setInnerText(daySpan, time.day+'天');
-                      setInnerText(hourSpan, time.hour+'时');
-                      setInnerText(minuteSpan, time.minute+'分');
-                      setInnerText(secondSpan, time.second+'秒');
-                    }
-                  </script>
               
               
                   <a href="" class="books-sec">
