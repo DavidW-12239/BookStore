@@ -4,10 +4,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class Cart {
-    private Map<Integer,CartItem> cartItemMap ;     //购物车中购物车项的集合 , 这个Map集合中的key是Book的id
-    private Double totalMoney ;                     //购物车的总金额
-    private Integer totalCount ;                    //购物车中购物项的数量
-    private Integer totalBookCount ;                //购物车中书本的总数量，而不是购物车项的总数量
+    private Map<Integer,CartItem> cartItemMap ;     //key: bookId, value:cartItem
+    private Double totalMoney ;                     //total amount in the cart
+    private Integer totalCount ;                    //cartItem volumes
+    private Integer totalBookCount ;                //total books
     public Cart(){}
 
     public Map<Integer, CartItem> getCartItemMap() {

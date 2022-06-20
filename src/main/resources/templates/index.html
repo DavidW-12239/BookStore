@@ -47,14 +47,15 @@
               </form>
             </div>
             <div class="list-content">
-              <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}">
+              <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}" style="float:left">
                 <img th:src="@{|/book/*{bookImg}|}" alt="">
                 <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
                 <p th:text="|author: *{author}|">author</p>
                 <p th:text="|price: $*{price}|">price</p>
                 <p th:text="|sales: *{saleCount}|">sales</p>
                 <p th:text="|stock: *{bookCount}|">stock</p>
-                <a th:href="@{/addCart/{id}(id=${book.id})}" class="btn" type="button">Add to the Cart</button></a>
+                <a th:href="@{/addCart/{id}(id=${book.id})}" class="btn" type="button">
+                  Add to my Cart</button></a>
               </div>
             </div>
             <div class="list-footer">
@@ -138,7 +139,6 @@
               </div>
             </div>
             <div class="seckill-content">
-             
                   <a href="" class="tip"> 
                      <h5>Before End</h5>
                      <i class="iconfont icon-shandian"></i>
@@ -151,47 +151,17 @@
                      </div>
                   </a>
 
-
-              
-              
-                  <a href="" class="books-sec">
-                    <img src="uploads/congwanqingdaominguo.jpg" alt="">
-                    <p>从晚晴到民国</p>
-                    <div>
-                      <span class="cur-price">￥28.9</span>
-                      <span class="pre-price">￥36.5</span>
-                    </div>
-                    <button>立即购买</button>
-                  </a>
-                  <a href="" class="books-sec">
-                    <img src="uploads/cyuyanrumenjingdian.jpg" alt="">
-                    <p>c语言入门经典</p>
-                    <div>
-                      <span class="cur-price">￥55.9</span>
-                      <span class="pre-price">￥68.5</span>
-                    </div>
-                    <button>立即购买</button>
-                  </a>
-                  <a href="" class="books-sec">
-                    <img src="uploads/fusang.jpg" alt="">
-                    <p>扶桑</p>
-                    <div>
-                      <span class="cur-price">￥30.9</span>
-                      <span class="pre-price">￥47.5</span>
-                    </div>
-                    <button>立即购买</button>
-                  </a>
-                  <a href="" class="books-sec">
-                    <img src="uploads/geihaizideshi.jpg" alt="">
-                    <p>给孩子的诗</p>
-                    <div>
-                      <span class="cur-price">￥18.9</span>
-                      <span class="pre-price">￥25.5</span>
-                    </div>
-                    <button>立即购买</button>
-                  </a>
-
-              </ul>
+                <a th:each="book : ${session.discountBookList}" th:object="${book}" style="float:left"
+                   th:href="@{/addCart/{id}(id=${book.id})}" class="books-sec" >
+                  <img th:src="@{|/book/*{bookImg}|}" alt="">
+                  <p th:text="|*{bookName}|" style="text-align: center">bookname</p>
+                  <div>
+                    <span class="cur-price" th:text="|$*{price}|">$10</span><br>
+                    <span class="pre-price" th:text="|$*{price*1.2}|">$20</span>
+                  </div>
+                  <button style="width: auto">Add to my Cart</button>
+                </a>
+              <!--</div>-->
             </div>
           </div>
         </div>

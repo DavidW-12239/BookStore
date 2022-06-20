@@ -2,6 +2,7 @@ package org.bookStore.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.catalina.Session;
 import org.bookStore.pojo.Book;
 import org.bookStore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +60,10 @@ public class BookController {
 
     @RequestMapping("/getMainBookList")
     public String getMainBookList(@RequestParam(required=false, name="price1") Double price1, @RequestParam(required=false, name="price2") Double price2,
-            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize, Model model){
-        //not a paging search
+            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize, Model model, HttpSession session){
+        //get discount book list
+        getDiscountBookList(session);
+
         //import pageHelper
         //invoke pageHelper, page number and the size of each page
         PageHelper.startPage(pageNum, pageSize);
@@ -91,20 +94,12 @@ public class BookController {
         return "index";
     }
 
-    @RequestMapping("/getDiscountBookList")
-    public String getDiscountBookList(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "4") Integer pageSize, Model model){
-        //not a paging search
-        //import pageHelper
-        //invoke pageHelper, page number and the size of each page
-        PageHelper.startPage(pageNum, pageSize);
-        //then the paging search
-        List<Book> bookList = bookService.getBookListByStatus(1);
-        //use pageInfo to package the result
-        //packaging detailed paging info and search result, 5 pages show each time
-        PageInfo page = new PageInfo(bookList, 3);
-        model.addAttribute("page", page);
-        return "index";
+    //@RequestMapping("/getDiscountBookList")
+    public void getDiscountBookList(HttpSession session){
+        List<Book> discountBookList = bookService.getBookListByStatus(1);
+        session.setAttribute("discountBookList", discountBookList);
     }
+
 
     @RequestMapping("/toBookManagerPage")
     public String toBookManagerPage(@RequestParam(defaultValue = "1") Integer pageNum, Model model){

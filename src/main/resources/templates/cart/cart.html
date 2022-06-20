@@ -36,7 +36,7 @@
           <tbody>
           <tr th:each="cartItem : ${session.loginUser.cart.cartItemMap.values()}">
             <td>
-              <img th:src="@{|/uploads/${cartItem.book.bookImg}|}" alt="" />
+              <img th:src="@{|/book/${cartItem.book.bookImg}|}" alt="" />
             </td>
             <td th:text="${cartItem.book.bookName}">bookName</td>
             <td>

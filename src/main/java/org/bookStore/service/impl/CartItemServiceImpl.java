@@ -54,7 +54,7 @@ public class CartItemServiceImpl implements CartItemService {
             }else{
                 addCartItem(cartItem);
             }
-        }else{  //连购物车都没有的情况
+        }else{  //without a cart
             addCartItem(cartItem);
         }
     }

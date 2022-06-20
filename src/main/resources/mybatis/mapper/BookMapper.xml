@@ -15,7 +15,7 @@
         delete from t_book where id = #{id}
     </delete>
     <select id="getBookListByStatus" resultType="org.bookStore.pojo.Book">
-        select * from t_book where bookStatus=0
+        select * from t_book where bookStatus = #{bookStatus}
     </select>
     <select id="getBook" resultType="org.bookStore.pojo.Book">
         select * from t_book where id = #{id}

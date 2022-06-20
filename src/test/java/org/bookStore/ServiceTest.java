@@ -94,8 +94,11 @@ public class ServiceTest {
 
     @Test
     void editBook(){
-        List<Book> books = bookService.getBookListByPrice(19.0,30.0);
-        System.out.println(books.size());
+        List<Book> books = bookService.getBookListByStatus(1);
+        for (Book book : books){
+            System.out.println(book.getBookName());
+        }
+
     }
 }
 

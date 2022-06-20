@@ -40,7 +40,7 @@
           <tbody>
             <tr th:each="book : ${pageInfo.list}" th:object="${book}">
               <td>
-                <img th:src="@{|/uploads/*{bookImg}|}" alt="">
+                <img th:src="@{|/book/*{bookImg}|}" alt="">
               </td>
               <td th:text="|*{bookName}|">bookName</td>
               <td th:text="|price: $*{price}|">price</td>

@@ -2,7 +2,6 @@ package org.bookStore.pojo;
 
 import java.math.BigDecimal;
 
-//我们应该还需要设计一个Cart类，代表购物车这个实体
 public class CartItem {
     private Integer id ;
     private Book book ;
