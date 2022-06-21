@@ -31,18 +31,20 @@
               <th>Order No</th>
               <th>Order Date</th>
               <th>Order Price</th>
-              <th>Order Quantity</th>
+              <th>Book Num</th>
               <th>Order Status</th>
               <th>Order Details</th>
             </tr>
           </thead>
           <tbody>
-            <tr th:each="orderBean : ${session.loginUser.orderList}" th:object="${orderBean}">
+            <tr th:each="order : ${session.orderList}" th:object="${order}">
               <td th:text="*{orderNo}">12354456895</td>
               <td th:text="*{orderDate}">2015.04.23</td>
               <td th:text="*{orderMoney}">90.00</td>
-              <td th:text="*{totalBookCount}">88</td>
-              <td><a href="" class="send">Waiting for shippment</a></td>
+              <td th:text="*{totalBookCount}">5</td>
+              <td th:if="${order.orderStatus==0}">Waiting for shipment</td>
+              <td th:if="${order.orderStatus==1}">Shipped</td>
+              <td th:if="${order.orderStatus==2}">Delivered</td>
               <td><a href="">Details</a></td>
             </tr>
 

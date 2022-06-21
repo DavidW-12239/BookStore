@@ -31,9 +31,14 @@ public class ManagerController {
         }
     }
 
+    @RequestMapping("/toAddBookPage")
+    public String toAddBookPage(){
+        return "manager/book_add";
+    }
+
     @RequestMapping("/toOrderManagerPage")
     public String toOrderManagerPage(){
-        return "manager/order_manager";
+        return "redirect:/getAllOrderList";
     }
 
     @RequestMapping("/toBookEditPage")

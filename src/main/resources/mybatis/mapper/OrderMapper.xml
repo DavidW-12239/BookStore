@@ -8,6 +8,9 @@
     <insert id="addOrderBean">
         insert into t_order values(null, #{orderNo}, #{orderDate}, #{orderUser.id}, #{orderMoney}, #{orderStatus})
     </insert>
+    <update id="updateOrderStatus">
+        update t_order set orderStatus = #{orderStatus} where id = #{orderBean.id}
+    </update>
 
     <resultMap id="orderBean" type="org.bookStore.pojo.OrderBean">
         <id property="id" column="id"></id>
@@ -29,5 +32,8 @@
     </select>
     <select id="getOrderBean" resultMap="orderBean">
         SELECT * FROM t_order WHERE id = #{id}
+    </select>
+    <select id="getAllOrderList" resultMap="orderBean">
+        SELECT * FROM t_order
     </select>
 </mapper>

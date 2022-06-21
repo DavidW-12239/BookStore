@@ -28,23 +28,49 @@
             <tr>
               <th>Order No</th>
               <th>Order Date</th>
+              <th>Order User</th>
+              <th>Book Num</th>
               <th>Order Price</th>
-              <th>Order Quantity</th>
               <th>Order Details</th>
-              <th>Order Status</th>
+              <th>Current Status</th>
+              <th>Edit Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>12354456895</td>
-              <td>
-                2015.04.23
-              </td>
-              <td>90.00</td>
-              <td>88</td>
-              <td><a href="">Details</a></td>
-              <td><a href="" class="send">Waiting for shipment</a></td>
-            </tr>
+              <tr th:each="order : ${pageInfo.list}" th:object="${order}">
+                <form th:action="@{/changeOrderStatus/{id}(id=${order.id})}">
+
+                <td th:text="|*{orderNo}|">1235445689</td>
+                <td th:text="|*{orderDate}|"></td>
+                <td th:text="|*{orderUser.getUname()}|">Tony</td>
+                <td th:text="|*{totalBookCount}|">5</td>
+                <td th:text="|*{orderMoney}|">100.0</td>
+                <td><a href="">Details</a></td>
+                <td th:if="${order.orderStatus==0}">
+                  <select name="orderStatus" >
+                    <option th:value="0" selected>Waiting for shipment</option>
+                    <option th:value="1">Shipped</option>
+                    <option th:value="2">Delivered</option>
+                  </select>
+                </td>
+                <td th:if="${order.orderStatus==1}">
+                  <select name="orderStatus" >
+                    <option th:value="0">Waiting for shipment</option>
+                    <option th:value="1" selected>Shipped</option>
+                    <option th:value="2">Delivered</option>
+                  </select>
+                </td>
+                <td th:if="${order.orderStatus==2}">
+                  <select name="orderStatus" >
+                    <option th:value="0">Waiting for shipment</option>
+                    <option th:value="1">Shipped</option>
+                    <option th:value="2" selected>Delivered</option>
+                  </select>
+                </td>
+                <!--<td><a th:href="@{/changeOrderStatus/{id}(id=${order.id})}">Edit</a></td>-->
+                <td><button style="width: auto">EDIT</button></td>
+                </form>
+              </tr>
           </tbody>
         </table>
       </div>

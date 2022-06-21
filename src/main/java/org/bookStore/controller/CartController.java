@@ -70,8 +70,6 @@ public class CartController {
         User user =(User)session.getAttribute("loginUser");
         Cart cart = cartItemService.getCart(user);
 
-        //调用Cart中的三个属性的get方法，目的是在此处计算这三个属性的值，否则这三个属性为null，
-        //导致的结果就是下一步的gson转化时，为null的属性会被忽略
         cart.getTotalBookCount();
         cart.getTotalCount();
         cart.getTotalMoney();

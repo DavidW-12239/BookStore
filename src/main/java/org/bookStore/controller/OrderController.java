@@ -9,6 +9,7 @@ import org.bookStore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -51,38 +52,41 @@ public class OrderController {
         User user = (User)session.getAttribute("loginUser");
 
         List<OrderBean> orderList = orderService.getOrderList(user);
-        user.setOrderList(orderList);
-        session.setAttribute("loginUser",user);
+        session.setAttribute("orderList",orderList);
 
         return "order/order" ;
     }
 
-    //@RequestMapping("/toOrderManagerPage")
-    public String toOrderManagerPageaaa(@RequestParam(defaultValue = "1") Integer pageNum, HttpSession session, Model model){
-        User user = (User)session.getAttribute("loginUser");
-        //not a paging search
-        //import pageHelper
-        //invoke pageHelper, page number and the size of each page
+    @RequestMapping("/getAllOrderList")
+    public String getAllOrderList(@RequestParam(defaultValue = "1") Integer pageNum, HttpSession session, Model model){
         PageHelper.startPage(pageNum, 10);
-        //then the paging search
-        List<OrderBean> orderList = orderService.getOrderList(user);
+
+        List<OrderBean> orderList = orderService.getOrderList(null);
         //use pageInfo to package the result
         //packaging detailed paging info and search result, 5 pages show each time
-        PageInfo pageInfo = new PageInfo(orderList, 5);
-        model.addAttribute("pageInfo", pageInfo);
+        PageInfo orderPageInfo = new PageInfo(orderList, 5);
+        model.addAttribute("pageInfo", orderPageInfo);
 
         //currPage
-        model.addAttribute("pageNum", pageInfo.getPageNum());
+        model.addAttribute("pageNum", orderPageInfo.getPageNum());
         //pageSize
-        model.addAttribute("pageSize", pageInfo.getPageSize());
+        model.addAttribute("pageSize", orderPageInfo.getPageSize());
         //first page?
-        model.addAttribute("isFirstPage", pageInfo.isIsFirstPage());
+        model.addAttribute("isFirstPage", orderPageInfo.isIsFirstPage());
         //total page
-        model.addAttribute("totalPages", pageInfo.getPages());
+        model.addAttribute("totalPages", orderPageInfo.getPages());
         //last page?
-        model.addAttribute("isLastPage", pageInfo.isIsLastPage());
+        model.addAttribute("isLastPage", orderPageInfo.isIsLastPage());
 
-        return "manager/book_manager";
+        return "manager/order_manager";
+    }
+
+    @RequestMapping("/changeOrderStatus/{id}")
+    public String changeOrderStatus(@RequestParam("orderStatus") String orderStatus, @PathVariable Integer id){
+        Integer a = Integer.parseInt(orderStatus);
+        OrderBean orderBean = orderService.getOrderBeanById(id);
+        orderService.updateOrderStatus(orderBean, a);
+        return "redirect:/getAllOrderList";
     }
 
 }

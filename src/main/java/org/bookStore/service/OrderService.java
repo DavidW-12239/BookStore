@@ -11,4 +11,6 @@ import java.util.List;
 public interface OrderService {
     void addOrderBean(OrderBean orderBean);
     List<OrderBean> getOrderList(User user);
+    void updateOrderStatus(OrderBean orderBean, Integer orderStatus);
+    OrderBean getOrderBeanById(Integer id);
 }

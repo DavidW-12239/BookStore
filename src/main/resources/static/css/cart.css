@@ -85,8 +85,8 @@
 }
 .list .w table tbody tr td:nth-child(2) {
   padding: 0 20px;
-  width: 300px;
-  max-width: 300px;
+  width: 340px;
+  max-width: 340px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -106,7 +106,7 @@
 .list .w table tbody tr td:nth-child(3) .count-num {
   margin: 0 10px;
   display: inline-block;
-  width: 40px;
+  width: 50px;
   height: 25px;
   text-align: center;
 }

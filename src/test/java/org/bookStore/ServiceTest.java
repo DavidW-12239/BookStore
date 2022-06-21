@@ -73,13 +73,13 @@ public class ServiceTest {
 
     @Test
     void testOrder(){
-        User user = userMapper.getUser("lina", "ok");
-        OrderBean orderBean = orderMapper.getOrderBean(4);
-        /*
+        User user = userService.getUserById(1);
+
         //List<OrderBean> list = orderService.getOrderList(user);
-        List<OrderBean> list = orderMapper.getOrderList(user);
-        */
-        System.out.println(orderMapper.getOrderTotalBookCount(orderBean));
+        List<OrderBean> list = orderService.getOrderList(user);
+
+        OrderBean orderBean = list.get(1);
+        System.out.println(orderBean.getOrderStatus());
     }
 
     @Test

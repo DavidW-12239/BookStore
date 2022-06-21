@@ -9,12 +9,16 @@ import java.util.List;
 
 @Mapper
 public interface OrderMapper {
-    //添加订单
+    //add order
     void addOrderBean(OrderBean orderBean);
-    //获取指定用户的订单列表
+
     List<OrderBean> getOrderList(User user);
+
+    List<OrderBean> getAllOrderList();
 
     Integer getOrderTotalBookCount(OrderBean orderBean);
 
     OrderBean getOrderBean(Integer id);
+
+    void updateOrderStatus(OrderBean orderBean, Integer orderStatus);
 }

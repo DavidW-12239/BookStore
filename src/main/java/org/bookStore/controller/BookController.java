@@ -18,10 +18,7 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-    @RequestMapping("/toAddBookPage")
-    public String toAddBookPage(){
-        return "manager/book_add";
-    }
+
 
     @PostMapping("/addBook")
     public String addBook(@RequestParam("bookName") String bookName, @RequestParam("price") Double price,
