@@ -26,8 +26,8 @@
             <li><a href="#">Management</a></li>
           </ul>
         </div>
-        <form class="header-search">
-          <input type="text" placeholder=" " />
+        <form class="header-search" th:action="@{/getMainBookList}">
+          <input type="text" placeholder=" " name="bookName" th:value="${session.bookName}"/>
           <button class="iconfont icon-search"></button>
         </form>
       </div>
@@ -35,15 +35,32 @@
       <div class="books-list ">
         <div class="w">
           <div class="list">
-            <div class="list-header">
-              <div class="title">Book List</div>
+            <!--<div class="list-header" th:if="${session.price1==null}">
+              <div class="title" >Book List</div>
               <form class="price-search" th:action="@{/getMainBookList}">
                 <span>Price: </span>
                 <span> $</span>
-                <input type="number" name="price1">
+                <input type="number" name="price1" value="">
                 <span> - $</span>
-                <input type="number" name="price2">
+                <input type="number" name="price2" value="">
                 <button>Search</button>
+              </form>
+              <form class="price-search" th:action="@{/clearPrice}">
+                <button>Clear</button>
+              </form>
+            </div>-->
+            <div class="list-header">
+              <div class="title" >Book List</div>
+              <form class="price-search" th:action="@{/getMainBookList}">
+                <span>Price: </span>
+                <span> $</span>
+                <input type="number" name="price1" th:value="${session.price1}">
+                <span> - $</span>
+                <input type="number" name="price2" th:value="${session.price2}">
+                <button>Search</button>
+              </form>
+              <form class="price-search" th:action="@{/clearPrice}">
+                <button>Clear</button>
               </form>
             </div>
             <div class="list-content">

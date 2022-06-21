@@ -11,6 +11,7 @@ public interface BookService {
     List<Book> getBookList();
     List<Book> getBookListByName(String bookName);
     List<Book> getBookListByPrice(Double price1, Double price2);
+    List<Book> getBookListByNameAndPrice(Double price1, Double price2, String bookName);
     Book getBook(Integer id);
     void addBook(Book book);
     void updateBook(Book book);

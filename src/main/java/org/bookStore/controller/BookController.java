@@ -58,9 +58,16 @@ public class BookController {
         return "manager/adding_successful";
     }
 
+    /*@RequestMapping("/getBookByName")
+    public String getBookByName(){
+
+    }*/
+
     @RequestMapping("/getMainBookList")
-    public String getMainBookList(@RequestParam(required=false, name="price1") Double price1, @RequestParam(required=false, name="price2") Double price2,
-            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize, Model model, HttpSession session){
+    public String getMainBookList(@RequestParam(required=false, defaultValue = "0.0", name="price1") Double price1,
+                                  @RequestParam(required=false, defaultValue = "1000.0", name="price2") Double price2,
+            @RequestParam(required=false, defaultValue = "") String bookName, @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize, Model model, HttpSession session){
         //get discount book list
         getDiscountBookList(session);
 
@@ -68,13 +75,21 @@ public class BookController {
         //invoke pageHelper, page number and the size of each page
         PageHelper.startPage(pageNum, pageSize);
         //then the paging search
-        if (price1==null){
-            price1=0.0;
+        if (price1==null || price1.isNaN()){
+            price1 = 0.0;
         }
-        if(price2==null){
-            price2=1000.0;
+        if (price2==null || price2.isNaN()){
+            price2 = 1000.0;
         }
-        List<Book> bookList = bookService.getBookListByPrice(price1, price2);
+        if (bookName==null){
+            bookName="";
+        }
+        session.setAttribute("price1", price1);
+        session.setAttribute("price2", price2);
+        session.setAttribute("bookName", bookName);
+        //List<Book> www = bookService.getBookListByName(bookName);
+
+        List<Book> bookList = bookService.getBookListByNameAndPrice(price1, price2, bookName);
         //use pageInfo to package the result
         //packaging detailed paging info and search result, 5 pages show each time
         PageInfo pageInfo = new PageInfo(bookList, 5);
@@ -92,6 +107,13 @@ public class BookController {
         model.addAttribute("isLastPage", pageInfo.isIsLastPage());
 
         return "index";
+    }
+
+    @RequestMapping("/clearPrice")
+    public String clearPrice(HttpSession session){
+        session.setAttribute("price1", 0);
+        session.setAttribute("price2", 1000);
+        return "redirect:/getMainBookList";
     }
 
     //@RequestMapping("/getDiscountBookList")
