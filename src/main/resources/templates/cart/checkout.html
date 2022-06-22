@@ -20,10 +20,19 @@
 </style>
 </head>
 <body>
-	<div class="header" th:replace="common::header_main"/>
+<div class="header">
+	<div class="w">
+		<div class="header-left">
+			<a th:href="@{/index}">
+				<img src="/img/logo.png" alt=""/></a>
+			<span>Checkout</span>
+		</div>
+		<div th:replace="common::header_right"/>
+	</div>
+</div>
 	
 	<div id="main">
-		<h1>Your Order No:<span class="oid" th:href="@{session.orderId}">546845626455846</span></h1>
+		<h1>Your Order No:<span class="oid" th:href="${session.orderNo}">546845626455846</span></h1>
 	</div>
 
 	<div th:replace="common::bottom"/>

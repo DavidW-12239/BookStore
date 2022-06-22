@@ -58,10 +58,6 @@ CREATE TABLE `t_cart_item` (
   CONSTRAINT `FK_cart_user` FOREIGN KEY (`userBean`) REFERENCES `t_user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
-/*Data for the table `t_cart_item` */
-
-insert  into `t_cart_item`(`id`,`book`,`buyCount`,`userBean`) values (9,1,1,2),(10,5,1,1),(11,1,2,1),(12,2,13,1),(13,3,2,1),(14,4,1,1),(15,6,1,1),(16,7,1,1),(17,8,1,1),(18,9,1,1),(19,10,1,1),(20,11,4,1);
-
 /*Table structure for table `t_order` */
 
 CREATE TABLE `t_order` (

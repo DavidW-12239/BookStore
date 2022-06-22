@@ -1,18 +1,16 @@
 package org.bookStore.controller;
 
-import org.apache.catalina.Session;
-import org.bookStore.pojo.Cart;
+import org.bookStore.pojo.CartItem;
 import org.bookStore.service.CartItemService;
 import org.bookStore.service.UserService;
-import org.bookStore.service.impl.*;
 import org.bookStore.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -31,11 +29,11 @@ public class UserController {
     public String login(@RequestParam("uname") String uname, @RequestParam("pwd") String pwd, HttpSession session, Model model){
         User user = userService.login(uname, pwd);
         if(user!=null){
-            Cart cart = cartItemService.getCart(user);
-            user.setCart(cart);
+            List<CartItem> cartItemList = cartItemService.getCartItemList(user);
+            user.setCartItemList(cartItemList);
             session.setAttribute("loginUser",user);
-            int cartCount = user.getCart().getTotalCount();
-            session.setAttribute("cartCount", cartCount);
+            int cartItemNum = cartItemList.size();
+            session.setAttribute("cartCount", cartItemNum);
             return "user/login_success";
         }
         else{

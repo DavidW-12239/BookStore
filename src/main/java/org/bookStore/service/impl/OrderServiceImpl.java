@@ -33,8 +33,8 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.addOrderBean(orderBean);
 
         User loginUser = orderBean.getOrderUser();
-        Map<Integer, CartItem> cartItemMap = loginUser.getCart().getCartItemMap();
-        for(CartItem cartItem : cartItemMap.values()){
+        List<CartItem> cartItemList = loginUser.getCartItemList();
+        for(CartItem cartItem : cartItemList){
             OrderItem orderItem = new OrderItem();
             orderItem.setBook(cartItem.getBook());
             orderItem.setBuyCount(cartItem.getBuyCount());
@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
             orderItemMapper.addOrderItem(orderItem);
         }
 
-        for(CartItem cartItem : cartItemMap.values()){
+        for(CartItem cartItem : cartItemList){
             cartItemMapper.delCartItem(cartItem);
         }
     }

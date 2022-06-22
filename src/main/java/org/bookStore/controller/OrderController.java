@@ -3,8 +3,10 @@ package org.bookStore.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.bookStore.pojo.Book;
+import org.bookStore.pojo.CartItem;
 import org.bookStore.pojo.OrderBean;
 import org.bookStore.pojo.User;
+import org.bookStore.service.CartItemService;
 import org.bookStore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,9 @@ public class OrderController {
     @Autowired
     OrderService orderService ;
 
+    @Autowired
+    CartItemService cartItemService;
+
     @RequestMapping("/checkout")
     public String checkout(HttpSession session){
         OrderBean orderBean = new OrderBean() ;
@@ -32,12 +37,14 @@ public class OrderController {
         orderBean.setOrderDate(now);
 
         User user = (User)session.getAttribute("loginUser");
+        List<CartItem> cartItemList = cartItemService.getCartItemList(user);
+        Double totalPrice = cartItemService.getTotalCartItemPrice(cartItemList);
         orderBean.setOrderUser(user);
-        orderBean.setOrderMoney(user.getCart().getTotalMoney());
+        orderBean.setOrderMoney(totalPrice);
         orderBean.setOrderStatus(0);
 
         orderService.addOrderBean(orderBean);
-        session.setAttribute("orderId", orderBean.getOrderNo());
+        session.setAttribute("orderNo", orderBean.getOrderNo());
 
         return "redirect:/toCheckoutPage" ;
     }

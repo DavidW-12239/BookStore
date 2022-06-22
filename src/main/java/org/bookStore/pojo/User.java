@@ -9,7 +9,7 @@ public class User {
     private String email;
     private Integer role = 0 ;
 
-    private Cart cart ;
+    private List<CartItem> cartItemList;    //1:N
     private List<OrderBean> orderList ;     //1:N
 
     public User(){}
@@ -65,14 +65,6 @@ public class User {
         this.role = role;
     }
 
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
     public List<OrderBean> getOrderList() {
         return orderList;
     }
@@ -81,4 +73,11 @@ public class User {
         this.orderList = orderList;
     }
 
+    public List<CartItem> getCartItemList() {
+        return cartItemList;
+    }
+
+    public void setCartItemList(List<CartItem> cartItemList) {
+        this.cartItemList = cartItemList;
+    }
 }

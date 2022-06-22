@@ -13,13 +13,13 @@
     <div class="w">
       <div class="header-left">
         <a th:href="@{/index}">
-          <img src="/img/logo.png" alt=""
-          /></a>
-        <h1>My Cart</h1>
+          <img src="/img/logo.png" alt=""/></a>
+        <span>My Cart</span>
       </div>
       <div th:replace="common::header_right"/>
     </div>
   </div>
+
     <div class="list">
       <div class="w">
         <table>
@@ -34,7 +34,7 @@
             </tr>
           </thead>
           <tbody>
-          <tr th:each="cartItem : ${session.loginUser.cart.cartItemMap.values()}">
+          <tr th:each="cartItem : ${session.loginUser.getCartItemList()}">
             <td>
               <img th:src="@{|/book/${cartItem.book.bookImg}|}" alt="" />
             </td>
@@ -44,7 +44,7 @@
               <input class="count-num" type="text" value="1" th:value="${cartItem.buyCount}"/>
               <a class="count" th:href="@{/increaseCartItemQuantity/{id}(id=${cartItem.id})}">+</a>
             </td>
-            <td th:text="${cartItem.book.price}">0</td>
+            <td th:text="${cartItem.book.price*cartItem.getBuyCount()}">0</td>
             <td th:text="${cartItem.xj}">0</td>
             <td><a th:href="@{/deleteCartItem/{id}(id=${cartItem.id})}">DELETE</a></td>
           </tr>
@@ -55,8 +55,8 @@
             <a th:href="@{/index}">Continue Shopping</a>
           </div>
           <div class="footer-right">
-            <div>Total<span th:text="${session.loginUser.cart.totalBookCount}">0</span>items</div>
-            <div class="total-price">total price<span th:text="${session.loginUser.cart.totalMoney}">0</span>元</div>
+            <div>Total<span th:text="${session.loginUser.getCartItemList().size()}">0</span>items</div>
+            <div class="total-price">total price<span th:text="${session.totalPrice}">0</span>元</div>
             <a class="pay" th:href="@{/checkout}">Checkout</a>
           </div>
         </div>

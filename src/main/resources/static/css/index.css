@@ -192,6 +192,7 @@
   justify-content: space-between;
 }
 .books-list .list-content .list-item {
+  float: left;
   transition: all 0.5s;
   flex-shrink: 0;
   width: 234px;
@@ -202,6 +203,7 @@
   color: #000;
   background-color: #fff;
   margin-bottom: 10px;
+
 }
 .books-list .list-content .list-item img {
   width: 160px;

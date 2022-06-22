@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface OrderMapper {
-    //add order
+
     void addOrderBean(OrderBean orderBean);
 
     List<OrderBean> getOrderList(User user);

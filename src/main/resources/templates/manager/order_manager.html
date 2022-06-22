@@ -16,7 +16,7 @@
         <div class="header-left">
           <a th:href="@{/index}">
             <img src="/img/logo.png" alt=""/></a>
-          <h1>Order Management System</h1>
+          <span>Order Management System</span>
         </div>
         <div th:replace="common::header_manager"/>
       </div>
@@ -73,6 +73,45 @@
               </tr>
           </tbody>
         </table>
+        <div class="footer">
+          <div class="footer-right">
+            <ul class="pagination">
+              <li>
+                <a th:href="@{${'getAllOrderList'}(pageNum=${1},pageSize=${pageSize})}">Front Page</a>
+              </li>
+              <li>
+                <a th:if="${not isFirstPage}" th:href="@{${'getAllOrderList'}(pageNum=${pageNum-1},pageSize=${pageSize})}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+                <a th:if="${isFirstPage}" href="javascript:void(0);" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li th:each="pageNo : ${#numbers.sequence(1, totalPages)}">
+                <a th:if="${pageNum eq pageNo}" href="javascript:void(0);">
+                  <span th:text="${pageNo}"></span>
+                </a>
+                <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'getAllOrderList'}(pageNum=${pageNo},pageSize=${pageSize})}">
+                  <span th:text="${pageNo}"></span>
+                </a>
+              </li>
+              <li>
+                <a th:if="${not isLastPage}" th:href="@{${'getAllOrderList'}(pageNum=${pageNum+1},pageSize=${pageSize})}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+                <a th:if="${isLastPage}" href="javascript:void(0);" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              <li>
+                <a th:href="@{${'getAllOrderList'}(pageNum=${pageInfo.pages},pageSize=${pageSize})}">Last Page</a>
+              </li>
+            </ul>
+
+            <span th:text="'  &nbsp;Total Pages: ' + ${pageInfo.pages} + ', '">total pages</span>
+            <span th:text="'  Total Items: ' + ${pageInfo.total}">total items</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="bottom" th:replace="common::bottom_main"/>

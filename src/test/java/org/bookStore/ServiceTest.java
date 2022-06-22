@@ -103,7 +103,7 @@ public class ServiceTest {
             System.out.println(book.getBookName());
         }*/
 
-        List<Book> books = bookService.getBookListByNameAndPrice(0.0, 100.0,"");
+        List<Book> books = bookService.getBookListByNameAndPrice(0.0, 1.0,"ringdafsdg");
         for (Book book : books){
             System.out.println(book.getBookName());
         }

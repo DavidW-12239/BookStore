@@ -50,7 +50,7 @@
               </form>
             </div>
             <div class="list-content">
-              <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}" style="float:left">
+              <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}">
                 <img th:src="@{|/book/*{bookImg}|}" alt="">
                 <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
                 <p th:text="|author: *{author}|">author</p>

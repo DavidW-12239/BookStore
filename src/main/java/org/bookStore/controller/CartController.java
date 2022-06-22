@@ -1,40 +1,43 @@
 package org.bookStore.controller;
 
-import org.bookStore.pojo.Book;
-import org.bookStore.pojo.Cart;
 import org.bookStore.pojo.CartItem;
 import org.bookStore.pojo.User;
+import org.bookStore.service.BookService;
 import org.bookStore.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class CartController {
     @Autowired
     CartItemService cartItemService ;
 
-    //加载当前用户的购物车信息
+    @Autowired
+    BookService bookService;
+
+    //load cart info
     @RequestMapping("/toCartPage")
-    public String getCart(HttpSession session, Model model){
+    public String getCart(HttpSession session){
         User user = (User)session.getAttribute("loginUser");
-        Cart cart = cartItemService.getCart(user);
-        user.setCart(cart);
+        List<CartItem> cartItemList = cartItemService.getCartItemList(user);
+        user.setCartItemList(cartItemList);
+        Double totalPrice = cartItemService.getTotalCartItemPrice(cartItemList);
         session.setAttribute("loginUser",user);
+        session.setAttribute("totalPrice", totalPrice);
         return "cart/cart";
     }
 
     @RequestMapping("/addCart/{id}")
-    public String addCartItem(@PathVariable("id") Integer bookId, HttpSession session, Model model){
+    public String addCartItem(@PathVariable("id") Integer bookId, HttpSession session){
         User user = (User)session.getAttribute("loginUser");
-        CartItem cartItem = new CartItem(new Book(bookId),1,user);
-        //将指定的图书添加到当前用户的购物车中
-        cartItemService.addOrUpdateCartItem(cartItem,user.getCart());
+        CartItem cartItem = new CartItem(null, bookService.getBook(bookId), 1, user);
+
+        cartItemService.addOrUpdateCartItem(cartItem, user);
         int cartCount = cartItemService.getCartItemList(user).size();
         session.setAttribute("cartCount", cartCount);
 
@@ -42,9 +45,9 @@ public class CartController {
     }
 
     @RequestMapping("/deleteCartItem/{id}")
-    public String deleteCartItem(@PathVariable("id") Integer cartItemId, HttpSession session){
+    public String deleteCartItem(@PathVariable("id") Integer cartItemId){
         CartItem cartItem = cartItemService.getCartItem(cartItemId);
-        //将指定的图书添加到当前用户的购物车中
+
         cartItemService.deleteCartItem(cartItem);
 
         return "redirect:/toCartPage";
@@ -66,16 +69,4 @@ public class CartController {
         return "redirect:/toCartPage";
     }
 
-    /*public String cartInfo(HttpSession session){
-        User user =(User)session.getAttribute("loginUser");
-        Cart cart = cartItemService.getCart(user);
-
-        cart.getTotalBookCount();
-        cart.getTotalCount();
-        cart.getTotalMoney();
-
-        Gson gson = new Gson();
-        String cartJsonStr = gson.toJson(cart);
-        return "json:"+cartJsonStr ;
-    }*/
 }

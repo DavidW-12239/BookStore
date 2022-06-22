@@ -44,7 +44,7 @@
         <a th:href="@{/index}">
             <img class="logo_img" alt="" src="/img/logo.png" />
         </a>
-        <div th:fragment="head" >
+        <div class="header-right">
             <span>Dear<span class="um_span" th:text="${session.loginUser.getUname()}">xxx</span>Welcome to the BookStore</span>
             <a th:href="@{/getOrderList}">My Order &nbsp;</a>
             <a th:href="@{/logout}">Logout</a>&nbsp;&nbsp;
@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <div th:fragment="header_manager">
+    <div th:fragment="header_manager" class="header-right">
         <a th:href="@{/toBookManagerPage}">Book Management&nbsp;&nbsp;</a>
         <a th:href="@{/toOrderManagerPage}">Order Management&nbsp;&nbsp;</a>
         <a th:href="@{/index}">Main Page</a>
