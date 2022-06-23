@@ -17,13 +17,16 @@
         <a href="#" class="header-logo"></a>
         <div class="header-nav">
           <ul>
-            <li><a href="#">Technology</a></li>
-            <li><a href="#">History</a></li>
-            <li><a href="#">Fiction</a></li>
-            <li><a href="#">Business</a></li>
-            <li><a href="#">Literature</a></li>
-            <li><a href="#">Art</a></li>
-            <li><a href="#">Management</a></li>
+            <li><a th:href="@{/getBookByCategory(category='Technology')}">Technology</a></li>
+            <li><a th:href="@{/getBookByCategory(category='History')}">History</a></li>
+            <li><a th:href="@{/getBookByCategory(category='Fiction')}">Fiction</a></li>
+            <li><a th:href="@{/getBookByCategory(category='Business')}">Business</a></li>
+            <li><a th:href="@{/getBookByCategory(category='Finance')}">Finance</a></li>
+            <li><a th:href="@{/getBookByCategory(category='Literature')}">Literature</a></li>
+            <li><a th:href="@{/getBookByCategory(category='Art')}">Art</a></li>
+            <li><a th:href="@{/getBookByCategory(category='Management')}">Management</a></li>
+            <li><a th:href="@{/getBookByCategory(category='Education')}">Education</a></li>
+            <li><a href="#" name="On Sale">On Sale</a></li>
           </ul>
         </div>
         <form class="header-search" th:action="@{/getMainBookList}">
@@ -38,14 +41,14 @@
             <div class="list-header">
               <div class="title" >Book List</div>
               <form class="price-search" th:action="@{/getMainBookList}">
-                <span>Price: </span>
-                <span> $</span>
+                <span>Price:&nbsp;</span>
+                <span>&nbsp;$</span>
                 <input type="number" name="price1" th:value="${session.price1}">
                 <span> - $</span>
                 <input type="number" name="price2" th:value="${session.price2}">
                 <button>Search</button>
               </form>
-              <form class="price-search" th:action="@{/clearPrice}">
+              <form class="price-search" th:action="@{/clearAll}">
                 <button>Clear</button>
               </form>
             </div>
@@ -53,8 +56,8 @@
               <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}">
                 <img th:src="@{|/book/*{bookImg}|}" alt="">
                 <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
-                <p th:text="|*{author}|" style="font-style: oblique">Author</p>
-                <p th:if="${book.bookStatus==0}" th:text="|$*{price}|">price</p>
+                <p th:text="|*{author}|" style="font-style: oblique; color: #2a2a2a">Author</p>
+                <p th:if="${book.bookStatus==0}" th:text="|$*{price}|" style="color: #2a2a2a">price</p>
                 <p th:if="${book.bookStatus==1}" class="cur-price" th:text="|$*{price*0.8}|">price</p>
                 <p th:if="${book.bookStatus==1}" class="pre-price" th:text="|$*{price}|">price</p>
                 <p th:text="|Sales: *{saleCount}|">Sales</p>
@@ -144,37 +147,41 @@
               </div>
             </div>
             <div class="seckill-content">
-                  <a href="" class="tip"> 
-                     <h5>Before End</h5>
-                     <i class="iconfont icon-shandian"></i>
-                     <div class="downcount">
-                      <span class="time" id="hour">00</span>
-                      <span class="token">:</span>
-                      <span class="time" id="minute">00</span>
-                       <span class="token">:</span>
-                       <span class="time" id="second">00</span>
-                     </div>
-                  </a>
+              <a href="" class="tip">
+                 <h5>Before End</h5>
+                 <i class="iconfont icon-shandian"></i>
+                 <div class="downcount">
+                     <span class="time" id="hour">00</span>
+                     <span class="token">:</span>
+                     <span class="time" id="minute">00</span>
+                     <span class="token">:</span>
+                     <span class="time" id="second">00</span>
+                 </div>
+              </a>
 
-                <a th:each="book : ${session.discountBookList}" th:object="${book}" style="float:left"
-                   th:href="@{/addCart/{id}(id=${book.id})}" class="books-sec" >
-                  <img th:src="@{|/book/*{bookImg}|}" alt="">
-                  <p th:text="|*{bookName}|" style="text-align: center">bookname</p>
-                  <div>
-                    <span class="cur-price" th:text="|$*{price*0.8}|">$10</span><br>
-                    <span class="pre-price" th:text="|$*{price}|">$20</span>
-                  </div>
-                  <button style="width: auto">Add to my Cart</button>
-                </a>
+              <a th:each="book : ${session.discountBookList}" th:object="${book}" style="float:left"
+                 th:href="@{/addCart/{id}(id=${book.id})}" class="books-sec" >
+                <img th:src="@{|/book/*{bookImg}|}" alt="">
+                <p th:text="|*{bookName}|" style="text-align: center">bookname</p>
+                <div>
+                  <span class="cur-price" th:text="|$*{price*0.8}|">$10</span><br>
+                  <span class="pre-price" th:text="|$*{price}|">$20</span>
+                </div>
+                <button style="width: auto" >Add to my Cart</button>
+              </a>
+
+              <a th:href="@{/getMainBookList}" class="cart iconfont icon-huanyipi">
+                Switch
+              </a>
               <!--</div>-->
             </div>
           </div>
         </div>
       </div>
-      <div th:replace="common::bottom_main"/>
+      <div th:replace="common::bottom_main" id="bottom"/>
      
 
-    </div>
+<!--    </div>
     <script src="/script/swiper.min.js"></script>
     <script>
       var swiper = new Swiper('.swiper-container', {
@@ -188,6 +195,6 @@
           prevEl: '.swiper-button-prev'
         }
       })
-    </script>
+    </script>-->
   </body>
 </html>

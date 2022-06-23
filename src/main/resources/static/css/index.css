@@ -188,14 +188,17 @@
 }
 .books-list .list-content {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+
 }
 .books-list .list-content .list-item {
   float: left;
+  flex: 0 1 250px;
   transition: all 0.5s;
   flex-shrink: 0;
-  width: 275px;
+  width: 18%;
+  margin-right: 2%;
   height: 350px;
   display: flex;
   flex-direction: column;
@@ -346,13 +349,14 @@
   cursor: pointer;
 }
 .books .seckill-content {
-  height: 339px;
+  height: 360px;
   display: flex;
   justify-content: space-between;
+  text-align: center;
 }
 .books .seckill-content a {
   width: 234px;
-  height: 339px;
+  height: 360px;
   background-color: #fff;
   display: flex;
   flex-direction: column;

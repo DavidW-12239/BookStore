@@ -60,7 +60,20 @@
               <input type="number" name="bookCount" placeholder="Please enter the stock" th:value="${session.book.bookCount}">
             </div>
             <span th:text="${bookCountMsg}" style="color:red">stock</span>
-            <br/>
+          </div>
+          <div class="form-item">
+            <div>
+              <label>Book Status:</label>
+              <select name="bookStatus" style="float: left" th:if="${session.book.bookStatus==0}">
+                <option th:value="0" selected>Not On Sale</option>
+                <option th:value="1">On Sale</option>
+              </select>
+              <select name="bookStatus" style="float: left" th:unless="${session.book.bookStatus==0}">
+                <option th:value="0">Not On Sale</option>
+                <option th:value="1" selected>On Sale</option>
+              </select>
+            </div>
+            <span th:text="${saleCountMsg}" style="color:red">sales</span><br>
           </div>
 
           <input type="submit" value="Submit" id="sub_btn" />

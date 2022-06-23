@@ -9,6 +9,7 @@ public class Book {
     private Integer saleCount ;
     private Integer bookCount ;
     private Integer bookStatus;
+    private String category;
 
     public Book(){}
 
@@ -16,7 +17,8 @@ public class Book {
         this.id = id;
     }
 
-    public Book(Integer id, String bookImg, String bookName, Double price, String author, Integer saleCount, Integer bookCount, Integer bookStatus) {
+    public Book(Integer id, String bookImg, String bookName, Double price, String author,
+                Integer saleCount, Integer bookCount, Integer bookStatus, String category) {
         this.id = id;
         this.bookImg = bookImg;
         this.bookName = bookName;
@@ -25,6 +27,7 @@ public class Book {
         this.saleCount = saleCount;
         this.bookCount = bookCount;
         this.bookStatus = bookStatus;
+        this.category = category;
     }
 
     public Integer getId() {
@@ -89,5 +92,13 @@ public class Book {
 
     public void setBookStatus(Integer bookStatus) {
         this.bookStatus = bookStatus;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

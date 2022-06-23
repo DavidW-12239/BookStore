@@ -14,5 +14,5 @@ public interface BookMapper {
     void update(Book book);
     List<Book> getBookListByPrice(Double price1, Double price2);
     List<Book> getBookByName(String bookName);
-    List<Book> getBookListByPriceAndName(Double price1, Double price2, String bookName);
+    List<Book> getAllBookList(Double price1, Double price2, String bookName, String category);
 }

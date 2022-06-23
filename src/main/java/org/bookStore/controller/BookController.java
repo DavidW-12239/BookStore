@@ -2,15 +2,16 @@ package org.bookStore.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.catalina.Session;
 import org.bookStore.pojo.Book;
 import org.bookStore.service.BookService;
+import org.bookStore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,7 +22,8 @@ public class BookController {
     @PostMapping("/addBook")
     public String addBook(@RequestParam("bookName") String bookName, @RequestParam("price") Double price,
                           @RequestParam("author") String author, @RequestParam("saleCount") Integer saleCount,
-                          @RequestParam("bookCount") Integer bookCount, HttpSession session, Model model){
+                          @RequestParam("bookCount") Integer bookCount, @RequestParam("bookStatus") Integer bookStatus,
+                          @RequestParam("category") String category, Model model){
         String quantityReg = "^[1-9]\\d*$";
         if (bookName.equals("")){
             model.addAttribute("bookNameMsg","Book name cannot be empty!");
@@ -43,8 +45,12 @@ public class BookController {
             model.addAttribute("bookCountMsg","Please enter a correct bookCount!");
             return "manager/book_add";
         }
+        else if (category.equals("")){
+            model.addAttribute("categoryMsg","Book category cannot be empty!");
+            return "manager/book_add";
+        }
 
-        bookService.addBook(new Book(null, null, bookName, price, author, saleCount, bookCount, 0));
+        bookService.addBook(new Book(null, null, bookName, price, author, saleCount, bookCount, bookStatus, category));
         return "redirect:/toAddingSuccessfulPage";
     }
 
@@ -53,15 +59,16 @@ public class BookController {
         return "manager/adding_successful";
     }
 
-    /*@RequestMapping("/getBookByName")
-    public String getBookByName(){
-
-    }*/
+    @RequestMapping("/getBookByCategory")
+    public String getBookByCategory(@RequestParam("category") String category, HttpSession session){
+        session.setAttribute("category", category);
+        return "redirect:/getMainBookList";
+    }
 
     @RequestMapping("/getMainBookList")
     public String getMainBookList(@RequestParam(required=false, defaultValue = "0.0", name="price1") Double price1,
                                   @RequestParam(required=false, defaultValue = "1000.0", name="price2") Double price2,
-            @RequestParam(required=false, defaultValue = "") String bookName,
+                                  @RequestParam(required=false, defaultValue = "") String bookName,
             @RequestParam(defaultValue = "1") Integer pageNum, Model model, HttpSession session){
 
         //import pageHelper
@@ -77,6 +84,12 @@ public class BookController {
         if (bookName==null){
             bookName="";
         }
+        String category = "";
+        if (session.getAttribute("category")==null){
+            category="";
+        } else {
+            category = (String) session.getAttribute("category");
+        }
         session.setAttribute("price1", price1);
         session.setAttribute("price2", price2);
         session.setAttribute("bookName", bookName);
@@ -85,7 +98,7 @@ public class BookController {
         //packaging detailed paging info and search result, 5 pages show each time
         PageHelper.startPage(pageNum, 10);
         //then the paging search
-        List<Book> bookList = bookService.getBookListByNameAndPrice(price1, price2, bookName);
+        List<Book> bookList = bookService.getAllBookList(price1, price2, bookName, category);
         //use pageInfo to package the result
         //packaging detailed paging info and search result, 5 pages show each time
         PageInfo<Book> pageInfo = new PageInfo<>(bookList, 5);
@@ -108,17 +121,24 @@ public class BookController {
         return "index";
     }
 
-    @RequestMapping("/clearPrice")
-    public String clearPrice(HttpSession session){
+    @RequestMapping("/clearAll")
+    public String clearAll(HttpSession session){
         session.setAttribute("price1", 0);
         session.setAttribute("price2", 1000);
+        session.setAttribute("bookName", "");
+        session.setAttribute("category", "");
         return "redirect:/getMainBookList";
     }
 
-    //@RequestMapping("/getDiscountBookList")
+    //get four random discount books
     public void getDiscountBookList(HttpSession session){
         List<Book> discountBookList = bookService.getBookListByStatus(1);
-        session.setAttribute("discountBookList", discountBookList);
+        int[] randomNum = Utils.randomNumber(0,discountBookList.size(),4);
+        List<Book> randomList = new ArrayList<>();
+        for (int i: randomNum){
+            randomList.add(discountBookList.get(i));
+        }
+        session.setAttribute("discountBookList", randomList);
     }
 
 
@@ -169,7 +189,8 @@ public class BookController {
     @PostMapping("/editBook")
     public String editBook(@RequestParam("bookName") String bookName, @RequestParam("price") Double price,
                           @RequestParam("author") String author, @RequestParam("saleCount") Integer saleCount,
-                          @RequestParam("bookCount") Integer bookCount, HttpSession session, Model model){
+                          @RequestParam("bookCount") Integer bookCount, @RequestParam("bookStatus") Integer bookStatus,
+                          @RequestParam("category") String category, HttpSession session, Model model){
         String quantityReg = "^[1-9]\\d*$";
         if (bookName.equals("")){
             model.addAttribute("bookNameMsg","Book name cannot be empty!");
@@ -191,6 +212,10 @@ public class BookController {
             model.addAttribute("bookCountMsg","Please enter a correct bookCount!");
             return "manager/book_edit";
         }
+        else if (category.equals("")){
+            model.addAttribute("categoryMsg","Book category cannot be empty!");
+            return "manager/book_add";
+        }
 
         Book book = (Book) session.getAttribute("book");
         book.setBookName(bookName);
@@ -198,6 +223,8 @@ public class BookController {
         book.setAuthor(author);
         book.setSaleCount(saleCount);
         book.setBookCount(bookCount);
+        book.setBookStatus(bookStatus);
+        book.setCategory(category);
 
         bookService.updateBook(book);
         return "redirect:/toEditSuccessfulPage";

@@ -60,7 +60,16 @@
               <input type="number" name="bookCount" value="0" placeholder="Please enter the stock" />
             </div>
             <span th:text="${bookCountMsg}" style="color:red">stock</span>
-            <br/>
+          </div>
+          <div class="form-item">
+            <div>
+              <label>Book Status:</label>
+              <select name="bookStatus" style="float: left">
+                <option th:value="0" selected>Not On Sale</option>
+                <option th:value="1">On Sale</option>
+              </select>
+            </div>
+            <span th:text="${saleCountMsg}" style="color:red">sales</span><br>
           </div>
 
           <input type="submit" value="Submit" id="sub_btn" />

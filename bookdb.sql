@@ -25,7 +25,12 @@ insert  into `t_book`(`id`,`bookImg`,`bookName`,`price`,`author`,`saleCount`,`bo
 
 insert  into `t_book`(`id`,`bookImg`,`bookName`,`price`,`author`,`saleCount`,`bookCount`,`bookStatus`) values 
 (12,'lesMisérables.jpg','Les Misérables',55.00,'Victor Hugo',12,120,1),(13,'dataStructuresandAlgorithms.jpg','Data Structures and Algorithms Made Easy',45.65,'Narasimha Karumanchi',18,70,1),
-(14,'theLittlePrince.jpg','The Little Prince',40.00,' Antoine de Saint-Exupery',20,140,1),(15,'japaneseGrammar.jpg','Dict of Basic Japanese Grammar',65.00,'Seiichi Makino',2,50,1);
+(14,'theLittlePrince.jpg','The Little Prince',40.00,' Antoine de Saint-Exupery',20,140,1),
+(15,'japaneseGrammar.jpg','Dict of Basic Japanese Grammar',65.00,'Seiichi Makino',2,50,1),
+(16,'SPQR.jpg','S.P.Q.R.: A History of Ancient Rome',60.00,'Mary Beard',6,80,1),
+(17,'stockMarket.jpg','A Beginner''s Guide to the Stock Market',25.00,'Matthew R. Kratter',7,90,1),
+(18,'programmingPHP.jpg','Dict of Basic Japanese Grammar',39.00,'Kevin Tatroe',1,40,1),
+(19,'blockchainForDummies.jpg','Blockchain For Dummies',25.00,'Tiana Laurence',4,72,1);
 
 
 CREATE TABLE `t_user` (

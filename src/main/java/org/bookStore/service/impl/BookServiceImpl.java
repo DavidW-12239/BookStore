@@ -40,8 +40,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getBookListByNameAndPrice(Double price1, Double price2, String bookName) {
-        List<Book> bookList = bookMapper.getBookListByPriceAndName(price1, price2, bookName);
+    public List<Book> getAllBookList(Double price1, Double price2, String bookName, String category) {
+        List<Book> bookList = bookMapper.getAllBookList(price1, price2, bookName, category);
         return bookList;
     }
 

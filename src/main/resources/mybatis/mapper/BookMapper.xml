@@ -7,8 +7,8 @@
         insert into t_book values (null, null, #{bookName}, #{price}, #{author}, #{saleCount}, #{bookCount}, 0)
     </insert>
     <update id="update">
-        update t_book set bookName = #{bookName},price = #{price}, author = #{author},
-                          saleCount = #{saleCount}, bookCount = #{bookCount}, bookStatus = #{bookStatus}
+        update t_book set bookName = #{bookName},price = #{price}, author = #{author}, saleCount = #{saleCount},
+                          bookCount = #{bookCount}, bookStatus = #{bookStatus}, category = #{category}
         where id = #{id}
     </update>
     <delete id="deleteBook">
@@ -29,7 +29,9 @@
     <select id="getBookByName" resultType="org.bookStore.pojo.Book">
         select * from t_book where bookName Like CONCAT('%',#{bookName},'%')
     </select>
-    <select id="getBookListByPriceAndName" resultType="org.bookStore.pojo.Book">
-        select * from t_book where bookName Like CONCAT('%',#{bookName},'%') and price between #{price1} and #{price2}
+    <select id="getAllBookList" resultType="org.bookStore.pojo.Book">
+        select * from t_book where bookName Like CONCAT('%',#{bookName},'%')
+                               and price between #{price1} and #{price2}
+                               and category Like CONCAT('%',#{category},'%')
     </select>
 </mapper>

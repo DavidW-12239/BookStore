@@ -6,6 +6,7 @@ import org.bookStore.service.BookService;
 import org.bookStore.service.CartItemService;
 import org.bookStore.service.OrderService;
 import org.bookStore.service.UserService;
+import org.bookStore.utils.Utils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,8 +148,16 @@ public class ServiceTest {
     @Test
     void testGetBookList(){
 
-        List<Book> list = bookService.getBookListByNameAndPrice(0.0, 50.0, "lll");
+        List<Book> list = bookService.getAllBookList(0.0, 1000.0, "", "education");
         System.out.println(list.size());
+    }
+
+    @Test
+    void testUtils(){
+        int[] aa = Utils.randomNumber(0,6,4);
+        for (int i:aa){
+            System.out.println(i);
+        }
     }
 }
 
