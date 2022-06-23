@@ -59,20 +59,20 @@ public class OrderController {
         User user = (User)session.getAttribute("loginUser");
 
         List<OrderBean> orderList = orderService.getOrderList(user);
-        session.setAttribute("orderList",orderList);
+        session.setAttribute("orderList", orderList);
 
         return "order/order" ;
     }
 
     @RequestMapping("/getAllOrderList")
-    public String getAllOrderList(@RequestParam(defaultValue = "1") Integer pageNum, HttpSession session, Model model){
+    public String getAllOrderList(@RequestParam(defaultValue = "1") Integer pageNum, Model model){
         PageHelper.startPage(pageNum, 10);
 
         List<OrderBean> orderList = orderService.getOrderList(null);
         //use pageInfo to package the result
         //packaging detailed paging info and search result, 5 pages show each time
         PageInfo orderPageInfo = new PageInfo(orderList, 5);
-        model.addAttribute("pageInfo", orderPageInfo);
+        model.addAttribute("orderPageInfo", orderPageInfo);
 
         //currPage
         model.addAttribute("pageNum", orderPageInfo.getPageNum());

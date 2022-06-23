@@ -37,7 +37,7 @@
             </tr>
           </thead>
           <tbody>
-              <tr th:each="order : ${pageInfo.list}" th:object="${order}">
+              <tr th:each="order : ${orderPageInfo.list}" th:object="${order}">
                 <form th:action="@{/changeOrderStatus/{id}(id=${order.id})}">
 
                 <td th:text="|*{orderNo}|">1235445689</td>
@@ -104,12 +104,12 @@
                 </a>
               </li>
               <li>
-                <a th:href="@{${'getAllOrderList'}(pageNum=${pageInfo.pages},pageSize=${pageSize})}">Last Page</a>
+                <a th:href="@{${'getAllOrderList'}(pageNum=${orderPageInfo.pages},pageSize=${pageSize})}">Last Page</a>
               </li>
             </ul>
 
-            <span th:text="'  &nbsp;Total Pages: ' + ${pageInfo.pages} + ', '">total pages</span>
-            <span th:text="'  Total Items: ' + ${pageInfo.total}">total items</span>
+            <span th:text="'  &nbsp;Total Pages: ' + ${orderPageInfo.pages} + ', '">total pages</span>
+            <span th:text="'  Total Items: ' + ${orderPageInfo.total}">total items</span>
           </div>
         </div>
       </div>

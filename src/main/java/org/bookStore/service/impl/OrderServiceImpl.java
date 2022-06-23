@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
             OrderItem orderItem = new OrderItem();
             orderItem.setBook(cartItem.getBook());
             orderItem.setBuyCount(cartItem.getBuyCount());
-            orderItem.setOrderBean(orderBean);
+            orderItem.setOrderBean(orderMapper.getOrderBeanByNo(orderBean.getOrderNo()));
             orderItemMapper.addOrderItem(orderItem);
         }
 

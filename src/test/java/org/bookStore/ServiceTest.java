@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 public class ServiceTest {
@@ -72,7 +73,7 @@ public class ServiceTest {
     }
 
     @Test
-    void testOrder(){
+    void testOrder1(){
         User user = userService.getUserById(1);
 
         //List<OrderBean> list = orderService.getOrderList(user);
@@ -103,10 +104,51 @@ public class ServiceTest {
             System.out.println(book.getBookName());
         }*/
 
-        List<Book> books = bookService.getBookListByNameAndPrice(0.0, 1.0,"ringdafsdg");
+        /*List<Book> books = bookService.getBookListByNameAndPrice(0.0, 1.0,"ringdafsdg");
         for (Book book : books){
             System.out.println(book.getBookName());
+        }*/
+        Integer bookId = 3;
+        User user = userMapper.getUserById(2);
+        CartItem cartItem = new CartItem(null, bookService.getBook(bookId), 1, user);
+        System.out.println(cartItem.getBook().getId());
+
+        List<CartItem> cartItems = cartItemMapper.getCartItemList(user);
+        boolean itemExists = false;
+        for (CartItem cartItem1 : cartItems){
+            if (cartItem.getBook().getId()==cartItem1.getBook().getId()){
+                cartItem1.setBuyCount(cartItem1.getBuyCount()+1);
+                itemExists = true;
+                System.out.println(itemExists);
+            }
         }
+        if (itemExists==false){
+            //cartItemMapper.addCartItem(cartItem);
+            System.out.println(itemExists);
+        }
+    }
+
+    @Test
+    void testOrder2(){
+        OrderBean orderBean = new OrderBean() ;
+        Date now = new Date();
+        orderBean.setOrderNo(UUID.randomUUID()+"_"+now);
+        orderBean.setOrderDate(now);
+
+        User user = userService.getUserById(1);
+        List<CartItem> cartItemList = cartItemService.getCartItemList(user);
+        Double totalPrice = cartItemService.getTotalCartItemPrice(cartItemList);
+        orderBean.setOrderUser(user);
+        orderBean.setOrderMoney(totalPrice);
+        orderBean.setOrderStatus(0);
+        System.out.println(orderBean.getId());
+    }
+
+    @Test
+    void testGetBookList(){
+
+        List<Book> list = bookService.getBookListByNameAndPrice(0.0, 50.0, "lll");
+        System.out.println(list.size());
     }
 }
 

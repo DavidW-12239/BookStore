@@ -18,8 +18,6 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-
-
     @PostMapping("/addBook")
     public String addBook(@RequestParam("bookName") String bookName, @RequestParam("price") Double price,
                           @RequestParam("author") String author, @RequestParam("saleCount") Integer saleCount,
@@ -63,14 +61,12 @@ public class BookController {
     @RequestMapping("/getMainBookList")
     public String getMainBookList(@RequestParam(required=false, defaultValue = "0.0", name="price1") Double price1,
                                   @RequestParam(required=false, defaultValue = "1000.0", name="price2") Double price2,
-            @RequestParam(required=false, defaultValue = "") String bookName, @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "10") Integer pageSize, Model model, HttpSession session){
-        //get discount book list
-        getDiscountBookList(session);
+            @RequestParam(required=false, defaultValue = "") String bookName,
+            @RequestParam(defaultValue = "1") Integer pageNum, Model model, HttpSession session){
 
         //import pageHelper
         //invoke pageHelper, page number and the size of each page
-        PageHelper.startPage(pageNum, pageSize);
+
         //then the paging search
         if (price1==null || price1.isNaN()){
             price1 = 0.0;
@@ -84,12 +80,15 @@ public class BookController {
         session.setAttribute("price1", price1);
         session.setAttribute("price2", price2);
         session.setAttribute("bookName", bookName);
-        //List<Book> www = bookService.getBookListByName(bookName);
 
+        //use pageInfo to package the result
+        //packaging detailed paging info and search result, 5 pages show each time
+        PageHelper.startPage(pageNum, 10);
+        //then the paging search
         List<Book> bookList = bookService.getBookListByNameAndPrice(price1, price2, bookName);
         //use pageInfo to package the result
         //packaging detailed paging info and search result, 5 pages show each time
-        PageInfo pageInfo = new PageInfo(bookList, 5);
+        PageInfo<Book> pageInfo = new PageInfo<>(bookList, 5);
         model.addAttribute("pageInfo", pageInfo);
 
         //currPage
@@ -102,6 +101,9 @@ public class BookController {
         model.addAttribute("totalPages", pageInfo.getPages());
         //last page?
         model.addAttribute("isLastPage", pageInfo.isIsLastPage());
+
+        //get discount book list
+        getDiscountBookList(session);
 
         return "index";
     }
@@ -130,19 +132,19 @@ public class BookController {
         List<Book> bookList = bookService.getBookList();
         //use pageInfo to package the result
         //packaging detailed paging info and search result, 5 pages show each time
-        PageInfo pageInfo = new PageInfo(bookList, 5);
-        model.addAttribute("pageInfo", pageInfo);
+        PageInfo bookManagerPageInfo = new PageInfo(bookList, 5);
+        model.addAttribute("pageInfo", bookManagerPageInfo);
 
         //currPage
-        model.addAttribute("pageNum", pageInfo.getPageNum());
+        model.addAttribute("pageNum", bookManagerPageInfo.getPageNum());
         //pageSize
-        model.addAttribute("pageSize", pageInfo.getPageSize());
+        model.addAttribute("pageSize", bookManagerPageInfo.getPageSize());
         //first page?
-        model.addAttribute("isFirstPage", pageInfo.isIsFirstPage());
+        model.addAttribute("isFirstPage", bookManagerPageInfo.isIsFirstPage());
         //total page
-        model.addAttribute("totalPages", pageInfo.getPages());
+        model.addAttribute("totalPages", bookManagerPageInfo.getPages());
         //last page?
-        model.addAttribute("isLastPage", pageInfo.isIsLastPage());
+        model.addAttribute("isLastPage", bookManagerPageInfo.isIsLastPage());
 
         return "manager/book_manager";
     }

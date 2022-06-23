@@ -53,10 +53,12 @@
               <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}">
                 <img th:src="@{|/book/*{bookImg}|}" alt="">
                 <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
-                <p th:text="|author: *{author}|">author</p>
-                <p th:text="|price: $*{price}|">price</p>
-                <p th:text="|sales: *{saleCount}|">sales</p>
-                <p th:text="|stock: *{bookCount}|">stock</p>
+                <p th:text="|*{author}|" style="font-style: oblique">Author</p>
+                <p th:if="${book.bookStatus==0}" th:text="|$*{price}|">price</p>
+                <p th:if="${book.bookStatus==1}" class="cur-price" th:text="|$*{price*0.8}|">price</p>
+                <p th:if="${book.bookStatus==1}" class="pre-price" th:text="|$*{price}|">price</p>
+                <p th:text="|Sales: *{saleCount}|">Sales</p>
+                <p th:text="|Stock: *{bookCount}|">Stock</p>
                 <a th:href="@{/addCart/{id}(id=${book.id})}" class="btn" type="button">
                   Add to my Cart</button></a>
               </div>
@@ -64,10 +66,10 @@
             <div class="list-footer">
               <ul class="pagination">
                 <li>
-                  <a th:href="@{${'getMainBookList'}(pageNum=${1},pageSize=${pageSize})}">Front Page</a>
+                  <a th:href="@{${'getMainBookList'}(pageNum=${1},pageSize=${10})}">Front Page</a>
                 </li>
                 <li>
-                  <a th:if="${not isFirstPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum-1},pageSize=${pageSize})}" aria-label="Previous">
+                  <a th:if="${not isFirstPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum-1},pageSize=${10})}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                   </a>
                   <a th:if="${isFirstPage}" href="javascript:void(0);" aria-label="Previous">
@@ -78,12 +80,12 @@
                   <a th:if="${pageNum eq pageNo}" href="javascript:void(0);">
                     <span th:text="${pageNo}"></span>
                   </a>
-                  <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'getMainBookList'}(pageNum=${pageNo},pageSize=${pageSize})}">
+                  <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'getMainBookList'}(pageNum=${pageNo},pageSize=${10})}">
                     <span th:text="${pageNo}"></span>
                   </a>
                 </li>
                 <li>
-                  <a th:if="${not isLastPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum+1},pageSize=${pageSize})}" aria-label="Next">
+                  <a th:if="${not isLastPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum+1},pageSize=${10})}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                   </a>
                   <a th:if="${isLastPage}" href="javascript:void(0);" aria-label="Next">
@@ -91,7 +93,7 @@
                   </a>
                 </li>
                 <li>
-                  <a th:href="@{${'getMainBookList'}(pageNum=${pageInfo.pages},pageSize=${pageSize})}">Last Page</a>
+                  <a th:href="@{${'getMainBookList'}(pageNum=${pageInfo.pages},pageSize=${10})}">Last Page</a>
                 </li>
               </ul>
 
@@ -159,8 +161,8 @@
                   <img th:src="@{|/book/*{bookImg}|}" alt="">
                   <p th:text="|*{bookName}|" style="text-align: center">bookname</p>
                   <div>
-                    <span class="cur-price" th:text="|$*{price}|">$10</span><br>
-                    <span class="pre-price" th:text="|$*{price*1.2}|">$20</span>
+                    <span class="cur-price" th:text="|$*{price*0.8}|">$10</span><br>
+                    <span class="pre-price" th:text="|$*{price}|">$20</span>
                   </div>
                   <button style="width: auto">Add to my Cart</button>
                 </a>

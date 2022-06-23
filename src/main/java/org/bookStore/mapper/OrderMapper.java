@@ -20,5 +20,7 @@ public interface OrderMapper {
 
     OrderBean getOrderBean(Integer id);
 
+    OrderBean getOrderBeanByNo(String orderNo);
+
     void updateOrderStatus(OrderBean orderBean, Integer orderStatus);
 }

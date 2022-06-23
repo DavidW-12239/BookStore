@@ -36,26 +36,6 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemMapper.updateCartItem(cartItem);
     }
 
-    /*@Override
-    public void addOrUpdateCartItem(CartItem cartItem, Cart cart) {
-        //exists ? update : add
-        if(cart!=null){
-            Map<Integer, CartItem> cartItemMap = cart.getCartItemMap();
-            if(cartItemMap==null){
-                cartItemMap = new HashMap<>();
-            }
-            if(cartItemMap.containsKey(cartItem.getBook().getId())){
-                CartItem cartItemTemp = cartItemMap.get(cartItem.getBook().getId());
-                cartItemTemp.setBuyCount(cartItemTemp.getBuyCount()+1);
-                updateCartItem(cartItemTemp);
-            }else{
-                addCartItem(cartItem);
-            }
-        }else{  //without a cart
-            addCartItem(cartItem);
-        }
-    }*/
-
     @Override
     public void addOrUpdateCartItem(CartItem cartItem, User user) {
         //exists ? update : add
@@ -64,6 +44,7 @@ public class CartItemServiceImpl implements CartItemService {
         for (CartItem cartItem1 : cartItems){
             if (cartItem.getBook().getId()==cartItem1.getBook().getId()){
                 cartItem1.setBuyCount(cartItem1.getBuyCount()+1);
+                cartItemMapper.updateCartItem(cartItem1);
                 itemExists = true;
             }
         }
@@ -91,19 +72,6 @@ public class CartItemServiceImpl implements CartItemService {
         }
         return price;
     }
-
-/*    @Override
-    public Cart getCart(User user) {
-        List<CartItem> cartItemList = getCartItemList(user);
-        Map<Integer,CartItem> cartItemMap = new HashMap<>();
-        for (CartItem cartItem : cartItemList){
-            cartItemMap.put(cartItem.getBook().getId(),cartItem);
-        }
-        Cart cart = new Cart();
-        cart.setCartItemMap(cartItemMap);
-
-        return cart;
-    }*/
 
     @Override
     public void deleteCartItem(CartItem cartItem) {

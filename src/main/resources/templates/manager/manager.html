@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Backstage Management</title>
+	<link rel="stylesheet" href="/css/minireset.css" />
+	<link rel="stylesheet" href="/css/common.css" />
+	<link rel="stylesheet" href="/css/cart.css" />
+	<link rel="stylesheet" href="/css/bookManger.css" />
 <link type="text/css" rel="stylesheet" href="/css/style.css" >
 <style type="text/css">
 	h1 {
@@ -12,18 +16,25 @@
 </style>
 </head>
 <body>
-	
-	<div id="header">
-			<img class="logo_img" alt="" src="/img/logo.png" >
-			<span class="wel_word">Backstage Management System</span>
-			<div th:replace="common::header_manager"/>
+
+<div class="header">
+	<div class="w">
+		<div class="header-left">
+			<a th:href="@{/index}">
+				<img src="/img/logo.png" alt=""/></a>
+			<span>Book Management System</span>
+		</div>
+		<div th:replace="common::header_manager"/>
 	</div>
+</div>
 	
 	<div id="main">
-		<span>Welcome to the management system</span>
-		<div><a th:href="@{/toBookManagerPage}">Book Management</a></div>
-		<div><a th:href="@{/toOrderManagerPage}">Order Management</a></div>
-		<div><a th:href="@{/index}">Main Page</a></div>
+		<h1>Welcome to the management system<br/><br>
+			<ul>
+				<li><a th:href="@{/toBookManagerPage}" class="btn-primary">Book Management</a></li><br>
+				<li><a th:href="@{/toOrderManagerPage}" class="btn-primary">Order Management</a></li>
+			</ul>
+		</h1>
 	</div>
 
 	<div th:replace="common::bottom"/>

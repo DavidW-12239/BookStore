@@ -29,4 +29,7 @@
     <select id="getBookByName" resultType="org.bookStore.pojo.Book">
         select * from t_book where bookName Like CONCAT('%',#{bookName},'%')
     </select>
+    <select id="getBookListByPriceAndName" resultType="org.bookStore.pojo.Book">
+        select * from t_book where bookName Like CONCAT('%',#{bookName},'%') and price between #{price1} and #{price2}
+    </select>
 </mapper>
