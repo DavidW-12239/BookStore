@@ -55,8 +55,9 @@
             <a th:href="@{/index}">Continue Shopping</a>
           </div>
           <div class="footer-right">
+            <span th:text="${session.insufficientMsg}" style="color:red">insufficientMsg</span>
             <div>Total<span th:text="${session.loginUser.getCartItemList().size()}">0</span>items</div>
-            <div class="total-price">total price<span th:text="${session.totalPrice}">0</span>元</div>
+            <div class="total-price">total price $<span th:text="${session.totalPrice}">0</span></div>
             <a class="pay" th:href="@{/checkout}">Checkout</a>
           </div>
         </div>

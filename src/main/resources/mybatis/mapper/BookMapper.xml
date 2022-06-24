@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.bookStore.mapper.BookMapper">
     <insert id="addBook">
-        insert into t_book values (null, null, #{bookName}, #{price}, #{author}, #{saleCount}, #{bookCount}, 0)
+        insert into t_book values (null, null, #{bookName}, #{price}, #{author}, #{saleCount}, #{bookCount}, #{bookStatus}, #{category})
     </insert>
     <update id="update">
         update t_book set bookName = #{bookName},price = #{price}, author = #{author}, saleCount = #{saleCount},

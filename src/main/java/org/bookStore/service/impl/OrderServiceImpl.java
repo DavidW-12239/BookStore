@@ -1,17 +1,14 @@
 package org.bookStore.service.impl;
 
-import org.bookStore.mapper.CartItemMapper;
-import org.bookStore.mapper.OrderMapper;
-import org.bookStore.mapper.OrderItemMapper;
-import org.bookStore.mapper.UserMapper;
-import org.bookStore.pojo.CartItem;
-import org.bookStore.pojo.OrderBean;
-import org.bookStore.pojo.OrderItem;
-import org.bookStore.pojo.User;
+import org.bookStore.mapper.*;
+import org.bookStore.pojo.*;
 import org.bookStore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,17 +24,28 @@ public class OrderServiceImpl implements OrderService {
     private CartItemMapper cartItemMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private BookMapper bookMapper;
 
+    //@Transactional
     @Override
-    public void addOrderBean(OrderBean orderBean) {
-        orderMapper.addOrderBean(orderBean);
-
+    public void addOrderBean(OrderBean orderBean, HttpSession session) throws Exception {
         User loginUser = orderBean.getOrderUser();
         List<CartItem> cartItemList = loginUser.getCartItemList();
         for(CartItem cartItem : cartItemList){
+            Book book = cartItem.getBook();
+            Integer bookCount = cartItem.getBuyCount();
+            book.setSaleCount(book.getSaleCount() + bookCount);
+            book.setBookCount(book.getBookCount() - bookCount);
+            if (book.getBookCount()<0){
+                session.setAttribute("insufficientMsg", "Insufficient stock for " + book.getBookName());
+                throw new Exception("Insufficient stock");
+            }
+            orderMapper.addOrderBean(orderBean);
             OrderItem orderItem = new OrderItem();
-            orderItem.setBook(cartItem.getBook());
-            orderItem.setBuyCount(cartItem.getBuyCount());
+            orderItem.setBook(book);
+            orderItem.setBuyCount(bookCount);
+
             orderItem.setOrderBean(orderMapper.getOrderBeanByNo(orderBean.getOrderNo()));
             orderItemMapper.addOrderItem(orderItem);
         }

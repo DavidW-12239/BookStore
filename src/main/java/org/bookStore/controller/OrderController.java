@@ -10,6 +10,8 @@ import org.bookStore.service.CartItemService;
 import org.bookStore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +31,9 @@ public class OrderController {
     @Autowired
     CartItemService cartItemService;
 
+    @Transactional
     @RequestMapping("/checkout")
-    public String checkout(HttpSession session){
+    public String checkout(HttpSession session) {
         OrderBean orderBean = new OrderBean() ;
         Date now = new Date();
         orderBean.setOrderNo(UUID.randomUUID()+"_"+now);
@@ -43,10 +46,15 @@ public class OrderController {
         orderBean.setOrderMoney(totalPrice);
         orderBean.setOrderStatus(0);
 
-        orderService.addOrderBean(orderBean);
+        try {
+            orderService.addOrderBean(orderBean, session);
+        }catch (Exception e){
+            return "redirect:/toCartPage";
+        }
+
         session.setAttribute("orderNo", orderBean.getOrderNo());
 
-        return "redirect:/toCheckoutPage" ;
+        return "redirect:/toCheckoutPage";
     }
 
     @RequestMapping("/toCheckoutPage")

@@ -6,6 +6,7 @@ import org.bookStore.service.BookService;
 import org.bookStore.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,13 +23,14 @@ public class CartController {
 
     //load cart info
     @RequestMapping("/toCartPage")
-    public String getCart(HttpSession session){
+    public String getCart(HttpSession session, Model model){
         User user = (User)session.getAttribute("loginUser");
         List<CartItem> cartItemList = cartItemService.getCartItemList(user);
         user.setCartItemList(cartItemList);
         Double totalPrice = cartItemService.getTotalCartItemPrice(cartItemList);
         session.setAttribute("loginUser",user);
         session.setAttribute("totalPrice", totalPrice);
+        //session.setAttribute("insufficientMsg", "");
         return "cart/cart";
     }
 

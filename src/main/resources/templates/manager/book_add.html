@@ -63,6 +63,13 @@
           </div>
           <div class="form-item">
             <div>
+              <label>Category:</label>
+              <input type="text" name="category" placeholder="Please enter the category" />
+            </div>
+            <span th:text="${categoryMsg}" style="color:red">category</span>
+          </div>
+          <div class="form-item">
+            <div>
               <label>Book Status:</label>
               <select name="bookStatus" style="float: left">
                 <option th:value="0" selected>Not On Sale</option>

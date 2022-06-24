@@ -58,8 +58,8 @@
                 <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
                 <p th:text="|*{author}|" style="font-style: oblique; color: #2a2a2a">Author</p>
                 <p th:if="${book.bookStatus==0}" th:text="|$*{price}|" style="color: #2a2a2a">price</p>
-                <p th:if="${book.bookStatus==1}" class="cur-price" th:text="|$*{price*0.8}|">price</p>
-                <p th:if="${book.bookStatus==1}" class="pre-price" th:text="|$*{price}|">price</p>
+                <p th:if="${book.bookStatus==1}" class="cur-price" th:text="|$*{price}|">price</p>
+                <p th:if="${book.bookStatus==1}" class="pre-price" th:text="|$*{price*1.2}|">price</p>
                 <p th:text="|Sales: *{saleCount}|">Sales</p>
                 <p th:text="|Stock: *{bookCount}|">Stock</p>
                 <a th:href="@{/addCart/{id}(id=${book.id})}" class="btn" type="button">
@@ -164,8 +164,8 @@
                 <img th:src="@{|/book/*{bookImg}|}" alt="">
                 <p th:text="|*{bookName}|" style="text-align: center">bookname</p>
                 <div>
-                  <span class="cur-price" th:text="|$*{price*0.8}|">$10</span><br>
-                  <span class="pre-price" th:text="|$*{price}|">$20</span>
+                  <span class="cur-price" th:text="|$*{price}|">$10</span><br>
+                  <span class="pre-price" th:text="|$*{price*1.2}|">$20</span>
                 </div>
                 <button style="width: auto" >Add to my Cart</button>
               </a>
