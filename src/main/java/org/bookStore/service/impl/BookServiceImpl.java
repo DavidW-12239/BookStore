@@ -7,11 +7,7 @@ import org.bookStore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -40,8 +36,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getAllBookList(Double price1, Double price2, String bookName, String category) {
-        List<Book> bookList = bookMapper.getAllBookList(price1, price2, bookName, category);
+    public List<Book> getAllBookList(Double price1, Double price2, String bookName, String category, Integer bookStatus) {
+        List<Book> bookList = bookMapper.getAllBookList(price1, price2, bookName, category, bookStatus);
         return bookList;
     }
 

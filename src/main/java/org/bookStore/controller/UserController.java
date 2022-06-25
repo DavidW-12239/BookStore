@@ -29,11 +29,7 @@ public class UserController {
     public String login(@RequestParam("uname") String uname, @RequestParam("pwd") String pwd, HttpSession session, Model model){
         User user = userService.login(uname, pwd);
         if(user!=null){
-            List<CartItem> cartItemList = cartItemService.getCartItemList(user);
-            user.setCartItemList(cartItemList);
             session.setAttribute("loginUser",user);
-            int cartItemNum = cartItemList.size();
-            session.setAttribute("cartCount", cartItemNum);
             return "user/login_success";
         }
         else{
@@ -59,6 +55,12 @@ public class UserController {
     @GetMapping(value = "/index")
     public String toIndexPage(HttpSession session){
         if (session.getAttribute("loginUser") != null){
+            User user = (User) session.getAttribute("loginUser");
+            List<CartItem> cartItemList = cartItemService.getCartItemList(user);
+            user.setCartItemList(cartItemList);
+            session.setAttribute("loginUser",user);
+            int cartItemNum = cartItemList.size();
+            session.setAttribute("cartCount", cartItemNum);
             return "redirect:/getMainBookList";
         }
         return "user/login";

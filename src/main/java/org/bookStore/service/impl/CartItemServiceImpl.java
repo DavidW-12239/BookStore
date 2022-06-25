@@ -68,7 +68,7 @@ public class CartItemServiceImpl implements CartItemService {
     public Double getTotalCartItemPrice(List<CartItem> cartItemList) {
         Double price = 0.0;
         for(CartItem cartItem : cartItemList){
-            price += cartItem.getBook().getPrice() * cartItem.getBuyCount();
+            price += cartItem.getBook().getCurrPrice() * cartItem.getBuyCount();
         }
         return price;
     }

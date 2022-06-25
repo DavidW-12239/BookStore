@@ -28,6 +28,7 @@
               <th>Cover</th>
               <th>Book Name</th>
               <th>Quantity</th>
+              <th>In Stock</th>
               <th>Price</th>
               <th>Total Price</th>
               <th>Action</th>
@@ -40,12 +41,15 @@
             </td>
             <td th:text="${cartItem.book.bookName}">bookName</td>
             <td>
-              <a class="count" th:href="@{/reduceCartItemQuantity/{id}(id=${cartItem.id})}">-</a>
-              <input class="count-num" type="text" value="1" th:value="${cartItem.buyCount}"/>
-              <a class="count" th:href="@{/increaseCartItemQuantity/{id}(id=${cartItem.id})}">+</a>
+              <a class="count" th:if="${cartItem.buyCount}>1" th:href="@{/reduceCartItemQuantity/{id}(id=${cartItem.id})}">-</a>
+              <input class="count-num" type="text" name="purchaseNum" th:value="${cartItem.buyCount}"
+                     oninput="if(value<1)value=1"/>
+              <a class="count" th:if="${cartItem.buyCount}<${cartItem.book.getBookCount()}"
+                 th:href="@{/increaseCartItemQuantity/{id}(id=${cartItem.id})}">+</a>
             </td>
-            <td th:text="${cartItem.book.price*cartItem.getBuyCount()}">0</td>
-            <td th:text="${cartItem.xj}">0</td>
+            <td th:text="${cartItem.book.getBookCount()}">0</td>
+            <td th:text="${cartItem.book.currPrice}">0</td>
+            <td th:text="${cartItem.book.currPrice*cartItem.getBuyCount()}">0</td>
             <td><a th:href="@{/deleteCartItem/{id}(id=${cartItem.id})}">DELETE</a></td>
           </tr>
           </tbody>
@@ -55,7 +59,7 @@
             <a th:href="@{/index}">Continue Shopping</a>
           </div>
           <div class="footer-right">
-            <span th:text="${session.insufficientMsg}" style="color:red">insufficientMsg</span>
+            <span th:text="${session.checkoutErrorMsg}" style="color:red">checkoutErrorMsg</span>
             <div>Total<span th:text="${session.loginUser.getCartItemList().size()}">0</span>items</div>
             <div class="total-price">total price $<span th:text="${session.totalPrice}">0</span></div>
             <a class="pay" th:href="@{/checkout}">Checkout</a>

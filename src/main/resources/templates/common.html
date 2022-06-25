@@ -19,11 +19,6 @@
         <div class="topbar-right" th:if="${session.loginUser==null}">
             <a th:href="@{/}" class="login">Login</a>
             <a th:href="@{/toRegisterPage}" class="register">Register</a>
-            <a th:href="@{/toCartPage}" class="cart iconfont icon-gouwuche">
-                My Cart
-                <div class="cart-num">0</div>
-            </a>
-            <a th:href="@{/toAdminPage}" class="admin">Admin</a>
         </div>
 
         <div class="topbar-right" th:unless="${session.loginUser==null}">
@@ -34,11 +29,65 @@
                 My Cart
                 <div class="cart-num" th:text="${session.cartCount}">0</div>
             </a>
+            <a th:href="@{/getOrderList}" class="cart">My Order</a>
             <a th:href="@{/toAdminPage}" class="admin">Admin</a>
         </div>
 
     </div>
 </div>
+
+    <div th:fragment="header_nav" class="header-nav">
+        <ul>
+            <li><a th:if="${session.category!='Technology'}" th:href="@{/getBookByCategory(category='Technology')}">
+                &nbsp;Technology</a>
+                <a th:if="${session.category=='Technology'}" th:href="@{/getBookByCategory(category='Technology')}"
+                   class="li-active" style="color:#39987c;;">Technology</a></li>
+
+            <li><a th:if="${session.category!='History'}" th:href="@{/getBookByCategory(category='History')}">
+                History</a>
+                <a th:if="${session.category=='History'}" th:href="@{/getBookByCategory(category='History')}"
+                   class="li-active" style="color:#39987c;;">History</a></li>
+
+            <li><a th:if="${session.category!='Fiction'}" th:href="@{/getBookByCategory(category='Fiction')}">
+                Fiction</a>
+                <a th:if="${session.category=='Fiction'}" th:href="@{/getBookByCategory(category='Fiction')}"
+                   class="li-active" style="color:#39987c;;">Fiction</a></li>
+
+            <li><a th:if="${session.category!='Business'}" th:href="@{/getBookByCategory(category='Business')}">
+                Business</a>
+                <a th:if="${session.category=='Business'}" th:href="@{/getBookByCategory(category='Business')}"
+                   class="li-active" style="color:#39987c;;">Business</a></li>
+
+            <li><a th:if="${session.category!='Finance'}" th:href="@{/getBookByCategory(category='Finance')}">
+                Finance</a>
+                <a th:if="${session.category=='Finance'}" th:href="@{/getBookByCategory(category='Finance')}"
+                   class="li-active" style="color:#39987c;;">Finance</a></li>
+
+            <li><a th:if="${session.category!='Literature'}" th:href="@{/getBookByCategory(category='Literature')}">
+                Literature</a>
+                <a th:if="${session.category=='Literature'}" th:href="@{/getBookByCategory(category='Literature')}"
+                   class="li-active" style="color:#39987c;;">Literature</a></li>
+
+            <li><a th:if="${session.category!='Art'}" th:href="@{/getBookByCategory(category='Art')}">
+                Art</a>
+                <a th:if="${session.category=='Art'}" th:href="@{/getBookByCategory(category='Art')}"
+                   class="li-active" style="color:#39987c;;">Art</a></li>
+
+            <li><a th:if="${session.category!='Education'}" th:href="@{/getBookByCategory(category='Education')}">
+                Education</a>
+                <a th:if="${session.category=='Education'}" th:href="@{/getBookByCategory(category='Education')}"
+                   class="li-active" style="color:#39987c;;">Education</a></li>
+
+            <li><a th:if="${session.category!='Management'}" th:href="@{/getBookByCategory(category='Management')}">
+                Management</a>
+                <a th:if="${session.category=='Management'}" th:href="@{/getBookByCategory(category='Management')}"
+                   class="li-active" style="color:#39987c;;">Management</a></li>
+
+            <li><a th:if="${session.bookStatus!=1}" th:href="@{/getDiscountBook}">On Sale</a>
+                <a th:unless="${session.bookStatus!=1}" th:href="@{/getDiscountBook}"
+                   class="li-active" style="color:#39987c;;">On Sale</a></li>
+        </ul>
+    </div>
 
     <div id="header" th:fragment="head" >
         <a th:href="@{/index}">
@@ -72,37 +121,37 @@
             <ul>
                 <li>
                     <a href="">
-                        <span>文学 鉴赏</span>
+                        <span>aaa</span>
                         <i class="iconfont icon-jiantou"></i></a>
                 </li>
                 <li>
                     <a href="">
-                        <span>社科 研究</span>
+                        <span>bbb</span>
                         <i class="iconfont icon-jiantou"></i></a>
                 </li>
                 <li>
                     <a href="">
-                        <span>少儿 培训</span>
+                        <span>ccc</span>
                         <i class="iconfont icon-jiantou"></i></a>
                 </li>
                 <li>
                     <a href="">
-                        <span>艺术 赏析</span>
+                        <span>ddd</span>
                         <i class="iconfont icon-jiantou"></i></a>
                 </li>
                 <li>
                     <a href="">
-                        <span>生活 周边</span>
+                        <span>eee</span>
                         <i class="iconfont icon-jiantou"></i></a>
                 </li>
                 <li>
                     <a href="">
-                        <span>文教 科技</span>
+                        <span>fff</span>
                         <i class="iconfont icon-jiantou"></i></a>
                 </li>
                 <li>
                     <a href="">
-                        <span>热销 畅读</span>
+                        <span>ggg</span>
                         <i class="iconfont icon-jiantou"></i></a>
                 </li>
             </ul>

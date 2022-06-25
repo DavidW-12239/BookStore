@@ -30,7 +30,8 @@
             <tr>
               <th>Cover</th>
               <th>Book Name</th>
-              <th>Price</th>
+              <th>Current Price</th>
+              <th>Original Price</th>
               <th>Author</th>
               <th>Sales</th>
               <th>Stock</th>
@@ -43,7 +44,8 @@
                 <img th:src="@{|/book/*{bookImg}|}" alt="">
               </td>
               <td th:text="|*{bookName}|">bookName</td>
-              <td th:text="|price: $*{price}|">price</td>
+              <td th:text="|price: $*{currPrice}|">price</td>
+              <td th:text="|price: $*{origPrice}|">price</td>
               <td th:text="|author: *{author}|">author</td>
               <td th:text="|sales: *{saleCount}|">sales</td>
               <td th:text="|stock: *{bookCount}|">stock</td>

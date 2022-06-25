@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -30,7 +31,19 @@ public class CartController {
         Double totalPrice = cartItemService.getTotalCartItemPrice(cartItemList);
         session.setAttribute("loginUser",user);
         session.setAttribute("totalPrice", totalPrice);
-        //session.setAttribute("insufficientMsg", "");
+        session.setAttribute("insufficientMsg", "");
+        return "cart/cart";
+    }
+
+    //when the rollback occur
+    @RequestMapping("/toCartPage2")
+    public String getCart2(HttpSession session, Model model){
+        User user = (User)session.getAttribute("loginUser");
+        List<CartItem> cartItemList = cartItemService.getCartItemList(user);
+        user.setCartItemList(cartItemList);
+        Double totalPrice = cartItemService.getTotalCartItemPrice(cartItemList);
+        session.setAttribute("loginUser",user);
+        session.setAttribute("totalPrice", totalPrice);
         return "cart/cart";
     }
 
@@ -56,7 +69,8 @@ public class CartController {
     }
 
     @RequestMapping("/reduceCartItemQuantity/{id}")
-    public String reduceCartItemQuantity(@PathVariable("id") Integer cartItemId){
+    public String reduceCartItemQuantity(@PathVariable("id") Integer cartItemId,
+                                         @RequestParam("purchaseNum") Integer purchaseNum){
         Integer buyCount = cartItemService.getCartItem(cartItemId).getBuyCount() - 1;
         cartItemService.updateCartItem(new CartItem(cartItemId , buyCount));
 
@@ -64,7 +78,8 @@ public class CartController {
     }
 
     @RequestMapping("/increaseCartItemQuantity/{id}")
-    public String increaseCartItemQuantity(@PathVariable("id") Integer cartItemId){
+    public String increaseCartItemQuantity(@PathVariable("id") Integer cartItemId,
+                                           @RequestParam("purchaseNum") Integer purchaseNum){
         Integer buyCount = cartItemService.getCartItem(cartItemId).getBuyCount() + 1;
         cartItemService.updateCartItem(new CartItem(cartItemId , buyCount));
 

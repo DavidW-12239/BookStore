@@ -12,6 +12,7 @@ import org.junit.jupiter.api.TestClassOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.Date;
@@ -148,7 +149,7 @@ public class ServiceTest {
     @Test
     void testGetBookList(){
 
-        List<Book> list = bookService.getAllBookList(0.0, 1000.0, "", "education");
+        List<Book> list = bookService.getAllBookList(0.0, 14.00, null, null, 1);
         System.out.println(list.size());
     }
 
@@ -158,6 +159,15 @@ public class ServiceTest {
         for (int i:aa){
             System.out.println(i);
         }
+    }
+
+    @Test
+    @Transactional
+    void testTransactional(){
+        Book book = bookMapper.getBook(21);
+        book.setBookCount(3);
+        bookMapper.update(book);
+        int i = 5/0;
     }
 }
 

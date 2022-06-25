@@ -35,10 +35,17 @@
           </div>
           <div class="form-item">
             <div>
-              <label>Price:</label>
-              <input type="number" name="price" value="0" placeholder="Please enter the price" />
+              <label>Current Price</label>
+              <input type="number" name="price" placeholder="Please enter the current price" >
             </div>
-            <span th:text="${priceMsg}" style="color:red">price</span>
+            <span th:text="${currPriceMsg}" style="color:red">price</span>
+          </div>
+          <div class="form-item">
+            <div>
+              <label>Original Price</label>
+              <input type="number" name="price" placeholder="Please enter the price" >
+            </div>
+            <span th:text="${origPriceMsg}" style="color:red">price</span>
           </div>
           <div class="form-item">
             <div>

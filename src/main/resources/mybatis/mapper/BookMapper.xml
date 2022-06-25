@@ -4,11 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.bookStore.mapper.BookMapper">
     <insert id="addBook">
-        insert into t_book values (null, null, #{bookName}, #{price}, #{author}, #{saleCount}, #{bookCount}, #{bookStatus}, #{category})
+        insert into t_book values (null, null, #{bookName}, #{curr_price}, orig_price = #{orig_price},
+                                   #{author}, #{saleCount}, #{bookCount}, #{bookStatus}, #{category})
     </insert>
     <update id="update">
-        update t_book set bookName = #{bookName},price = #{price}, author = #{author}, saleCount = #{saleCount},
-                          bookCount = #{bookCount}, bookStatus = #{bookStatus}, category = #{category}
+        update t_book set bookName = #{bookName}, curr_price = #{currPrice}, orig_price = #{origPrice}, author = #{author},
+                          saleCount = #{saleCount}, bookCount = #{bookCount}, bookStatus = #{bookStatus}, category = #{category}
         where id = #{id}
     </update>
     <delete id="deleteBook">
@@ -24,14 +25,34 @@
         select * from t_book
     </select>
     <select id="getBookListByPrice" resultType="org.bookStore.pojo.Book">
-        select * from t_book where price between #{price1} and #{price2}
+        select * from t_book where curr_price between #{price1} and #{price2}
     </select>
     <select id="getBookByName" resultType="org.bookStore.pojo.Book">
         select * from t_book where bookName Like CONCAT('%',#{bookName},'%')
     </select>
     <select id="getAllBookList" resultType="org.bookStore.pojo.Book">
-        select * from t_book where bookName Like CONCAT('%',#{bookName},'%')
-                               and price between #{price1} and #{price2}
-                               and category Like CONCAT('%',#{category},'%')
+        select * from t_book
+            <where>
+            <if test="bookName!=null">
+                and bookName Like CONCAT('%',#{bookName},'%')
+            </if>
+            <choose>
+                <when test="price1 != null and price2 != null">
+                    and curr_price between #{price1} and #{price2}
+                </when>
+                <when test="price1 != null and price2 = null">
+                    and curr_price between #{price1} and 999
+                </when>
+                <when test="price1 = null and price2 != null">
+                    and curr_price between 0 and #{price2}
+                </when>
+            </choose>
+            <if test="category != null">
+                and category Like CONCAT('%',#{category},'%')
+            </if>
+            <if test="bookStatus != null">
+                and bookStatus = #{bookStatus}
+            </if>
+            </where>
     </select>
 </mapper>

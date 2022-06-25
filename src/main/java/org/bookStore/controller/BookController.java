@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.bookStore.pojo.Book;
 import org.bookStore.service.BookService;
+import org.bookStore.service.CartItemService;
 import org.bookStore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,18 +20,25 @@ public class BookController {
     @Autowired
     BookService bookService;
 
+    @Autowired
+    CartItemService cartItemService;
+
     @PostMapping("/addBook")
-    public String addBook(@RequestParam("bookName") String bookName, @RequestParam("price") Double price,
-                          @RequestParam("author") String author, @RequestParam("saleCount") Integer saleCount,
-                          @RequestParam("bookCount") Integer bookCount, @RequestParam("bookStatus") Integer bookStatus,
-                          @RequestParam("category") String category, Model model){
+    public String addBook(@RequestParam(required=false, name="bookName") String bookName, @RequestParam("currPrice") Double currPrice,
+                          @RequestParam("origPrice") Double origPrice, @RequestParam("author") String author,
+                          @RequestParam("saleCount") Integer saleCount, @RequestParam("bookCount") Integer bookCount,
+                          @RequestParam("bookStatus") Integer bookStatus, @RequestParam("category") String category, Model model){
         String quantityReg = "^[1-9]\\d*$";
         if (bookName.equals("")){
             model.addAttribute("bookNameMsg","Book name cannot be empty!");
             return "manager/book_add";
         }
-        else if (price<=0){
-            model.addAttribute("priceMsg","Please enter a correct price!");
+        else if (currPrice<=0){
+            model.addAttribute("currPriceMsg","Please enter a correct price!");
+            return "manager/book_add";
+        }
+        else if (origPrice<=0 || currPrice<=0 || (currPrice!=origPrice && bookStatus==0) || (currPrice>=origPrice && bookStatus==1)){
+            model.addAttribute("origPriceMsg","Please enter a correct price!");
             return "manager/book_add";
         }
         else if (author.equals("")){
@@ -50,7 +58,7 @@ public class BookController {
             return "manager/book_add";
         }
 
-        bookService.addBook(new Book(null, null, bookName, price, author, saleCount, bookCount, bookStatus, category));
+        bookService.addBook(new Book(null, null, bookName, currPrice, origPrice, author, saleCount, bookCount, bookStatus, category));
         return "redirect:/toAddingSuccessfulPage";
     }
 
@@ -61,44 +69,61 @@ public class BookController {
 
     @RequestMapping("/getBookByCategory")
     public String getBookByCategory(@RequestParam("category") String category, HttpSession session){
-        session.setAttribute("category", category);
+        if (session.getAttribute("category") == null){
+            session.setAttribute("category", category);
+        }else if(!session.getAttribute("category").equals(category)) {
+            session.setAttribute("category", category);
+        }else if (session.getAttribute("category").equals(category)){
+            session.setAttribute("category", null);
+        }
+        return "redirect:/getMainBookList";
+    }
+
+    @RequestMapping("/getDiscountBook")
+    public String getDiscountBook(HttpSession session){
+        if (session.getAttribute("bookStatus") == null){
+            session.setAttribute("bookStatus", 1);
+        } else {
+            session.setAttribute("bookStatus", null);
+        }
         return "redirect:/getMainBookList";
     }
 
     @RequestMapping("/getMainBookList")
-    public String getMainBookList(@RequestParam(required=false, defaultValue = "0.0", name="price1") Double price1,
-                                  @RequestParam(required=false, defaultValue = "1000.0", name="price2") Double price2,
-                                  @RequestParam(required=false, defaultValue = "") String bookName,
+    public String getMainBookList(@RequestParam(required=false, name="price1") Double price1,
+                                  @RequestParam(required=false, name="price2") Double price2,
+                                  @RequestParam(required=false) String bookName,
             @RequestParam(defaultValue = "1") Integer pageNum, Model model, HttpSession session){
+
+        session.setAttribute("cartCount", session.getAttribute("cartCount"));
 
         //import pageHelper
         //invoke pageHelper, page number and the size of each page
 
         //then the paging search
-        if (price1==null || price1.isNaN()){
-            price1 = 0.0;
+        if (price1!=null ){
+            session.setAttribute("price1", price1);
         }
-        if (price2==null || price2.isNaN()){
-            price2 = 1000.0;
+        if (price2!=null){
+            session.setAttribute("price2", price2);
         }
-        if (bookName==null){
-            bookName="";
+        if (bookName!=null){
+            session.setAttribute("bookName", bookName);
         }
         String category = "";
-        if (session.getAttribute("category")==null){
-            category="";
-        } else {
+        if (session.getAttribute("category")!=null){
             category = (String) session.getAttribute("category");
         }
-        session.setAttribute("price1", price1);
-        session.setAttribute("price2", price2);
-        session.setAttribute("bookName", bookName);
+        Integer bookStatus = null;
+        if (session.getAttribute("bookStatus")!=null){
+            bookStatus = (Integer) session.getAttribute("bookStatus");
+        }
 
         //use pageInfo to package the result
         //packaging detailed paging info and search result, 5 pages show each time
         PageHelper.startPage(pageNum, 10);
         //then the paging search
-        List<Book> bookList = bookService.getAllBookList(price1, price2, bookName, category);
+        List<Book> bookList = bookService.getAllBookList(price1, price2, bookName, category, bookStatus);
         //use pageInfo to package the result
         //packaging detailed paging info and search result, 5 pages show each time
         PageInfo<Book> pageInfo = new PageInfo<>(bookList, 5);
@@ -123,10 +148,11 @@ public class BookController {
 
     @RequestMapping("/clearAll")
     public String clearAll(HttpSession session){
-        session.setAttribute("price1", 0);
-        session.setAttribute("price2", 1000);
-        session.setAttribute("bookName", "");
-        session.setAttribute("category", "");
+        session.setAttribute("price1", null);
+        session.setAttribute("price2", null);
+        session.setAttribute("bookName", null);
+        session.setAttribute("category", null);
+        session.setAttribute("bookStatus", null);
         return "redirect:/getMainBookList";
     }
 
@@ -187,7 +213,8 @@ public class BookController {
     }
 
     @PostMapping("/editBook")
-    public String editBook(@RequestParam("bookName") String bookName, @RequestParam("price") Double price,
+    public String editBook(@RequestParam("bookName") String bookName, @RequestParam("currPrice") Double currPrice,
+                           @RequestParam("origPrice") Double origPrice,
                           @RequestParam("author") String author, @RequestParam("saleCount") Integer saleCount,
                           @RequestParam("bookCount") Integer bookCount, @RequestParam("bookStatus") Integer bookStatus,
                           @RequestParam("category") String category, HttpSession session, Model model){
@@ -196,9 +223,13 @@ public class BookController {
             model.addAttribute("bookNameMsg","Book name cannot be empty!");
             return "manager/book_edit";
         }
-        else if (price<=0){
-            model.addAttribute("priceMsg","Please enter a correct price!");
-            return "manager/book_edit";
+        else if (currPrice<=0){
+            model.addAttribute("currPriceMsg","Please enter a correct current price!");
+            return "manager/book_add";
+        }
+        else if (origPrice<=0 || currPrice<=0 || (currPrice!=origPrice && bookStatus==0) || (currPrice>=origPrice && bookStatus==1)){
+            model.addAttribute("origPriceMsg","Please enter a correct original price!");
+            return "manager/book_add";
         }
         else if (author.equals("")){
             model.addAttribute("authorMsg","Author cannot be empty!");
@@ -219,7 +250,8 @@ public class BookController {
 
         Book book = (Book) session.getAttribute("book");
         book.setBookName(bookName);
-        book.setPrice(price);
+        book.setCurrPrice(currPrice);
+        book.setOrigPrice(origPrice);
         book.setAuthor(author);
         book.setSaleCount(saleCount);
         book.setBookCount(bookCount);

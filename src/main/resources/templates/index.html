@@ -15,20 +15,7 @@
       <div th:replace="common :: top_bar" class="topbar"/>
       <div class="header w">
         <a href="#" class="header-logo"></a>
-        <div class="header-nav">
-          <ul>
-            <li><a th:href="@{/getBookByCategory(category='Technology')}">Technology</a></li>
-            <li><a th:href="@{/getBookByCategory(category='History')}">History</a></li>
-            <li><a th:href="@{/getBookByCategory(category='Fiction')}">Fiction</a></li>
-            <li><a th:href="@{/getBookByCategory(category='Business')}">Business</a></li>
-            <li><a th:href="@{/getBookByCategory(category='Finance')}">Finance</a></li>
-            <li><a th:href="@{/getBookByCategory(category='Literature')}">Literature</a></li>
-            <li><a th:href="@{/getBookByCategory(category='Art')}">Art</a></li>
-            <li><a th:href="@{/getBookByCategory(category='Management')}">Management</a></li>
-            <li><a th:href="@{/getBookByCategory(category='Education')}">Education</a></li>
-            <li><a href="#" name="On Sale">On Sale</a></li>
-          </ul>
-        </div>
+        <div th:replace="common :: header_nav"/>
         <form class="header-search" th:action="@{/getMainBookList}">
           <input type="text" placeholder=" " name="bookName" th:value="${session.bookName}"/>
           <button class="iconfont icon-search"></button>
@@ -48,8 +35,8 @@
                 <input type="number" name="price2" th:value="${session.price2}">
                 <button>Search</button>
               </form>
-              <form class="price-search" th:action="@{/clearAll}">
-                <button>Clear</button>
+              <form class="price-search" th:action="@{/clearAll}" style="width: auto">
+                <button style="width: auto">Reset All</button>
               </form>
             </div>
             <div class="list-content">
@@ -57,13 +44,14 @@
                 <img th:src="@{|/book/*{bookImg}|}" alt="">
                 <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
                 <p th:text="|*{author}|" style="font-style: oblique; color: #2a2a2a">Author</p>
-                <p th:if="${book.bookStatus==0}" th:text="|$*{price}|" style="color: #2a2a2a">price</p>
-                <p th:if="${book.bookStatus==1}" class="cur-price" th:text="|$*{price}|">price</p>
-                <p th:if="${book.bookStatus==1}" class="pre-price" th:text="|$*{price*1.2}|">price</p>
+                <p th:if="${book.bookStatus==0}" th:text="|$*{currPrice}|" style="color: #2a2a2a">price</p>
+                <p th:if="${book.bookStatus==1}" class="cur-price" th:text="|$*{currPrice}|">currPrice</p>
+                <p th:if="${book.bookStatus==1}" class="pre-price" th:text="|$*{origPrice}|">origPrice</p>
                 <p th:text="|Sales: *{saleCount}|">Sales</p>
                 <p th:text="|Stock: *{bookCount}|">Stock</p>
-                <a th:href="@{/addCart/{id}(id=${book.id})}" class="btn" type="button">
+                <a th:if="${book.bookCount>0}" th:href="@{/addCart/{id}(id=${book.id})}" class="btn" type="button">
                   Add to my Cart</button></a>
+                <a th:unless="${book.bookCount>0}" href="" class="disabled" style="color: #a8a8a8">Temporary out of stock</button></a>
               </div>
             </div>
             <div class="list-footer">
@@ -129,13 +117,13 @@
           >
         </div>
         <a href="" class="img">
-          <img src="/uploads/cate4.jpg" alt="" />
+          <img src="/uploads/cate1.png" alt="" />
         </a>
         <a href="" class="img">
-          <img src="/uploads/cate5.jpg" alt="" />
+          <img src="/uploads/cate2.png" alt="" />
         </a>
         <a href="" class="img">
-          <img src="/uploads/cate6.jpg" alt="" />
+          <img src="/uploads/cate3.png" alt="" />
         </a>
       </div>
       <div class="books">
@@ -164,14 +152,14 @@
                 <img th:src="@{|/book/*{bookImg}|}" alt="">
                 <p th:text="|*{bookName}|" style="text-align: center">bookname</p>
                 <div>
-                  <span class="cur-price" th:text="|$*{price}|">$10</span><br>
-                  <span class="pre-price" th:text="|$*{price*1.2}|">$20</span>
+                  <span class="cur-price" th:text="|$*{currPrice}|">$10</span><br>
+                  <span class="pre-price" th:text="|$*{origPrice}|">$20</span>
                 </div>
                 <button style="width: auto" >Add to my Cart</button>
               </a>
 
               <a th:href="@{/getMainBookList}" class="cart iconfont icon-huanyipi">
-                Switch
+                Find Something New
               </a>
               <!--</div>-->
             </div>

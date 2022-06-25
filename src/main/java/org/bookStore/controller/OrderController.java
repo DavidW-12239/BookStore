@@ -31,7 +31,7 @@ public class OrderController {
     @Autowired
     CartItemService cartItemService;
 
-    @Transactional
+    //@Transactional
     @RequestMapping("/checkout")
     public String checkout(HttpSession session) {
         OrderBean orderBean = new OrderBean() ;
@@ -48,13 +48,11 @@ public class OrderController {
 
         try {
             orderService.addOrderBean(orderBean, session);
-        }catch (Exception e){
-            return "redirect:/toCartPage";
+            session.setAttribute("orderNo", orderBean.getOrderNo());
+            return "redirect:/toCheckoutPage";
+        } catch (Exception e) {
+            return "redirect:/toCartPage2";
         }
-
-        session.setAttribute("orderNo", orderBean.getOrderNo());
-
-        return "redirect:/toCheckoutPage";
     }
 
     @RequestMapping("/toCheckoutPage")

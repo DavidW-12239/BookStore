@@ -67,7 +67,7 @@ public class CartItem {
     }
 
     public Double getXj() {
-        BigDecimal bigDecimalPrice = new BigDecimal(""+getBook().getPrice());
+        BigDecimal bigDecimalPrice = new BigDecimal(""+getBook().getCurrPrice());
         BigDecimal bigDecimalBuyCount = new BigDecimal(""+buyCount);
         BigDecimal bigDecimalXJ = bigDecimalPrice.multiply(bigDecimalBuyCount);
         xj = bigDecimalXJ.doubleValue() ;

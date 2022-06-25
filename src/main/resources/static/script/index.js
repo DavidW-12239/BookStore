@@ -1,3 +1,8 @@
-function addCart(bookId){
-    window.location.href='cart.do?operate=addCart&bookId='+bookId;
-}
+/*
+$('li').click(function(){
+    if($(this).css('backgroundColor')=='rgb(255, 255, 0)'){
+        $(this).css('background','red');
+    }else{
+        $(this).css('background','yellow');
+    }
+}*/

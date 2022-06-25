@@ -27,11 +27,16 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private BookMapper bookMapper;
 
-    //@Transactional
+    @Transactional
     @Override
-    public void addOrderBean(OrderBean orderBean, HttpSession session) throws Exception {
+    public void addOrderBean(OrderBean orderBean, HttpSession session) throws RuntimeException {
         User loginUser = orderBean.getOrderUser();
         List<CartItem> cartItemList = loginUser.getCartItemList();
+        if(cartItemList.size()==0){
+            session.setAttribute("checkoutErrorMsg", "Your cart is empty!");
+            throw new RuntimeException("checkoutErrorMsg");
+        }
+        orderMapper.addOrderBean(orderBean);
         for(CartItem cartItem : cartItemList){
             Book book = cartItem.getBook();
             Integer bookCount = cartItem.getBuyCount();
@@ -39,9 +44,9 @@ public class OrderServiceImpl implements OrderService {
             book.setBookCount(book.getBookCount() - bookCount);
             if (book.getBookCount()<0){
                 session.setAttribute("insufficientMsg", "Insufficient stock for " + book.getBookName());
-                throw new Exception("Insufficient stock");
+                throw new RuntimeException("Insufficient stock");
             }
-            orderMapper.addOrderBean(orderBean);
+            bookMapper.update(book);
             OrderItem orderItem = new OrderItem();
             orderItem.setBook(book);
             orderItem.setBuyCount(bookCount);

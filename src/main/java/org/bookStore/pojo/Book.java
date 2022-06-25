@@ -1,13 +1,14 @@
 package org.bookStore.pojo;
 
 public class Book {
-    private Integer id ;
-    private String bookImg ;
-    private String bookName ;
-    private Double price ;
-    private String author ;
-    private Integer saleCount ;
-    private Integer bookCount ;
+    private Integer id;
+    private String bookImg;
+    private String bookName;
+    private Double currPrice;
+    private Double origPrice;
+    private String author;
+    private Integer saleCount;
+    private Integer bookCount;
     private Integer bookStatus;
     private String category;
 
@@ -17,12 +18,13 @@ public class Book {
         this.id = id;
     }
 
-    public Book(Integer id, String bookImg, String bookName, Double price, String author,
+    public Book(Integer id, String bookImg, String bookName, Double currPrice, Double origPrice, String author,
                 Integer saleCount, Integer bookCount, Integer bookStatus, String category) {
         this.id = id;
         this.bookImg = bookImg;
         this.bookName = bookName;
-        this.price = price;
+        this.currPrice = currPrice;
+        this.origPrice = origPrice;
         this.author = author;
         this.saleCount = saleCount;
         this.bookCount = bookCount;
@@ -52,14 +54,6 @@ public class Book {
 
     public void setBookName(String bookName) {
         this.bookName = bookName;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public String getAuthor() {
@@ -100,5 +94,21 @@ public class Book {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Double getCurrPrice() {
+        return currPrice;
+    }
+
+    public void setCurrPrice(Double currPrice) {
+        this.currPrice = currPrice;
+    }
+
+    public Double getOrigPrice() {
+        return origPrice;
+    }
+
+    public void setOrigPrice(Double origPrice) {
+        this.origPrice = origPrice;
     }
 }
