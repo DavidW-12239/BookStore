@@ -6,12 +6,10 @@ import org.bookStore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -87,5 +85,42 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderBean getOrderBeanById(Integer id) {
         return orderMapper.getOrderBean(id);
+    }
+
+    @Override
+    public void deleteOrderById(OrderBean orderBean) {
+        orderItemMapper.deleteOrderItem(orderBean);
+        orderMapper.delById(orderBean);
+    }
+
+    @Override
+    public List<OrderItem> getOrderItems(Integer orderId) {
+        List<OrderItem> list = orderItemMapper.getOrderItem(orderId);
+        for (int i=0; i<list.size(); i++){
+            //get book info from the database and set it into the orderItem list
+            Book book = bookMapper.getBook(list.get(i).getBook().getId());
+            list.get(i).setBook(book);
+        }
+        return list;
+    }
+
+    @Override
+    public Boolean checkOrderItemReview(OrderItem orderItem) {
+        Integer isReviewed = orderItemMapper.checkOrderItemReview(orderItem);
+        if (isReviewed==0){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    @Override
+    public void updateOrderItemReviewStatus(OrderItem orderItem) {
+        orderItemMapper.updateIsReviewedById(orderItem.getId());
+    }
+
+    @Override
+    public OrderItem getOrderItemById(Integer id) {
+        return orderItemMapper.getOrderItemById(id);
     }
 }

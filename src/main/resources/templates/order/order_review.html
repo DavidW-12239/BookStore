@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Main Page</title>
+  <link rel="stylesheet" href="css/minireset.css" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/iconfont.css" />
+  <link rel="stylesheet" href="css/index.css" />
+  <link rel="stylesheet" href="css/swiper.min.css" />
+</head>
+<body>
+<div id="app">
+  <div th:replace="common :: top_bar" class="topbar"/>
+  <div class="header w">
+    <a href="#" class="header-logo"></a>
+    <div th:replace="common :: header_nav"/>
+  </div>
+  <div class="books-list ">
+    <div class="w">
+      <div class="list">
+        <div class="list-header">
+          <div class="title" >Item List</div>
+        </div>
+        <div class="list-content">
+          <div href="" class="list-item" th:each="orderItem : ${session.reviewItems}" th:object="${orderItem}">
+            <form th:action="@{/submitReview/{id}(id=${orderItem.id})}">
+              <img th:src="@{|/book/*{book.bookImg}|}" alt="" class="bookImg"><br>
+              <p th:text="|*{book.bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p><br>
+              <p th:text="|Purchased Quantity: *{buyCount}|" style="color: #2a2a2a">Quantity</p>
+              <p th:text="|Total Price: $*{book.currPrice*buyCount}|" style="color: #2a2a2a">Price</p><br>
+              <select th:if="${orderItem.getIsReviewed()==0}" name="review" >
+                <option th:value="1">1 Star</option>
+                <option th:value="2">2 Star</option>
+                <option th:value="3">3 Star</option>
+                <option th:value="4">4 Star</option>
+                <option th:value="5" selected>5 Star</option>
+              </select><br>
+              <button style="width: auto" th:if="${orderItem.getIsReviewed()==0}">Submit my review</button>
+              <p th:if="${orderItem.getIsReviewed()==1}" th:text="Reviewed" style="color: #2a2a2a">Reviewed</p><br/>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="common::bottom_main" id="bottom"/>
+</div>
+</body>
+</html>

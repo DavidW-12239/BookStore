@@ -23,4 +23,6 @@ public interface OrderMapper {
     OrderBean getOrderBeanByNo(String orderNo);
 
     void updateOrderStatus(OrderBean orderBean, Integer orderStatus);
+
+    void delById(OrderBean orderBean);
 }

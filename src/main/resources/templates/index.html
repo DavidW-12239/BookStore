@@ -12,177 +12,173 @@
   </head>
   <body>
     <div id="app">
-      <div th:replace="common :: top_bar" class="topbar"/>
-      <div class="header w">
-        <a href="#" class="header-logo"></a>
-        <div th:replace="common :: header_nav"/>
-        <form class="header-search" th:action="@{/getMainBookList}">
-          <input type="text" placeholder=" " name="bookName" th:value="${session.bookName}"/>
-          <button class="iconfont icon-search"></button>
-        </form>
-      </div>
-      <div th:replace="common :: banner" class="banner w clearfix"/>
-      <div class="books-list ">
-        <div class="w">
-          <div class="list">
-            <div class="list-header">
-              <div class="title" >Book List</div>
-              <form class="price-search" th:action="@{/getMainBookList}">
-                <span>Price:&nbsp;</span>
-                <span>&nbsp;$</span>
-                <input type="number" name="price1" th:value="${session.price1}">
-                <span> - $</span>
-                <input type="number" name="price2" th:value="${session.price2}">
-                <button>Search</button>
-              </form>
-              <form class="price-search" th:action="@{/clearAll}" style="width: auto">
-                <button style="width: auto">Reset All</button>
-              </form>
-            </div>
-            <div class="list-content">
-              <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}">
-                <img th:src="@{|/book/*{bookImg}|}" alt="">
-                <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
-                <p th:text="|*{author}|" style="font-style: oblique; color: #2a2a2a">Author</p>
-                <p th:if="${book.bookStatus==0}" th:text="|$*{currPrice}|" style="color: #2a2a2a">price</p>
-                <p th:if="${book.bookStatus==1}" class="cur-price" th:text="|$*{currPrice}|">currPrice</p>
-                <p th:if="${book.bookStatus==1}" class="pre-price" th:text="|$*{origPrice}|">origPrice</p>
-                <p th:text="|Sales: *{saleCount}|">Sales</p>
-                <p th:text="|Stock: *{bookCount}|">Stock</p>
-                <a th:if="${book.bookCount>0}" th:href="@{/addCart/{id}(id=${book.id})}" class="btn" type="button">
-                  Add to my Cart</button></a>
-                <a th:unless="${book.bookCount>0}" href="" class="disabled" style="color: #a8a8a8">Temporary out of stock</button></a>
-              </div>
-            </div>
-            <div class="list-footer">
-              <ul class="pagination">
-                <li>
-                  <a th:href="@{${'getMainBookList'}(pageNum=${1},pageSize=${10})}">Front Page</a>
-                </li>
-                <li>
-                  <a th:if="${not isFirstPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum-1},pageSize=${10})}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                  <a th:if="${isFirstPage}" href="javascript:void(0);" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-                <li th:each="pageNo : ${#numbers.sequence(1, totalPages)}">
-                  <a th:if="${pageNum eq pageNo}" href="javascript:void(0);">
-                    <span th:text="${pageNo}"></span>
-                  </a>
-                  <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'getMainBookList'}(pageNum=${pageNo},pageSize=${10})}">
-                    <span th:text="${pageNo}"></span>
-                  </a>
-                </li>
-                <li>
-                  <a th:if="${not isLastPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum+1},pageSize=${10})}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                  <a th:if="${isLastPage}" href="javascript:void(0);" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
-                <li>
-                  <a th:href="@{${'getMainBookList'}(pageNum=${pageInfo.pages},pageSize=${10})}">Last Page</a>
-                </li>
-              </ul>
-
-              <span th:text="'  &nbsp;Total Pages: ' + ${pageInfo.pages} + ', '">total pages</span>
-              <span th:text="'  Total Items: ' + ${pageInfo.total}">total items</span>
-            </div>
-          </div>
+        <div th:replace="common :: top_bar" class="topbar"/>
+        <div class="header w">
+          <a href="#" class="header-logo"></a>
+          <div th:replace="common :: header_nav"/>
+          <form class="header-search" th:action="@{/getMainBookList}">
+            <input type="text" placeholder=" " name="bookName" th:value="${session.bookName}"/>
+            <button class="iconfont icon-search"></button>
+          </form>
         </div>
-      </div>
-      <div class="cate w">
-        <div class="list">
-          <a href="" class="list-item">
-            <i class="iconfont icon-java"></i>
-            <span>java</span>
-          </a>
-          <a href="" class="list-item"
-            ><i class="iconfont icon-h5"></i>h5</a
-          >
-          <a href="" class="list-item">
-            <i class="iconfont icon-p"></i>python
-          </a>
-          <a href="" class="list-item"
-            ><i class="iconfont icon-tianchongxing-"></i>pm</a
-          >
-          <a href="" class="list-item"
-            ><i class="iconfont icon-php_elephant"></i>php</a
-          >
-          <a href="" class="list-item"
-            ><i class="iconfont icon-go"></i>go</a
-          >
-        </div>
-        <a href="" class="img">
-          <img src="/uploads/cate1.png" alt="" />
-        </a>
-        <a href="" class="img">
-          <img src="/uploads/cate2.png" alt="" />
-        </a>
-        <a href="" class="img">
-          <img src="/uploads/cate3.png" alt="" />
-        </a>
-      </div>
-      <div class="books">
-        <div class="w">
-          <div class="seckill">
-            <div class="seckill-header">
-              <div class="title">
-                Special Offers
+        <div th:replace="common :: banner" class="banner w clearfix"/>
+        <div class="books-list ">
+          <div class="w">
+            <div class="list">
+              <div class="list-header">
+                <div class="title" >Book List</div>
+                <form class="price-search" th:action="@{/getMainBookList}">
+                  <span>Price:&nbsp;</span>
+                  <span>&nbsp;$</span>
+                  <input type="number" name="price1" th:value="${session.price1}">
+                  <span> - $</span>
+                  <input type="number" name="price2" th:value="${session.price2}">
+                  <button>Search</button>
+                </form>
+                <form class="price-search" th:action="@{/clearAll}" style="width: auto">
+                  <button style="width: auto">Reset All</button>
+                </form>
               </div>
-            </div>
-            <div class="seckill-content">
-              <a href="" class="tip">
-                 <h5>Before End</h5>
-                 <i class="iconfont icon-shandian"></i>
-                 <div class="downcount">
-                     <span class="time" id="hour">00</span>
-                     <span class="token">:</span>
-                     <span class="time" id="minute">00</span>
-                     <span class="token">:</span>
-                     <span class="time" id="second">00</span>
-                 </div>
-              </a>
+              <div class="list-content">
+                <div href="" class="list-item" th:each="book : ${pageInfo.list}" th:object="${book}">
+                  <img th:src="@{|/book/*{bookImg}|}" alt="" class="bookImg">
 
-              <a th:each="book : ${session.discountBookList}" th:object="${book}" style="float:left"
-                 th:href="@{/addCart/{id}(id=${book.id})}" class="books-sec" >
-                <img th:src="@{|/book/*{bookImg}|}" alt="">
-                <p th:text="|*{bookName}|" style="text-align: center">bookname</p>
-                <div>
-                  <span class="cur-price" th:text="|$*{currPrice}|">$10</span><br>
-                  <span class="pre-price" th:text="|$*{origPrice}|">$20</span>
+                  <img th:if="${book.review>4.5}" src="/uploads/5star.png" alt="" class="star">
+                  <img th:if="${book.review<=4.5 && book.review>4}" src="/uploads/4.5star.png" alt="" class="star">
+                  <img th:if="${book.review<=4 && book.review>3.5}" src="/uploads/4star.png" alt="" class="star">
+                  <img th:if="${book.review<=3.5 && book.review>3}" src="/uploads/3.5star.png" alt="" class="star">
+                  <img th:if="${book.review<=3 && book.review>2.5}" src="/uploads/3star.png" alt="" class="star">
+                  <img th:if="${book.review<=2.5 && book.review>2}" src="/uploads/2.5star.png" alt="" class="star">
+                  <img th:if="${book.review<=2 && book.review>1.5}" src="/uploads/2star.png" alt="" class="star">
+                  <img th:if="${book.review<=1.5 && book.review>1}" src="/uploads/1.5star.png" alt="" class="star">
+                  <img th:if="${book.review<=1 && book.review>0.5}" src="/uploads/1star.png" alt="" class="star">
+                  <img th:if="${book.review<=0.5}" src="/uploads/0.5star.png" alt="" class="star">
+
+                  <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
+                  <p th:text="|*{author}|" style="font-style: oblique; color: #2a2a2a">Author</p>
+                  <p th:if="${book.bookStatus==0}" th:text="|$*{currPrice}|" style="color: #2a2a2a">price</p>
+                  <p th:if="${book.bookStatus==1}" class="cur-price" th:text="|$*{currPrice}|">currPrice</p>
+                  <p th:if="${book.bookStatus==1}" class="pre-price" th:text="|$*{origPrice}|">origPrice</p>
+                  <p th:text="|Sales: *{saleCount}|">Sales</p>
+                  <p th:text="|Stock: *{bookCount}|">Stock</p>
+                  <a th:if="${book.bookCount>0}" th:href="@{/addCart/{id}(id=${book.id})}" class="btn" type="button">
+                    Add to my Cart</button></a>
+                  <a th:unless="${book.bookCount>0}" href="" class="disabled" style="color: #a8a8a8">Temporary out of stock</button></a>
                 </div>
-                <button style="width: auto" >Add to my Cart</button>
-              </a>
+              </div>
+              <div class="list-footer">
+                <ul class="pagination">
+                  <li>
+                    <a th:href="@{${'getMainBookList'}(pageNum=${1},pageSize=${10})}">Front Page</a>
+                  </li>
+                  <li>
+                    <a th:if="${not isFirstPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum-1},pageSize=${10})}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    <a th:if="${isFirstPage}" href="javascript:void(0);" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li th:each="pageNo : ${#numbers.sequence(1, totalPages)}">
+                    <a th:if="${pageNum eq pageNo}" href="javascript:void(0);">
+                      <span th:text="${pageNo}"></span>
+                    </a>
+                    <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'getMainBookList'}(pageNum=${pageNo},pageSize=${10})}">
+                      <span th:text="${pageNo}"></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a th:if="${not isLastPage}" th:href="@{${'getMainBookList'}(pageNum=${pageNum+1},pageSize=${10})}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    <a th:if="${isLastPage}" href="javascript:void(0);" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a th:href="@{${'getMainBookList'}(pageNum=${pageInfo.pages},pageSize=${10})}">Last Page</a>
+                  </li>
+                </ul>
 
-              <a th:href="@{/getMainBookList}" class="cart iconfont icon-huanyipi">
-                Find Something New
-              </a>
-              <!--</div>-->
+                <span th:text="'  &nbsp;Total Pages: ' + ${pageInfo.pages} + ', '">total pages</span>
+                <span th:text="'  Total Items: ' + ${pageInfo.total}">total items</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div th:replace="common::bottom_main" id="bottom"/>
-     
+        <div class="cate w">
+          <div class="list">
+            <a href="" class="list-item">
+              <i class="iconfont icon-java"></i>
+              <span>java</span>
+            </a>
+            <a href="" class="list-item"
+              ><i class="iconfont icon-h5"></i>h5</a
+            >
+            <a href="" class="list-item">
+              <i class="iconfont icon-p"></i>python
+            </a>
+            <a href="" class="list-item"
+              ><i class="iconfont icon-tianchongxing-"></i>pm</a
+            >
+            <a href="" class="list-item"
+              ><i class="iconfont icon-php_elephant"></i>php</a
+            >
+            <a href="" class="list-item"
+              ><i class="iconfont icon-go"></i>go</a
+            >
+          </div>
+          <a href="" class="img">
+            <img src="/uploads/cate1.png" alt="" />
+          </a>
+          <a href="" class="img">
+            <img src="/uploads/cate2.png" alt="" />
+          </a>
+          <a href="" class="img">
+            <img src="/uploads/cate3.png" alt="" />
+          </a>
+        </div>
+        <div class="books">
+          <div class="w">
+            <div class="seckill">
+              <div class="seckill-header">
+                <div class="title">
+                  Special Offers
+                </div>
+              </div>
+              <div class="seckill-content">
+                <a href="" class="tip">
+                   <h5>Before End</h5>
+                   <i class="iconfont icon-shandian"></i>
+                   <div class="downcount">
+                       <span class="time" id="hour">00</span>
+                       <span class="token">:</span>
+                       <span class="time" id="minute">00</span>
+                       <span class="token">:</span>
+                       <span class="time" id="second">00</span>
+                   </div>
+                </a>
 
-<!--    </div>
-    <script src="/script/swiper.min.js"></script>
-    <script>
-      var swiper = new Swiper('.swiper-container', {
-        autoplay: true,
-        pagination: {
-          el: '.swiper-pagination',
-          dynamicBullets: true
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
-        }
-      })
-    </script>-->
+                <a th:each="book : ${session.discountBookList}" th:object="${book}" style="float:left"
+                   th:href="@{/addCart/{id}(id=${book.id})}" class="books-sec" >
+                  <img th:src="@{|/book/*{bookImg}|}" alt="">
+                  <p th:text="|*{bookName}|" style="text-align: center">bookname</p>
+                  <div>
+                    <span class="cur-price" th:text="|$*{currPrice}|">$10</span><br>
+                    <span class="pre-price" th:text="|$*{origPrice}|">$20</span>
+                  </div>
+                  <button style="width: auto" >Add to my Cart</button>
+                </a>
+
+                <a th:href="@{/getMainBookList}" class="cart iconfont icon-huanyipi">
+                  Find Something New
+                </a>
+                <!--</div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div th:replace="common::bottom_main" id="bottom"/>
+    </div>
   </body>
 </html>

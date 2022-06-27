@@ -57,6 +57,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public void updateBookReviews(Integer id, Integer review) {
+        Book book = bookMapper.getBook(id);
+        Integer reviewNum = book.getReviewNum()+1;
+        Double updatedReview = (book.getReviewNum() * book.getReview() + review)/reviewNum;
+        bookMapper.updateReviews(id, reviewNum, updatedReview);
+    }
+
+    @Override
     public void deleteBook(Integer id) {
         bookMapper.deleteBook(id);
     }

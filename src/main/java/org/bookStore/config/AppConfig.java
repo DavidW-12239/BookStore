@@ -11,7 +11,6 @@ import javax.sql.DataSource;
 public class AppConfig implements WebMvcConfigurer {
 
     /**
-     * 将自定义拦截器作为bean写入配置
      * @return
      */
     @Bean
@@ -20,8 +19,6 @@ public class AppConfig implements WebMvcConfigurer {
     }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //拦截处理操作的匹配路径
-        //放开静态拦截
         registry.addInterceptor(loginInterceptor())
                 .addPathPatterns("/**") //intercept all paths
                 .excludePathPatterns("/index", "/", "/login")//exclude login and main path

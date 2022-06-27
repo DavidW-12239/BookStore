@@ -7,11 +7,18 @@ import org.bookStore.service.BookService;
 import org.bookStore.service.CartItemService;
 import org.bookStore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +65,8 @@ public class BookController {
             return "manager/book_add";
         }
 
-        bookService.addBook(new Book(null, null, bookName, currPrice, origPrice, author, saleCount, bookCount, bookStatus, category));
+        bookService.addBook(new Book(null, null, bookName, currPrice, origPrice,
+                author, saleCount, bookCount, bookStatus, category, 0, 0.0));
         return "redirect:/toAddingSuccessfulPage";
     }
 
@@ -267,7 +275,37 @@ public class BookController {
         return "manager/edit_successful";
     }
 
+    /*   @Value("${user.file.path}")
+    private String filePath;
+    @Value("${user.file.name}")
+    private String fileName;
 
+    @RequestMapping("/upload")
+    public ModelAndView update(@RequestParam("pic") MultipartFile multipartFile) {
+
+        try {
+            // 保存图片
+            File file = new File(filePath + multipartFile.getOriginalFilename());
+            multipartFile.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index");
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<?> getFile(@PathVariable String filename) {
+        try {
+            return ResponseEntity.ok(resourceLoader.getResource("file:" + Paths.get(filePath + filename)));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }*/
 
 
 }

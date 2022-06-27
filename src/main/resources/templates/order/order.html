@@ -33,6 +33,7 @@
               <th>Book Num</th>
               <th>Order Status</th>
               <th>Order Details</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -44,9 +45,25 @@
               <td th:if="${order.orderStatus==0}">Waiting for shipment</td>
               <td th:if="${order.orderStatus==1}">Shipped</td>
               <td th:if="${order.orderStatus==2}">Delivered</td>
+              <td th:if="${order.orderStatus==3}" style="color: #a8a8a8">Completed</td>
+              <td th:if="${order.orderStatus==4}" style="color: #a8a8a8">Canceled</td>
+              <td th:if="${order.orderStatus==5}" style="color: #a8a8a8">Reviewed</td>
               <td><a href="">Details</a></td>
+              <td th:if="${order.orderStatus==2}">
+                <a th:href="@{/confirmReceipt/{id}(id=${order.id})}"
+                  th:confirm-receipt="|Are you sure you have received all the items?|"
+                  onclick="if (!confirm(this.getAttribute('confirm-receipt'))) return false">Confirm Receipt</a></td>
+              <td th:if="${order.orderStatus==0}">
+                <a th:href="@{/cancelOrder/{id}(id=${order.id})}"
+                   th:confirm-cancel="|Are you sure you want to cancel this order?|"
+                   onclick="if (!confirm(this.getAttribute('confirm-cancel'))) return false">Cancel Order</a></td>
+              <td th:if="${order.orderStatus==3}">
+                <a th:href="@{/reviewOrder/{id}(id=${order.id})}">Give a Review</a></td>
+              <td th:if="${order.orderStatus==4 || order.orderStatus==5}">
+                <a th:href="@{/deleteOrder/{id}(id=${order.id})}"
+                   th:confirm-delete="|Are you sure you want to delete this order?|"
+                   onclick="if (!confirm(this.getAttribute('confirm-delete'))) return false">Delete Order</a></td>
             </tr>
-
           </tbody>
         </table>
         <div class="footer">
@@ -59,3 +76,15 @@
     <div th:replace="common::bottom_main"/>
   </body>
 </html>
+
+
+<!--
+<div href="" class="list-item" th:each="orderItem : ${session.reviewItems}" th:object="${orderItem}">
+                <img th:src="@{|/book/*{book.bookImg}|}" alt="">
+                <p th:text="|Item Name: *{book.bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
+                <p th:text="|Purchased Quantity:*{buyCount}|" style="color: #2a2a2a">Quantity</p>
+                <p th:text="|Total Price: $*{book.currPrice}|" style="color: #2a2a2a">Price</p>
+                <a th:href="@{/review/{id}(id=${orderItem.book})}" class="btn" type="button">
+                  Review</button></a>
+              </div>-->
+

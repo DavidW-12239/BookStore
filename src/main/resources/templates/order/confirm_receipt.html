@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Welcome Page</title>
+<link type="text/css" rel="stylesheet" href="/css/style.css" >
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+	
+	h1 a {
+		color:red;
+	}
+</style>
+</head>
+<body>
+
+		<div th:replace="common::head"/>
+		
+		<div id="main">
+		
+			<h1>Receipt confirmed!<br><br>
+				<a th:href="@{/index}">To Main Page</a><br><br>
+				<a th:href="@{/toReviewPage}">Give a Review</a>
+			</h1>
+	
+		</div>
+
+		<div th:replace="common::bottom"/>
+</body>
+</html>

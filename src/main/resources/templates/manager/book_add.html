@@ -85,6 +85,17 @@
             </div>
             <span th:text="${saleCountMsg}" style="color:red">sales</span><br>
           </div>
+          <!--<div class="form-item">
+            <div>
+              <label>Upload Image:</label>
+              <img th:src="${filePath}">
+              <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+                <input type="file" name="img">
+                <input type="submit">
+              </form>
+            </div>
+            <span th:text="${}" style="color:red"></span><br>
+          </div>-->
 
           <input type="submit" value="Submit" id="sub_btn" />
         </form>

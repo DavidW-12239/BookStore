@@ -169,6 +169,29 @@ public class ServiceTest {
         bookMapper.update(book);
         int i = 5/0;
     }
+
+    @Test
+    void testDeleteOrder(){
+        OrderBean orderBean = orderMapper.getOrderBean(66);
+        orderMapper.delById(orderBean);
+    }
+
+    @Test
+    void testReview(){
+        bookService.updateBookReviews(1, 5);
+    }
+
+    @Test
+    void testOrderItem(){
+        /*List<Integer> list = orderItemMapper.getOrderItem(11);
+        System.out.println(list.size());*/
+        /*List<OrderItem> list = orderService.getOrderItems(11);
+        System.out.println(list.get(0).getBook().getCurrPrice());*/
+        OrderItem orderItem = orderItemMapper.getOrderItemById(6);
+        orderService.updateOrderItemReviewStatus(orderItem);
+        System.out.println(orderService.checkOrderItemReview(orderItem));
+
+    }
 }
 
 

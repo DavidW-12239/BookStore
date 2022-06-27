@@ -2,10 +2,8 @@ package org.bookStore.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.bookStore.pojo.Book;
-import org.bookStore.pojo.CartItem;
-import org.bookStore.pojo.OrderBean;
-import org.bookStore.pojo.User;
+import org.bookStore.pojo.*;
+import org.bookStore.service.BookService;
 import org.bookStore.service.CartItemService;
 import org.bookStore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,9 @@ public class OrderController {
 
     @Autowired
     CartItemService cartItemService;
+
+    @Autowired
+    BookService bookService;
 
     //@Transactional
     @RequestMapping("/checkout")
@@ -100,6 +101,62 @@ public class OrderController {
         OrderBean orderBean = orderService.getOrderBeanById(id);
         orderService.updateOrderStatus(orderBean, a);
         return "redirect:/getAllOrderList";
+    }
+
+    @RequestMapping("/confirmReceipt/{id}")
+    public String confirmReceipt(@PathVariable("id") Integer id, HttpSession session){
+        OrderBean orderBean = orderService.getOrderBeanById(id);
+        orderService.updateOrderStatus(orderBean, 3);
+        session.setAttribute("reviewItems", orderService.getOrderItems(id));
+        return "redirect:/toConfirmReceiptPage";
+    }
+
+    @RequestMapping("/toConfirmReceiptPage")
+    public String toConfirmReceiptPage(){
+        return "order/confirm_receipt";
+    }
+
+    @RequestMapping("/cancelOrder/{id}")
+    public String cancelOrder(@PathVariable("id") Integer id){
+        OrderBean orderBean = orderService.getOrderBeanById(id);
+        orderService.updateOrderStatus(orderBean, 4);
+        return "redirect:/getOrderList";
+    }
+
+    @RequestMapping("/deleteOrder/{id}")
+    public String deleteOrder(@PathVariable("id") Integer id){
+        OrderBean orderBean = orderService.getOrderBeanById(id);
+        orderService.deleteOrderById(orderBean);
+        return "redirect:/getOrderList";
+    }
+
+    @RequestMapping("/reviewOrder/{id}")
+    public String toReviewPageFromOrderPage(@PathVariable("id") Integer id, HttpSession session){
+        session.setAttribute("reviewItems", orderService.getOrderItems(id));
+        return "redirect:/toReviewPage";
+    }
+
+    @RequestMapping("/toReviewPage")
+    public String toReviewPage(){
+        return "order/order_review";
+    }
+
+    @RequestMapping("/submitReview/{id}")
+    public String submitReview(@PathVariable("id") Integer id, @RequestParam("review") Integer review, HttpSession session){
+        OrderItem currOrderItem = orderService.getOrderItemById(id);
+        orderService.updateOrderItemReviewStatus(currOrderItem);
+        bookService.updateBookReviews(currOrderItem.getBook().getId(), review);
+        OrderBean orderBean = currOrderItem.getOrderBean();
+        session.setAttribute("reviewItems", orderService.getOrderItems(orderBean.getId()));
+
+        for (OrderItem orderItem: orderService.getOrderItems(orderBean.getId())){
+            if (orderItem.getIsReviewed() == 0){
+                return "redirect:/toReviewPage";
+            }
+        }
+
+        orderService.updateOrderStatus(orderBean, 5);
+        return "redirect:/getOrderList";
     }
 
 }

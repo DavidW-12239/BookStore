@@ -5,6 +5,7 @@ public class OrderItem {
     private Book book ;                 //M:1
     private Integer buyCount ;
     private OrderBean orderBean ;       //M:1
+    private Integer isReviewed;
 
     public OrderItem(){}
 
@@ -12,11 +13,12 @@ public class OrderItem {
         this.id = id;
     }
 
-    public OrderItem(Integer id, Book book, Integer buyCount, OrderBean orderBean) {
+    public OrderItem(Integer id, Book book, Integer buyCount, OrderBean orderBean, Integer isReviewed) {
         this.id = id;
         this.book = book;
         this.buyCount = buyCount;
         this.orderBean = orderBean;
+        this.isReviewed = isReviewed;
     }
 
     public Integer getId() {
@@ -49,5 +51,13 @@ public class OrderItem {
 
     public void setOrderBean(OrderBean orderBean) {
         this.orderBean = orderBean;
+    }
+
+    public Integer getIsReviewed() {
+        return isReviewed;
+    }
+
+    public void setIsReviewed(Integer isReviewed) {
+        this.isReviewed = isReviewed;
     }
 }

@@ -51,6 +51,9 @@
                     <option th:value="0" selected>Waiting for shipment</option>
                     <option th:value="1">Shipped</option>
                     <option th:value="2">Delivered</option>
+                    <option th:value="3">Completed</option>
+                    <option th:value="4">Canceled</option>
+                    <option th:value="5">Reviewed</option>
                   </select>
                 </td>
                 <td th:if="${order.orderStatus==1}">
@@ -58,6 +61,9 @@
                     <option th:value="0">Waiting for shipment</option>
                     <option th:value="1" selected>Shipped</option>
                     <option th:value="2">Delivered</option>
+                    <option th:value="3">Completed</option>
+                    <option th:value="4">Canceled</option>
+                    <option th:value="5">Reviewed</option>
                   </select>
                 </td>
                 <td th:if="${order.orderStatus==2}">
@@ -65,6 +71,39 @@
                     <option th:value="0">Waiting for shipment</option>
                     <option th:value="1">Shipped</option>
                     <option th:value="2" selected>Delivered</option>
+                    <option th:value="3">Completed</option>
+                    <option th:value="4">Canceled</option>
+                    <option th:value="5">Reviewed</option>
+                  </select>
+                </td>
+                <td th:if="${order.orderStatus==3}">
+                  <select name="orderStatus" >
+                    <option th:value="0">Waiting for shipment</option>
+                    <option th:value="1">Shipped</option>
+                    <option th:value="2">Delivered</option>
+                    <option th:value="3" selected>Completed</option>
+                    <option th:value="4">Canceled</option>
+                    <option th:value="5">Reviewed</option>
+                  </select>
+                </td>
+                <td th:if="${order.orderStatus==4}">
+                <select name="orderStatus" >
+                  <option th:value="0">Waiting for shipment</option>
+                  <option th:value="1">Shipped</option>
+                  <option th:value="2">Delivered</option>
+                  <option th:value="3">Completed</option>
+                  <option th:value="4" selected>Canceled</option>
+                  <option th:value="5">Reviewed</option>
+                </select>
+                </td>
+                <td th:if="${order.orderStatus==5}">
+                  <select name="orderStatus" >
+                    <option th:value="0">Waiting for shipment</option>
+                    <option th:value="1">Shipped</option>
+                    <option th:value="2">Delivered</option>
+                    <option th:value="3">Completed</option>
+                    <option th:value="4">Canceled</option>
+                    <option th:value="5" selected>Reviewed</option>
                   </select>
                 </td>
                 <!--<td><a th:href="@{/changeOrderStatus/{id}(id=${order.id})}">Edit</a></td>-->

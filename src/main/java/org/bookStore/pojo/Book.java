@@ -11,6 +11,8 @@ public class Book {
     private Integer bookCount;
     private Integer bookStatus;
     private String category;
+    private Integer reviewNum;
+    private Double review;
 
     public Book(){}
 
@@ -19,7 +21,7 @@ public class Book {
     }
 
     public Book(Integer id, String bookImg, String bookName, Double currPrice, Double origPrice, String author,
-                Integer saleCount, Integer bookCount, Integer bookStatus, String category) {
+                Integer saleCount, Integer bookCount, Integer bookStatus, String category, Integer reviewNum, Double review) {
         this.id = id;
         this.bookImg = bookImg;
         this.bookName = bookName;
@@ -30,6 +32,8 @@ public class Book {
         this.bookCount = bookCount;
         this.bookStatus = bookStatus;
         this.category = category;
+        this.reviewNum = reviewNum;
+        this.review = review;
     }
 
     public Integer getId() {
@@ -110,5 +114,21 @@ public class Book {
 
     public void setOrigPrice(Double origPrice) {
         this.origPrice = origPrice;
+    }
+
+    public Integer getReviewNum() {
+        return reviewNum;
+    }
+
+    public void setReviewNum(Integer reviewNum) {
+        this.reviewNum = reviewNum;
+    }
+
+    public Double getReview() {
+        return review;
+    }
+
+    public void setReview(Double review) {
+        this.review = review;
     }
 }

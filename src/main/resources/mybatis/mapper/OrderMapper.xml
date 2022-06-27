@@ -11,6 +11,9 @@
     <update id="updateOrderStatus">
         update t_order set orderStatus = #{orderStatus} where id = #{orderBean.id}
     </update>
+    <delete id="delById">
+        delete from t_order where id = #{id}
+    </delete>
 
     <resultMap id="orderBean" type="org.bookStore.pojo.OrderBean">
         <id property="id" column="id"></id>

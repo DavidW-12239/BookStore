@@ -18,7 +18,7 @@ import java.util.List;
 public class ManagerController {
 
     @RequestMapping("/toAdminPage")
-    public String toAdminPage(HttpSession session){
+    public String toAdminPage(HttpSession session, Model model){
         if (session.getAttribute("loginUser")==null){
             return "user/login";
         }
@@ -27,6 +27,7 @@ public class ManagerController {
             return "manager/manager";
         }
         else{
+            model.addAttribute("unameMsg","Sorry, only admin allowed.");
             return "index";
         }
     }

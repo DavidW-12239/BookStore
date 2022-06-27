@@ -6,6 +6,33 @@
 
 
     <insert id="addOrderItem">
-        insert into t_order_item values(null, #{book.id}, #{buyCount}, #{orderBean.id})
+        insert into t_order_item values(null, #{book.id}, #{buyCount}, #{orderBean.id}, 0)
     </insert>
+    <update id="updateIsReviewedById">
+        update t_order_item set isReviewed = 1
+        where id = #{id}
+    </update>
+    <delete id="deleteOrderItem">
+        delete from t_order_item where orderBean = #{id}
+    </delete>
+
+    <resultMap id="getOrderItems" type="org.bookStore.pojo.OrderItem">
+        <id property="id" column="id"></id>
+        <result property="book.id" column="book"></result>
+        <result property="buyCount" column="buyCount"></result>
+        <result property="orderBean.id" column="orderBean"></result>
+        <result property="isReviewed" column="isReviewed"></result>
+    </resultMap>
+    <select id="getOrderItem" resultMap="getOrderItems">
+        select * from t_order_item
+        where orderBean = #{orderId}
+    </select>
+    <select id="checkOrderItemReview" resultType="java.lang.Integer">
+        select isReviewed from t_order_item
+        where id = #{id}
+    </select>
+    <select id="getOrderItemById" resultMap="getOrderItems">
+        select * from t_order_item where id = #{id}
+    </select>
+
 </mapper>

@@ -5,11 +5,16 @@
 <mapper namespace="org.bookStore.mapper.BookMapper">
     <insert id="addBook">
         insert into t_book values (null, null, #{bookName}, #{curr_price}, orig_price = #{orig_price},
-                                   #{author}, #{saleCount}, #{bookCount}, #{bookStatus}, #{category})
+                                   #{author}, #{saleCount}, #{bookCount}, #{bookStatus}, #{category},
+                                   null, 0)
     </insert>
     <update id="update">
         update t_book set bookName = #{bookName}, curr_price = #{currPrice}, orig_price = #{origPrice}, author = #{author},
                           saleCount = #{saleCount}, bookCount = #{bookCount}, bookStatus = #{bookStatus}, category = #{category}
+        where id = #{id}
+    </update>
+    <update id="updateReviews">
+        update t_book set review_num = #{reviewNum}, review = #{review}
         where id = #{id}
     </update>
     <delete id="deleteBook">
