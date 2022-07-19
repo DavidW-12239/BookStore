@@ -70,8 +70,7 @@ public class CartController {
     }
 
     @RequestMapping("/reduceCartItemQuantity/{id}")
-    public String reduceCartItemQuantity(@PathVariable("id") Integer cartItemId,
-                                         @RequestParam("purchaseNum") Integer purchaseNum){
+    public String reduceCartItemQuantity(@PathVariable("id") Integer cartItemId){
         Integer buyCount = cartItemService.getCartItem(cartItemId).getBuyCount() - 1;
         cartItemService.updateCartItem(new CartItem(cartItemId , buyCount));
 
@@ -79,8 +78,7 @@ public class CartController {
     }
 
     @RequestMapping("/increaseCartItemQuantity/{id}")
-    public String increaseCartItemQuantity(@PathVariable("id") Integer cartItemId,
-                                           @RequestParam("purchaseNum") Integer purchaseNum){
+    public String increaseCartItemQuantity(@PathVariable("id") Integer cartItemId){
         Integer buyCount = cartItemService.getCartItem(cartItemId).getBuyCount() + 1;
         cartItemService.updateCartItem(new CartItem(cartItemId , buyCount));
 

@@ -1,7 +1,8 @@
 function fresh(){
-    var endtime=new Date("2022/07/02,14:20:10");
-    var nowtime=new Date();
-    var leftsecond=parseInt((endtime.getTime() - nowtime.getTime())/1000);
+    var myDate = new Date();
+    var endtime = new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1);
+    var nowtime = myDate;
+    var leftsecond = parseInt((endtime.getTime() - nowtime.getTime())/1000);
     h=parseInt(leftsecond/3600);
     m=parseInt((leftsecond/60)%60);
     s=parseInt(leftsecond%60);
