@@ -7,13 +7,10 @@ import org.bookStore.service.BookService;
 import org.bookStore.service.CartItemService;
 import org.bookStore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -34,9 +31,18 @@ public class BookController {
     public String addBook(@RequestParam(required=false, name="bookName") String bookName, @RequestParam("currPrice") Double currPrice,
                           @RequestParam("origPrice") Double origPrice, @RequestParam("author") String author,
                           @RequestParam("saleCount") Integer saleCount, @RequestParam("bookCount") Integer bookCount,
-                          @RequestParam("bookStatus") Integer bookStatus, @RequestParam("category") String category, Model model){
+                          @RequestParam("bookStatus") Integer bookStatus, @RequestParam("category") String category,
+                          Model model, HttpSession session) throws IOException {
         String quantityReg = "^[1-9]\\d*$";
-        if (bookName.equals("")){
+        if (currPrice==null){
+            model.addAttribute("currPriceMsg","Please enter a current price!");
+            return "manager/book_add";
+        }
+        else if (origPrice==null){
+            model.addAttribute("origPriceMsg","Please enter an original price!");
+            return "manager/book_add";
+        }
+        else if (bookName.equals("")){
             model.addAttribute("bookNameMsg","Book name cannot be empty!");
             return "manager/book_add";
         }
@@ -44,7 +50,7 @@ public class BookController {
             model.addAttribute("currPriceMsg","Please enter a correct price!");
             return "manager/book_add";
         }
-        else if (origPrice<=0 || currPrice<=0 || (currPrice!=origPrice && bookStatus==0) || (currPrice>=origPrice && bookStatus==1)){
+        else if (origPrice<=0 || (currPrice>origPrice && bookStatus==0) || (currPrice<origPrice && bookStatus==0) || (currPrice>=origPrice && bookStatus==1)){
             model.addAttribute("origPriceMsg","Please enter a correct price!");
             return "manager/book_add";
         }
@@ -52,11 +58,11 @@ public class BookController {
             model.addAttribute("authorMsg","Author cannot be empty!");
             return "manager/book_add";
         }
-        else if (!saleCount.toString().matches(quantityReg)){
+        else if (!saleCount.toString().matches(quantityReg) || saleCount==null){
             model.addAttribute("saleCountMsg","Please enter a correct saleCount!");
             return "manager/book_add";
         }
-        else if (!bookCount.toString().matches(quantityReg)){
+        else if (!bookCount.toString().matches(quantityReg) || bookCount==null){
             model.addAttribute("bookCountMsg","Please enter a correct bookCount!");
             return "manager/book_add";
         }
@@ -64,7 +70,11 @@ public class BookController {
             model.addAttribute("categoryMsg","Book category cannot be empty!");
             return "manager/book_add";
         }
-
+/*        else if (photo==null){
+            model.addAttribute("photoMsg","Please upload the photo!");
+            return "manager/book_add";
+        }*/
+        //String bookImg = Utils.UploadPhoto(photo, session);
         bookService.addBook(new Book(null, null, bookName, currPrice, origPrice,
                 author, saleCount, bookCount, bookStatus, category, 0, 0.0));
         return "redirect:/toAddingSuccessfulPage";
@@ -233,11 +243,11 @@ public class BookController {
         }
         else if (currPrice<=0){
             model.addAttribute("currPriceMsg","Please enter a correct current price!");
-            return "manager/book_add";
+            return "manager/book_edit";
         }
-        else if (origPrice<=0 || currPrice<=0 || (currPrice!=origPrice && bookStatus==0) || (currPrice>=origPrice && bookStatus==1)){
+        else if (origPrice<=0 || (currPrice>origPrice && bookStatus==0) || (currPrice<origPrice && bookStatus==0) || (currPrice>=origPrice && bookStatus==1)){
             model.addAttribute("origPriceMsg","Please enter a correct original price!");
-            return "manager/book_add";
+            return "manager/book_edit";
         }
         else if (author.equals("")){
             model.addAttribute("authorMsg","Author cannot be empty!");
@@ -253,7 +263,7 @@ public class BookController {
         }
         else if (category.equals("")){
             model.addAttribute("categoryMsg","Book category cannot be empty!");
-            return "manager/book_add";
+            return "manager/book_edit";
         }
 
         Book book = (Book) session.getAttribute("book");

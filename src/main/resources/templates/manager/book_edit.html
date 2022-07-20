@@ -36,14 +36,14 @@
           <div class="form-item">
             <div>
               <label>Current Price</label>
-              <input type="number" name="price" th:value="${session.book.currPrice}" placeholder="Please enter the current price" >
+              <input type="number" step="0.01" name="currPrice" th:value="${session.book.currPrice}" placeholder="Please enter the current price" >
             </div>
             <span th:text="${currPriceMsg}" style="color:red">price</span>
           </div>
           <div class="form-item">
             <div>
               <label>Original Price</label>
-              <input type="number" name="price" th:value="${session.book.origPrice}" placeholder="Please enter the price" >
+              <input type="number" step="0.01" name="origPrice" th:value="${session.book.origPrice}" placeholder="Please enter the original price" >
             </div>
             <span th:text="${origPriceMsg}" style="color:red">price</span>
           </div>

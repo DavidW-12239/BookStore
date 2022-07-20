@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 600px;
 }
 .login_banner .register_form {
   width: 500px;
