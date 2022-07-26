@@ -30,7 +30,7 @@ public class CartController {
         List<CartItem> cartItemList = cartItemService.getCartItemList(user);
         user.setCartItemList(cartItemList);
         Double totalPrice = cartItemService.getTotalCartItemPrice(cartItemList);
-        session.setAttribute("loginUser",user);
+        session.setAttribute("loginUser", user);
         session.setAttribute("totalPrice", totalPrice);
         session.setAttribute("insufficientMsg", "");
         return "cart/cart";
@@ -38,12 +38,12 @@ public class CartController {
 
     //when the rollback occur
     @RequestMapping("/toCartPage2")
-    public String getCart2(HttpSession session, Model model){
+    public String getCart2(HttpSession session){
         User user = (User)session.getAttribute("loginUser");
         List<CartItem> cartItemList = cartItemService.getCartItemList(user);
         user.setCartItemList(cartItemList);
         Double totalPrice = cartItemService.getTotalCartItemPrice(cartItemList);
-        session.setAttribute("loginUser",user);
+        session.setAttribute("loginUser", user);
         session.setAttribute("totalPrice", totalPrice);
         return "cart/cart";
     }
@@ -72,7 +72,7 @@ public class CartController {
     @RequestMapping("/reduceCartItemQuantity/{id}")
     public String reduceCartItemQuantity(@PathVariable("id") Integer cartItemId){
         Integer buyCount = cartItemService.getCartItem(cartItemId).getBuyCount() - 1;
-        cartItemService.updateCartItem(new CartItem(cartItemId , buyCount));
+        cartItemService.updateCartItem(new CartItem(cartItemId, buyCount));
 
         return "redirect:/toCartPage";
     }
@@ -80,9 +80,20 @@ public class CartController {
     @RequestMapping("/increaseCartItemQuantity/{id}")
     public String increaseCartItemQuantity(@PathVariable("id") Integer cartItemId){
         Integer buyCount = cartItemService.getCartItem(cartItemId).getBuyCount() + 1;
-        cartItemService.updateCartItem(new CartItem(cartItemId , buyCount));
+        cartItemService.updateCartItem(new CartItem(cartItemId, buyCount));
 
         return "redirect:/toCartPage";
     }
+
+/*    @RequestMapping("/updateCartItemQuantity/{id}")
+    public String updateCartItemQuantity(@PathVariable("id") Integer cartItemId, @RequestParam("purchaseNum") Integer buyCount,
+                                         Model model){
+        if (buyCount > cartItemService.getCartItem(cartItemId).getBook().getBookCount()){
+            model.addAttribute("stockMsg","Not enough storage!");
+        } else {
+            cartItemService.updateCartItem(new CartItem(cartItemId, buyCount));
+        }
+        return "redirect:/toCartPage";
+    }*/
 
 }

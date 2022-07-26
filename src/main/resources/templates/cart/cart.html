@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>My Cart</title>
     <link rel="stylesheet" href="/css/minireset.css" />
     <link rel="stylesheet" href="/css/common.css" />
     <link rel="stylesheet" href="/css/cart.css" />
@@ -29,7 +29,7 @@
               <th>Book Name</th>
               <th>Quantity</th>
               <th>In Stock</th>
-              <th>Price</th>
+              <th>Unit Price</th>
               <th>Total Price</th>
               <th>Action</th>
             </tr>
@@ -42,10 +42,10 @@
             <td th:text="${cartItem.book.bookName}">bookName</td>
             <td>
               <a class="count" th:if="${cartItem.buyCount}>1" th:href="@{/reduceCartItemQuantity/{id}(id=${cartItem.id})}">-</a>
-              <input class="count-num" type="text" name="purchaseNum" th:value="${cartItem.buyCount}"
-                     oninput="if(value<1)value=1"/>
+              <p class="count-num" th:text="${cartItem.buyCount}" />
               <a class="count" th:if="${cartItem.buyCount}<${cartItem.book.getBookCount()}"
-                 th:href="@{/increaseCartItemQuantity/{id}(id=${cartItem.id})}">+</a>
+                 th:href="@{/increaseCartItemQuantity/{id}(id=${cartItem.id})}">+</a><br/>
+              <!--<span th:text="${stockMsg}" style="color:red">stock</span>-->
             </td>
             <td th:text="${cartItem.book.getBookCount()}">0</td>
             <td th:text="${cartItem.book.currPrice}">0</td>
