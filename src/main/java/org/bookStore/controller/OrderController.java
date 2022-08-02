@@ -92,7 +92,7 @@ public class OrderController {
         //last page?
         model.addAttribute("isLastPage", orderPageInfo.isIsLastPage());
 
-        return "manager/order_manager";
+        return "admin/order_manager";
     }
 
     @RequestMapping("/changeOrderStatus/{id}")

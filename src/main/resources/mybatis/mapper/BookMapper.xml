@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.bookStore.mapper.BookMapper">
     <insert id="addBook">
-        insert into t_book values (null, null, #{bookName}, #{curr_price}, orig_price = #{orig_price},
+        insert into t_book values (null, null, #{bookName}, #{currPrice}, #{origPrice},
                                    #{author}, #{saleCount}, #{bookCount}, #{bookStatus}, #{category},
                                    null, 0)
     </insert>
@@ -15,6 +15,10 @@
     </update>
     <update id="updateReviews">
         update t_book set review_num = #{reviewNum}, review = #{review}
+        where id = #{id}
+    </update>
+    <update id="updateImg">
+        update t_book set bookImg = #{bookImg}
         where id = #{id}
     </update>
     <delete id="deleteBook">
@@ -59,5 +63,8 @@
                 and bookStatus = #{bookStatus}
             </if>
             </where>
+    </select>
+    <select id="getBookIdByNameAndAuthor" resultType="Integer">
+        select id from t_book where bookName = #{bookName} and author = #{author}
     </select>
 </mapper>

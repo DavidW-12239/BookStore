@@ -7,17 +7,27 @@ import org.bookStore.service.BookService;
 import org.bookStore.service.CartItemService;
 import org.bookStore.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class BookController {
@@ -33,57 +43,67 @@ public class BookController {
                           @RequestParam("saleCount") Integer saleCount, @RequestParam("bookCount") Integer bookCount,
                           @RequestParam("bookStatus") Integer bookStatus, @RequestParam("category") String category,
                           Model model, HttpSession session) throws IOException {
-        String quantityReg = "^[1-9]\\d*$";
+
+        String quantityReg = "^[0-9]\\d*$";
         if (currPrice==null){
             model.addAttribute("currPriceMsg","Please enter a current price!");
-            return "manager/book_add";
+            return "admin/book_add";
         }
         else if (origPrice==null){
             model.addAttribute("origPriceMsg","Please enter an original price!");
-            return "manager/book_add";
+            return "admin/book_add";
         }
         else if (bookName.equals("")){
             model.addAttribute("bookNameMsg","Book name cannot be empty!");
-            return "manager/book_add";
+            return "admin/book_add";
         }
         else if (currPrice<=0){
             model.addAttribute("currPriceMsg","Please enter a correct price!");
-            return "manager/book_add";
+            return "admin/book_add";
         }
         else if (origPrice<=0 || (currPrice>origPrice && bookStatus==0) || (currPrice<origPrice && bookStatus==0) || (currPrice>=origPrice && bookStatus==1)){
             model.addAttribute("origPriceMsg","Please enter a correct price!");
-            return "manager/book_add";
+            return "admin/book_add";
         }
         else if (author.equals("")){
             model.addAttribute("authorMsg","Author cannot be empty!");
-            return "manager/book_add";
+            return "admin/book_add";
         }
         else if (!saleCount.toString().matches(quantityReg) || saleCount==null){
-            model.addAttribute("saleCountMsg","Please enter a correct saleCount!");
-            return "manager/book_add";
+            model.addAttribute("saleCountMsg","Please enter a correct sales!");
+            return "admin/book_add";
         }
         else if (!bookCount.toString().matches(quantityReg) || bookCount==null){
-            model.addAttribute("bookCountMsg","Please enter a correct bookCount!");
-            return "manager/book_add";
+            model.addAttribute("bookCountMsg","Please enter a correct stock!");
+            return "admin/book_add";
         }
         else if (category.equals("")){
             model.addAttribute("categoryMsg","Book category cannot be empty!");
-            return "manager/book_add";
+            return "admin/book_add";
         }
 /*        else if (photo==null){
             model.addAttribute("photoMsg","Please upload the photo!");
-            return "manager/book_add";
+            return "admin/book_add";
         }*/
         //String bookImg = Utils.UploadPhoto(photo, session);
+
+
         bookService.addBook(new Book(null, null, bookName, currPrice, origPrice,
                 author, saleCount, bookCount, bookStatus, category, 0, 0.0));
+        session.setAttribute("tempBookId", bookService.getBookByNameAndAuthor(bookName, author));
         return "redirect:/toAddingSuccessfulPage";
     }
 
     @RequestMapping("/toAddingSuccessfulPage")
     public String toAddingSuccessfulPage(){
-        return "manager/adding_successful";
+        return "admin/adding_successful";
     }
+
+    @RequestMapping("/toPhotoUploadPage")
+    public String toPhotoUploadPage(){
+        return "admin/photo_upload";
+    }
+
 
     @RequestMapping("/getBookByCategory")
     public String getBookByCategory(@RequestParam("category") String category, HttpSession session){
@@ -210,7 +230,7 @@ public class BookController {
         //last page?
         model.addAttribute("isLastPage", bookManagerPageInfo.isIsLastPage());
 
-        return "manager/book_manager";
+        return "admin/book_manager";
     }
 
     @RequestMapping("/deleteBook/{id}")
@@ -227,7 +247,7 @@ public class BookController {
 
     @RequestMapping("/toEditBookPage")
     public String toEditBookPage(){
-        return "manager/book_edit";
+        return "admin/book_edit";
     }
 
     @PostMapping("/editBook")
@@ -239,31 +259,31 @@ public class BookController {
         String quantityReg = "^[1-9]\\d*$";
         if (bookName.equals("")){
             model.addAttribute("bookNameMsg","Book name cannot be empty!");
-            return "manager/book_edit";
+            return "admin/book_edit";
         }
         else if (currPrice<=0){
             model.addAttribute("currPriceMsg","Please enter a correct current price!");
-            return "manager/book_edit";
+            return "admin/book_edit";
         }
         else if (origPrice<=0 || (currPrice>origPrice && bookStatus==0) || (currPrice<origPrice && bookStatus==0) || (currPrice>=origPrice && bookStatus==1)){
             model.addAttribute("origPriceMsg","Please enter a correct original price!");
-            return "manager/book_edit";
+            return "admin/book_edit";
         }
         else if (author.equals("")){
             model.addAttribute("authorMsg","Author cannot be empty!");
-            return "manager/book_edit";
+            return "admin/book_edit";
         }
         else if (!saleCount.toString().matches(quantityReg)){
             model.addAttribute("saleCountMsg","Please enter a correct saleCount!");
-            return "manager/book_edit";
+            return "admin/book_edit";
         }
         else if (!bookCount.toString().matches(quantityReg)){
             model.addAttribute("bookCountMsg","Please enter a correct bookCount!");
-            return "manager/book_edit";
+            return "admin/book_edit";
         }
         else if (category.equals("")){
             model.addAttribute("categoryMsg","Book category cannot be empty!");
-            return "manager/book_edit";
+            return "admin/book_edit";
         }
 
         Book book = (Book) session.getAttribute("book");
@@ -282,40 +302,38 @@ public class BookController {
 
     @RequestMapping("/toEditSuccessfulPage")
     public String toEditSuccessfulPage(){
-        return "manager/edit_successful";
+        return "admin/edit_successful";
     }
 
-    /*   @Value("${user.file.path}")
-    private String filePath;
-    @Value("${user.file.name}")
-    private String fileName;
+/*    @GetMapping(value = "/file")
+    public String file() {
+        return "file";
+    }*/
 
-    @RequestMapping("/upload")
-    public ModelAndView update(@RequestParam("pic") MultipartFile multipartFile) {
-
+    @PostMapping(value = "/photoUpload")
+    public String photoUpload(@RequestParam(value = "photo") MultipartFile file, Model model, HttpSession session) throws FileNotFoundException {
+        if (file.isEmpty()) {
+            model.addAttribute("fileName", "The photo is empty!");
+            return "admin/photo_upload";
+        }
+        String fileName = file.getOriginalFilename();
+        String path = ClassUtils.getDefaultClassLoader().getResource("static/book/").getPath();
+        File dest = new File(path + fileName);
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
+        }
         try {
-            // 保存图片
-            File file = new File(filePath + multipartFile.getOriginalFilename());
-            multipartFile.transferTo(file);
+            file.transferTo(dest);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index");
-
-        return modelAndView;
+        model.addAttribute("fileName", fileName);
+        Integer id = (Integer) session.getAttribute("tempBookId");
+        bookService.updateImg(id,fileName);
+        return "redirect:/toBookManagerPage";
     }
 
-    @RequestMapping(value = "/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<?> getFile(@PathVariable String filename) {
-        try {
-            return ResponseEntity.ok(resourceLoader.getResource("file:" + Paths.get(filePath + filename)));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }*/
+
 
 
 }

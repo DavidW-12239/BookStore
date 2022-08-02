@@ -47,6 +47,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Integer getBookByNameAndAuthor(String bookName, String author) {
+        Integer id = bookMapper.getBookIdByNameAndAuthor(bookName, author);
+        return id;
+    }
+
+    @Override
     public void addBook(Book book) {
         bookMapper.addBook(book);
     }
@@ -54,6 +60,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public void updateBook(Book book) {
         bookMapper.update(book);
+    }
+
+    @Override
+    public void updateImg(Integer id, String bookImg) {
+        bookMapper.updateImg(id, bookImg);
     }
 
     @Override

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-public class ManagerController {
+public class AdminController {
 
     @RequestMapping("/toAdminPage")
     public String toAdminPage(HttpSession session, Model model){
@@ -24,7 +24,7 @@ public class ManagerController {
         }
         User user = (User) session.getAttribute("loginUser");
         if (user.getRole()==1){
-            return "manager/manager";
+            return "admin/admin";
         }
         else{
             model.addAttribute("unameMsg","Sorry, only admin allowed.");
@@ -34,7 +34,7 @@ public class ManagerController {
 
     @RequestMapping("/toAddBookPage")
     public String toAddBookPage(){
-        return "manager/book_add";
+        return "admin/book_add";
     }
 
     @RequestMapping("/toOrderManagerPage")
@@ -44,6 +44,6 @@ public class ManagerController {
 
     @RequestMapping("/toBookEditPage")
     public String toBookEditPage(){
-        return "manager/book_edit";
+        return "admin/book_edit";
     }
 }

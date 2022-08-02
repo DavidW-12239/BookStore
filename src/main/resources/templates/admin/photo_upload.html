@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Book</title>
+    <link rel="stylesheet" href="css/minireset.css" />
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+    <link rel="stylesheet" href="css/bookManger.css" />
+    <link rel="stylesheet" href="css/register.css" />
+    <link rel="stylesheet" href="css/book_edit.css" />
+</head>
+<body>
+<div class="header">
+    <div class="w">
+        <div class="header-left">
+            <a th:href="@{/index}">
+                <img src="img/logo.png" alt=""/></a>
+            <span>Add Book Cover Photo</span>
+        </div>
+        <div class="header-right" th:replace="common::header_right"/>
+    </div>
+</div>
+<div class="login_banner">
+    <div class="register_form">
+        <form th:action="@{/photoUpload}" method="post" enctype="multipart/form-data">
+            <label>Upload Photo</label></br>
+            <input type="file" name="photo"/></br>
+            <input type="submit" value="Submit"/>
+        </form>
+    </div>
+</div>
+<div th:replace="common::bottom"/>
+</body>
+</html>

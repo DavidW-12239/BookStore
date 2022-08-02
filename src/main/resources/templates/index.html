@@ -56,7 +56,7 @@
                   <img th:if="${book.review<=0.5}" src="/uploads/0.5star.png" alt="" class="star">
 
                   <p th:text="|*{bookName}|" style="font-weight:bold; color: #2a2a2a">bookname</p>
-                  <p th:text="|*{author}|" style="font-style: oblique; color: #2a2a2a">Author</p>
+                  <p th:text="|*{author}|" style="font-style: oblique; color: #2a2a2a">author</p>
                   <p th:if="${book.bookStatus==0}" th:text="|$*{currPrice}|" style="color: #2a2a2a">price</p>
                   <p th:if="${book.bookStatus==1}" class="cur-price" th:text="|$*{currPrice}|">currPrice</p>
                   <p th:if="${book.bookStatus==1}" class="pre-price" th:text="|$*{origPrice}|">origPrice</p>

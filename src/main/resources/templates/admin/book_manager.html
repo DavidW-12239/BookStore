@@ -44,11 +44,11 @@
                 <img th:src="@{|/book/*{bookImg}|}" alt="">
               </td>
               <td th:text="|*{bookName}|">bookName</td>
-              <td th:text="|price: $*{currPrice}|">price</td>
-              <td th:text="|price: $*{origPrice}|">price</td>
-              <td th:text="|author: *{author}|">author</td>
-              <td th:text="|sales: *{saleCount}|">sales</td>
-              <td th:text="|stock: *{bookCount}|">stock</td>
+              <td th:text="|$*{currPrice}|">price</td>
+              <td th:text="|$*{origPrice}|">price</td>
+              <td th:text="|*{author}|">author</td>
+              <td th:text="|*{saleCount}|">sales</td>
+              <td th:text="|*{bookCount}|">stock</td>
               <td>
                 <a th:href="@{/getCurrBook/{id}(id=${book.id})}">EDIT</a>
                 <a th:href="@{/deleteBook/{id}(id=${book.id})}" class="del">DELETE</a>
