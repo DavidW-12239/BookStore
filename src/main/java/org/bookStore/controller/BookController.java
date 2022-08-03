@@ -81,12 +81,6 @@ public class BookController {
             model.addAttribute("categoryMsg","Book category cannot be empty!");
             return "admin/book_add";
         }
-/*        else if (photo==null){
-            model.addAttribute("photoMsg","Please upload the photo!");
-            return "admin/book_add";
-        }*/
-        //String bookImg = Utils.UploadPhoto(photo, session);
-
 
         bookService.addBook(new Book(null, null, bookName, currPrice, origPrice,
                 author, saleCount, bookCount, bookStatus, category, 0, 0.0));
@@ -256,7 +250,7 @@ public class BookController {
                           @RequestParam("author") String author, @RequestParam("saleCount") Integer saleCount,
                           @RequestParam("bookCount") Integer bookCount, @RequestParam("bookStatus") Integer bookStatus,
                           @RequestParam("category") String category, HttpSession session, Model model){
-        String quantityReg = "^[1-9]\\d*$";
+        String quantityReg = "^[0-9]\\d*$";
         if (bookName.equals("")){
             model.addAttribute("bookNameMsg","Book name cannot be empty!");
             return "admin/book_edit";
@@ -297,6 +291,7 @@ public class BookController {
         book.setCategory(category);
 
         bookService.updateBook(book);
+        session.setAttribute("tempBookId", bookService.getBookByNameAndAuthor(bookName, author));
         return "redirect:/toEditSuccessfulPage";
     }
 
@@ -305,15 +300,11 @@ public class BookController {
         return "admin/edit_successful";
     }
 
-/*    @GetMapping(value = "/file")
-    public String file() {
-        return "file";
-    }*/
 
     @PostMapping(value = "/photoUpload")
     public String photoUpload(@RequestParam(value = "photo") MultipartFile file, Model model, HttpSession session) throws FileNotFoundException {
         if (file.isEmpty()) {
-            model.addAttribute("fileName", "The photo is empty!");
+            model.addAttribute("fileMsg", "The photo file cannot be empty!");
             return "admin/photo_upload";
         }
         String fileName = file.getOriginalFilename();
@@ -330,7 +321,7 @@ public class BookController {
         model.addAttribute("fileName", fileName);
         Integer id = (Integer) session.getAttribute("tempBookId");
         bookService.updateImg(id,fileName);
-        return "redirect:/toBookManagerPage";
+        return "admin/photo_successful";
     }
 
 

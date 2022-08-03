@@ -27,6 +27,7 @@
     <div class="register_form">
         <form th:action="@{/photoUpload}" method="post" enctype="multipart/form-data">
             <label>Upload Photo</label></br>
+            <span th:text="${fileMsg}" style="color:red">msg</span><br>
             <input type="file" name="photo"/></br>
             <input type="submit" value="Submit"/>
         </form>
